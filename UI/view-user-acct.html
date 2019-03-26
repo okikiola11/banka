@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Banking web application" />
+    <meta name="keywords" content="Banking web application" />
+    <meta name="author" content="Apelehin Okikiola" />
+    <title>Banka:: Admin Login</title>
+    <link rel="stylesheet" href="asset/css/style.css" />
+    <link rel="stylesheet" href="asset/css/admin.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel|Rajdhani" />
+</head>
+
+<body>
+    <header class="header-ad">
+        <nav>
+            <div id="branding">
+                <h1><a href="index.html"> Banka</a></h1>
+            </div>
+
+            <a href="#" class="nav-trigger">
+                <span></span>
+            </a>
+        </nav>
+    </header>
+
+    <section class="dashboard-container">
+
+        <div class="sidebar-menu">
+
+            <div class="sidebar-menu-mn">
+
+                <div class="logo">
+
+                    <a href="#" class="sidebar-icon"><span></span> </a>
+                    <a href="#">
+                        <span id="logo">
+                            <h1>Admin</h1>
+                        </span>
+                    </a>
+
+                </div>
+
+                <div class="down">
+
+                    <p class="text">Welcome Admin</p>
+
+                    <p><a class="tooltips"><span>Okikiola</span></a></p>
+                </div>
+
+                <div class="menu">
+
+                    <ul id="menu">
+
+                        <li id="menu-dashbrd">
+                            <a href="#">
+                                <span> User accounts </span>
+                            </a>
+
+                            <ul id="menu-dashbrd-sub">
+                                <!-- get this class and hid -->
+
+                                <li id="menu-dashbrd-edit">
+                                    <a href="view-user-acct.html">View all user accounts</a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="index.html">
+                                <span> Log out </span>
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="left-content">
+
+            <div class="inner-content">
+
+                <div class="hdr-acct"> View All User Account</div>
+
+                <div class="fl-acct">
+                    <a href="admin-create-user.html" class="btn-create-acct"> Create a user account</a>
+                </div>
+
+                <div>
+
+                    <table class="table table-bordered">
+
+                        <thead class="th-ad">
+                            <tr>
+                                <th>User ID</th>
+                                <th>Account No</th>
+                                <th>Account Name</th>
+                                <th>Account Type</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Gender</th>
+                                <th>Created Date</th>
+                                <th>Balance</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>111</td>
+                                <td>2020134829</td>
+                                <td>Apelehin Okikiola</td>
+                                <td>Savings</td>
+                                <td>Admin</td>
+                                <td>Draft</td>
+                                <td>Female</td>
+                                <th>24-09-2010</th>
+                                <td> NGN100, 000.00 </td>
+                                <td>
+                                    <span>
+                                        <a href="view-sp-user-acct.html" class="btn-view-acct">
+                                            View</a>
+                                    </span>
+                                    <span class="btn-delete">
+                                        <a class="button" href="#modal-popup">Delete</a>
+                                    </span>
+
+                                    <div id="modal-popup" class="overlay">
+                                        <div class="inner-popup">
+                                            <h2>Apelehin Okikiola</h2>
+                                            <a class="close" href="#">&times;</a>
+                                            <div class="content">
+                                                Are you sure, you want to permanently delete this account
+                                            </div>
+
+                                            <div class="btn-action">
+                                                <div class="btn-yes"><a href="">Yes</a></div>
+                                                <div class="btn-no"><a href="">No</a></div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>112</td>
+                                <td>2020134829</td>
+                                <td>Shade Williams</td>
+                                <td>Current</td>
+                                <td>User</td>
+                                <td>Active</td>
+                                <td>Female</td>
+                                <th>24-09-2010</th>
+                                <td> NGN200, 000.00</td>
+                                <td>
+                                    <span>
+                                        <a href="view-sp-user-acct.html" class="btn-view-acct">
+                                            View</a>
+                                    </span>
+                                    <span class="btn-delete">
+                                        <a class="button" href="#modal-popup">Delete</a>
+                                    </span>
+
+                                    <div id="modal-popup" class="overlay">
+
+                                        <div class="inner-popup">
+                                            <h2>Apelehin Okikiola</h2>
+                                            <a class="close" href="#">&times;</a>
+                                            <div class="content">
+                                                Are you sure, you want to permanently delete this account
+                                            </div>
+
+                                            <div class="btn-action">
+                                                <div class="btn-yes"><a href="">Yes</a></div>
+                                                <div class="btn-no"><a href="">No</a></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>113</td>
+                                <td>20203343529</td>
+                                <td>Mitcheal Azodo</td>
+                                <td>Current</td>
+                                <td>Staff</td>
+                                <td>Dormant</td>
+                                <td>Male</td>
+                                <th>24-09-2010</th>
+                                <td> NGN150, 000.00</td>
+                                <td>
+                                    <span><a href="view-sp-user-acct.html" class="btn-view-acct">View</a>
+                                    </span>
+                                    <span class="btn-delete">
+                                        <a class="button" href="#modal-popup">Delete</a>
+                                    </span>
+
+                                    <div id="modal-popup" class="overlay">
+
+                                        <div class="inner-popup">
+                                            <h2>Apelehin Okikiola</h2>
+                                            <a class="close" href="#">&times;</a>
+                                            <div class="content">
+                                                Are you sure, you want to permanently delete this account
+                                            </div>
+
+                                            <div class="btn-action">
+                                                <div class="btn-yes"><a href="">Yes</a></div>
+                                                <div class="btn-no"><a href="">No</a></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+        <div class="footer-ad">
+            2019 A Web Banking Application. All Rights Reserved
+        </div>
+    </footer>
+
+    <script src="asset/js/main.js"></script>
+
+</body>
+
+</html>
