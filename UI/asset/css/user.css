@@ -217,6 +217,12 @@ span:after {
   background: none;
 }
 
+.hdr-acct {
+  font-size: 2.3rem;
+  margin-bottom: 20px;
+  font-family: "Cinzel", serif;
+}
+
 .inner-mnth {
   font-size: 2rem;
   margin-bottom: 10px;
@@ -235,9 +241,26 @@ span:after {
   display: flex;
 }
 
-.main-dd span {
-  font-size: 1.7rem;
+.my-main {
+  text-align: center;
+}
+
+.main-dd__flex img {
+  width: 50%;
+}
+
+.my-main--s {
+  margin-top: 20px;
+}
+
+.main-pro-f {
+  font-size: 1.8rem;
   font-weight: 600;
+}
+
+.main-info {
+  font-size: 1.7rem;
+  font-weight: 500;
 }
 
 .main-dd span:nth-child(2) {
