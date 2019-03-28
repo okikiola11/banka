@@ -30,7 +30,7 @@
 
     <div class="side-nav">
         <div class="txt-sidenav">
-            Welcome User
+            User
         </div>
 
         <nav>
@@ -55,8 +55,14 @@
                 </li>
                 <li>
                     <a href="settings.html">
-                        <span><i class="fal fa-cog"></i></span>
+                        <span><i class="fas fa-cog"></i></span>
                         <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">
+                        <span><i class="far fa-arrow-alt-circle-left"></i></span>
+                        <span>Log out</span>
                     </a>
                 </li>
             </ul>
@@ -64,15 +70,21 @@
 
     </div>
 
-    <div class="main-content">
+    <div class="main-content bottom--sp">
 
         <div class="dd-wrapper">
             <div class="hdr-acct">Change Profile Picture</div>
 
             <div class="main-dd">
+
                 <div class="main-dd__flex">
-                    <div class="my-main">
-                        <img src=" asset/images/user-icon.png" alt="">
+
+                    <div class="image-upload">
+                        <label for="file-input">
+                            <img src=" asset/images/user-icon.png" alt="" />
+                        </label>
+
+                        <input id="file-input" type="file" />
                     </div>
 
                     <div class="main-info my-main--s">
@@ -106,7 +118,7 @@
                     <div class="main-info">
                         <div class="main-pro-f">Contact Information</div>
                         <div>
-                            <span>Email Address :</span><span>mitchell.apelehin@gmail.comOkikiola</span><br>
+                            <span>Email Address :</span><span>mitchell.apelehin@gmail.com</span><br>
                         </div>
                         <div>
                             <span>Phone Number :</span><span>08023192913</span><br>

@@ -48,7 +48,6 @@
 
 .header-staff {
     background: #052963;
-    ;
 }
 
 .btn-xss {
@@ -71,89 +70,6 @@
 /***
 ****
 **** ADMIN DASHBOARD */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .login-btn-ad {
     padding: 1.5rem 0rem;
     background: #005066;
@@ -191,6 +107,7 @@
 }
 
 .header-ad {
+    position: absolute;
     background: #78cce2;
     color: #ffffff;
     padding: 5px;
@@ -281,9 +198,11 @@
 
 .sidebar-menu,
 .sidebar-menu-st {
-    position: fixed;
+    position: absolute;
+    height: 100vh;
+    z-index: 1;
     float: left;
-    width: 80px;
+    width: 100%;
     top: 0;
     left: 0;
     bottom: 0;
@@ -556,7 +475,7 @@ span:after {
 }
 
 .button {
-    font-size: 1em;
+    font-size: 1.5rem;
     color: #fff;
     text-decoration: none;
     cursor: pointer;
@@ -681,9 +600,36 @@ span:after {
     overflow: auto;
 }
 
+.tbl__btn {
+    width: 130px;
+}
+
+.btn-view {
+    margin-left: 3px;
+    float: left;
+}
+
+.btn-delete {
+    float: left;
+    margin-left: 10px;
+    margin-top: -7px;
+}
+
+.clearfix {
+    clear: both;
+}
+
 /***
 **
 **TABLE STYLES  */
+.tbl--flow {
+    overflow-x: scroll;
+}
+
+table {
+    width: 100% !important;
+}
+
 .table td,
 .table>tbody>tr>td,
 .table>tbody>tr>th {
@@ -737,6 +683,7 @@ thead {
         display: block;
         border: 1px solid #34495e;
         width: 130px;
+        position: fixed;
     }
 
     .left-content {
@@ -762,6 +709,10 @@ thead {
     .btn-deactivate {
         width: 30%;
     }
+
+    .tbl--flow {
+        overflow-x: scroll;
+    }
 }
 
 @media screen and (min-width: 800px) {
@@ -771,6 +722,7 @@ thead {
         display: block;
         border: 1px solid #34495e;
         width: 200px;
+        position: fixed;
     }
 
     .left-content {
@@ -796,6 +748,10 @@ thead {
     .btn-activate {
         width: 10%;
     }
+
+    .tbl--flow {
+        overflow-x: scroll;
+    }
 }
 
 @media screen and (min-width: 1000px) {
@@ -805,6 +761,7 @@ thead {
         display: block;
         border: 1px solid #34495e;
         width: 150px;
+        position: fixed;
     }
 
     .left-content {
@@ -827,6 +784,10 @@ thead {
 
     .btn-deactivate .btn-activate {
         width: 10%;
+    }
+
+    .tbl--flow {
+        overflow-x: hidden;
     }
 }
 
