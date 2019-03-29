@@ -1,0 +1,590 @@
+@import url("https://fonts.googleapis.com/css?family=Cormorant+Unicase");
+@import url("https://fonts.googleapis.com/css?family=Felipa");
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    line-height: 1.5;
+    background-color: #fefefe;
+}
+
+html {
+    font-size: 10px;
+    line-height: 1.15;
+    /* font-family: "Cinzel", serif; */
+}
+
+.container {
+    padding: 25px;
+}
+
+.container-fluid {
+    padding: 0px;
+    margin: 0px;
+}
+
+header {
+    background: #2c0ef0;
+    padding: 5px;
+    font-family: "Nunito Sans", sans-serif;
+    box-shadow: 0 15px 30px 0 rgba(31, 48, 146, 0.11);
+    position: sticky;
+    font-weight: 500;
+    top: 0;
+    z-index: 1034;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    padding: 0.1rem 1.5rem;
+}
+
+header nav ul {
+    margin-left: auto;
+    padding: 0px;
+}
+
+header nav ul li {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+header #branding h1 {
+    margin: 0px;
+    font-size: 3.5rem;
+    font-family: "Felipa", cursive;
+}
+
+header #branding h1 a {
+    text-decoration: none;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-bottom 0.4s;
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 5px;
+}
+
+.banner {
+    background-image: url(../images/banner2.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    height: 55vh;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.banner-inner {
+    top: 5%;
+    left: 22px;
+    width: 250px;
+    font-family: "Nunito Sans", sans-serif;
+    /* transform: translate(-50%, -50%); */
+    font-size: 1.3rem;
+    display: flex;
+    position: absolute;
+    padding-top: 50px;
+    animation: 1s ease-out 0s 1 slideInFromRight
+}
+
+.banner-text {
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 40px;
+    text-transform: uppercase;
+    background-color: #2980b9;
+}
+
+.banner-acct {
+    top: 50%;
+    left: 58px;
+    width: 180px;
+    display: flex;
+    position: absolute;
+}
+
+.btn-acct {
+    padding: 10px;
+    background: #2ecc71;
+    font-size: 2.4rem;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 10px;
+    font-family: "Felipa", cursive;
+}
+
+.btn-acct a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.btn-acct:hover {
+    animation: shake 0.6s infinite;
+}
+
+.clearfix {
+    clear: both;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .container-2 {
+        padding: 0 0 2rem 0;
+        display: flex;
+        justify-content: space-evenly;
+        font-size: 1.4rem;
+    }
+
+    .container-2--inner {
+        width: 33.33%;
+    }
+
+    .container-2--hm {
+        width: 25%;
+    }
+
+    .container-2--hm img {
+        width: 100%;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) and (max-width: 1999px) {
+    .container-2 {
+        padding: 1.6rem 0 3rem 0;
+        display: flex;
+        justify-content: center;
+        font-size: 1.4rem;
+    }
+
+    .container-2--inner,
+    .container-2--hm {
+        width: 25%;
+    }
+
+    .row--ml {
+        /* display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap; */
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+}
+
+.txt-hdr-hm {
+    font-size: 3.5rem;
+    text-align: center;
+    margin: 30px;
+    font-family: "Felipa", cursive;
+}
+
+.container-2--inner {
+    font-family: "Cormorant Unicase", serif;
+    /* padding: 30px 0px 70px 0px; */
+    font-size: 1.7rem;
+    font-weight: 500;
+    text-align: center;
+    border-right: 1px solid #747d8c;
+    margin: 10px 1px 35px 1px;
+}
+
+.container-2--inner h4 {
+    font-weight: normal;
+    font-size: 1.9rem;
+}
+
+.container-2--inner:last-child {
+    border-right: none;
+}
+
+.container-2--inner span img {
+    width: 25%;
+}
+
+/* .container-2--hm {
+    font-family: "Cormorant Unicase", serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+    width: 25%;
+} */
+
+@keyframes shake {
+    0% {
+        transform: translate(0px, 0px) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(1px, 1px) rotate(1deg);
+    }
+
+    50% {
+        transform: translate(-1px, -1px) rotate(-1deg);
+    }
+
+    75% {
+        transform: translate(2px, -1px) rotate(2deg);
+    }
+
+    100% {
+        transform: translate(-1px, 1px) rotate(-1deg);
+    }
+}
+
+.btn-login {
+    background: #e74c3c;
+    padding: 10px 15px;
+    border-radius: 3px;
+    font-size: 2rem;
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+/******
+****
+***
+ LOGIN FORM */
+.login-container {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: rgba(18, 168, 225, 0.2);
+    min-height: 76vh;
+    position: relative;
+}
+
+.login-admin {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #fefefe;
+    min-height: 76vh;
+    position: relative;
+}
+
+.login-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.acct-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-wrapper form {
+    padding: 20px;
+    width: 320px;
+    margin-top: 20px auto;
+    background: #f9fbfd;
+    border: 1px solid #ddd;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.acct-wrapper form {}
+
+#inputbx {
+    padding: 1.3em 0.8em;
+    font-size: 1.2rem;
+    outline: none;
+    color: #333333;
+    letter-spacing: 1px;
+    margin: 0.5em;
+    width: 97%;
+    border: 1px solid #838383;
+    border-radius: 4px;
+}
+
+.txt-hdr {
+    text-transform: uppercase;
+    color: #000;
+    margin: 15px 10px;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+.btn-xs {
+    border: 2px solid #57606f;
+    border-radius: 30px;
+    margin-bottom: 10px;
+    padding: 9px;
+    font-size: 1.35rem;
+    color: #000;
+    text-decoration: none;
+}
+
+.btn-xs:hover {
+    background: #57606f;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background 0.4s;
+}
+
+.btn-span {
+    margin: 15px 1px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-span>div {
+    padding-left: 8px;
+}
+
+.btn-span span {
+    font-size: 1.2rem;
+}
+
+a .login-btn {
+    color: #ffffff;
+    padding: 1.5rem 0rem;
+    background: #12a8e1;
+    font-weight: 600;
+    outline: none;
+    border: none;
+    color: #ffffff !important;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 97%;
+    text-align: center;
+    margin: 5px;
+    border-radius: 6px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.register-container {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    min-height: 100vh;
+    background-color: rgb(62, 175, 219);
+    margin: 0 1px;
+    animation: 1s ease-out 0s 1 slideInFromRight;
+    position: relative;
+}
+
+.register-container-a {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    min-height: 100vh;
+    background-color: #fefefe;
+    margin: 20px 1px 80px 1px;
+    animation: 1s ease-out 0s 1 slideInFromTop;
+    position: relative;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+form {
+    display: block;
+    margin-top: 0em;
+}
+
+/*****
+****
+CREATE ACCOUNT FORM */
+#create-form {
+    border: 0 none;
+    margin-top: 500px;
+}
+
+#create-form fieldset {
+    padding: 20px;
+    width: 390px;
+    margin-top: 20px auto;
+    background: #f9fbfd;
+    border: 1px solid #ddd;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+#create-form fieldset:not(:first-of-type) {
+    /* hide all except first fieldset */
+    display: none;
+}
+
+.fs-title {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: #333333;
+    margin-bottom: 10px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.action-button {
+    padding: 1.3rem 0.8rem;
+    font-size: 1.4rem;
+    outline: none;
+    color: #ffffff;
+    letter-spacing: 1px;
+    margin: 0.5em;
+    width: 43%;
+    border: 1px solid #838383;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.next {
+    background: #2ecc71;
+}
+
+#progressbar {
+    margin-bottom: 10px;
+    overflow: hidden;
+    counter-reset: step;
+}
+
+#progressbar fieldset {
+    width: 100%;
+}
+
+#progressbar li {
+    list-style-type: none;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    width: 33.33%;
+    float: left;
+    position: relative;
+}
+
+#progressbar li::before {
+    content: counter(step);
+    counter-increment: step;
+    width: 20px;
+    display: block;
+    line-height: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #ffffff;
+    background: #2c0ef0;
+    border-radius: 3px;
+    margin: 0 auto 5px auto;
+}
+
+/* progressbar connectors */
+#progressbar li:after {
+    content: "";
+    width: 100%;
+    height: 2px;
+    background: #2c0ef0;
+    position: absolute;
+    left: -50%;
+    top: 9px;
+    /*put it behind the numbers */
+    z-index: -1;
+}
+
+#progressbar li:first-child:after {
+    /*connector not necessary before the first step */
+    content: none;
+}
+
+/* the number of the step and the connector before it *blue */
+#progressbar li.active::before,
+#progressbar li.active:after {
+    background: #ffffff;
+    color: #2c0ef0;
+}
+
+.footer {
+    background-color: #2c0ef0;
+    padding: 18px;
+    font-size: 1.7rem;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+.footer-text {
+    background-color: #2c3e50;
+    padding: 3px;
+    font-size: 1.7rem;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+@media screen and (min-width: 600px) {
+    .banner-inner {
+        top: 10%;
+        left: 38%;
+        width: 450px;
+        font-size: 1.6rem;
+    }
+
+    .banner-acct {
+        top: 50%;
+        left: 75%;
+        width: 200px;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .banner-inner {
+        top: 5%;
+        left: 62%;
+        width: 450px;
+        font-size: 1.6rem;
+    }
+
+    .banner-acct {
+        top: 45%;
+        left: 75%;
+        width: 200px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .banner-inner {
+        top: 5%;
+        left: 62%;
+        width: 450px;
+        font-size: 1.6rem;
+    }
+
+    .banner-acct {
+        top: 45%;
+        left: 75%;
+        width: 200px;
+    }
+}

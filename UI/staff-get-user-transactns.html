@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Banking web application" />
+    <meta name="keywords" content="Banking web application" />
+    <meta name="author" content="Apelehin Okikiola" />
+    <title>Banka:: Staff Dashboard</title>
+    <link rel="stylesheet" href="asset/css/style.css" />
+    <link rel="stylesheet" href="asset/css/admin.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel|Rajdhani" />
+</head>
+
+<body>
+    <header class="header-staff">
+        <nav>
+            <div id="branding">
+                <h1><a href="index.html"> Banka</a></h1>
+            </div>
+        </nav>
+
+        <a href="#" class="nav-trigger">
+            <span></span>
+        </a>
+    </header>
+
+    <section class="dashboard-container">
+
+        <div class="sidebar-menu-st">
+
+            <div class="sidebar-menu-mn">
+
+                <div class="logo">
+
+                    <a href="#" class="sidebar-icon"><span></span> </a>
+                    <a href=""> <span id="logo">
+                            <h1>Staff</h1>
+                        </span></a>
+
+                </div>
+
+                <div class="down">
+
+                    <p class="text">Welcome Staff</p>
+
+                    <p><a class="tooltips"><span>Kunle</span></a>
+                    </p>
+                </div>
+
+                <div class="menu">
+
+                    <ul id="menu">
+
+                        <li id="menu-dashbrd">
+                            <a href="#">
+                                <span> User accounts </span>
+                            </a>
+
+                            <ul id="menu-dashbrd-sub">
+                                <!-- get this class and hide -->
+
+                                <li id="menu-dashbrd-edit">
+                                    <a href="staff-view-all-acct.html">View all user accounts</a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="staff-get-user-transactns.html">
+                                <span> Transactions </span>
+                            </a>
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="notifcation.html">
+                                <span> Notification </span>
+                            </a>
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="index.html">
+                                <span> Log out </span>
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="left-content">
+
+            <div class="inner-content">
+
+                <div class="hdr-acct"> All Transactions</div>
+
+                <div class="btn-action btn-cd">
+
+                    <div class="btn-credit">
+                        <a href="staff-credit-user-acct.html" class="btn-view-acct">
+                            Credit
+                        </a>
+                    </div>
+
+                    <div class="btn-debit">
+                        <span class="btn-delete">
+                            <a class="button" href="staff-debit-user-acct.html">Debit </a>
+                        </span>
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="tbl--flow">
+
+                        <table class="table table-bordered">
+
+                            <thead class="th-ad">
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Account No</th>
+                                    <th>Account Type</th>
+                                    <th>Credit/Debit</th>
+                                    <th>Amount(NGN)</th>
+                                    <th>Old Balance</th>
+                                    <th>New Balance</th>
+                                    <th>Cashier</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>111</td>
+                                    <td>2020134829</td>
+                                    <td>Savings</td>
+                                    <td>Credit</td>
+                                    <td>100,000.00</td>
+                                    <td>100,000.00 </td>
+                                    <td>210,000.00</td>
+                                    <td>Shade Doyin</td>
+                                    <td>23-03-2019</td>
+                                </tr>
+
+                                <tr>
+                                    <td>112</td>
+                                    <td>2020134829</td>
+                                    <td>Current</td>
+                                    <td>Debit</td>
+                                    <td>20,000.00</td>
+                                    <td>200,000.00</td>
+                                    <td>180,0000.00</td>
+                                    <td>Ade Doyin</td>
+                                    <td>23-03-2019</td>
+                                </tr>
+
+                                <tr>
+                                    <td>113</td>
+                                    <td>2020334359</td>
+                                    <td>Current</td>
+                                    <td>Debit</td>
+                                    <td>50,000.00</td>
+                                    <td>450,000.00</td>
+                                    <td>400,000.00</td>
+                                    <td>Shade Doyin</td>
+                                    <td>23-03-2019</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+        <div class="footer-st">
+            2019 A Web Banking Application. All Rights Reserved
+        </div>
+    </footer>
+
+    <script src="asset/js/main.js"></script>
+
+</body>
+
+</html>

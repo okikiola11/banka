@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Banking web application" />
+    <meta name="keywords" content="Banking web application" />
+    <meta name="author" content="Apelehin Okikiola" />
+    <title>Banka:: Staff Dashboard</title>
+    <link rel="stylesheet" href="asset/css/style.css" />
+    <link rel="stylesheet" href="asset/css/admin.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel|Rajdhani" />
+</head>
+
+<body>
+    <header class="header-staff">
+        <nav>
+            <div id="branding">
+                <h1><a href="index.html"> Banka</a></h1>
+            </div>
+        </nav>
+
+        <a href="#" class="nav-trigger">
+            <span></span>
+        </a>
+    </header>
+
+    <section class="dashboard-container">
+
+        <div class="sidebar-menu-st">
+
+            <div class="sidebar-menu-mn">
+
+                <div class="logo">
+
+                    <a href="#" class="sidebar-icon"><span></span> </a>
+                    <a href="">
+                        <span id="logo">
+                            <h1>Staff</h1>
+                        </span>
+                    </a>
+
+                </div>
+
+                <div class="down">
+
+                    <p class="text">Welcome Staff</p>
+
+                    <p><a class="tooltips"><span>Kunle</span></a>
+                    </p>
+                </div>
+
+                <div class="menu">
+
+                    <ul id="menu">
+
+                        <li id="menu-dashbrd">
+                            <a href="#">
+                                <span> User accounts </span>
+                            </a>
+
+                            <ul id="menu-dashbrd-sub">
+                                <!-- get this class and hid -->
+
+                                <li id="menu-dashbrd-edit">
+                                    <a href="staff-view-all-acct.html">View all user accounts</a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="staff-get-user-transactns.html">
+                                <span> Transactions </span>
+                            </a>
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="notifcation.html">
+                                <span> Notification </span>
+                            </a>
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="index.html">
+                                <span> Log out </span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="left-content">
+
+            <div class="inner-content">
+
+                <div class="hdr-acct"> View A Specific User Account</div>
+
+                <div>
+
+                    <div class="sp-user">
+
+                        <div>
+                            <span>Account Name : </span><span>Apelehin Okikiola</span>
+                        </div>
+                        <div>
+                            <span>Account Number : </span> <span>2020134829</span>
+                        </div>
+                        <div>
+                            <span>Available Balance : </span><span>NGN100, 000.00</span>
+                        </div>
+                        <div>
+                            <span> Role : </span><span> User </span>
+                        </div>
+                        <div>
+                            <span> Status : </span> <span class="btn-status-st"> Dormant</span>
+                        </div>
+                        <div>
+                            <span>Date of Birth : </span><span>24-09-1995</span>
+                        </div>
+                        <div>
+                            <span>Account Type : </span> <span>Savings</span>
+                        </div>
+                        <div>
+                            <span>Gender : </span><span> Female </span>
+                        </div>
+                        <div>
+                            <span>Email : </span><span> kiki@gmail.com </span>
+                        </div>
+                        <div>
+                            <span>Address : </span><span> House 54, Samuel Ajayi, Lekki Phase 2, Lagos Island </span>
+                        </div>
+                        <div>
+                            <span>Mobile : </span><span> 08023182318 </span>
+                        </div>
+                        <div>
+                            <span>Rate of Interest(%) : </span> <span>5</span>
+                        </div>
+
+                        <div class="btn-action">
+                            <div class="btn-activate">
+                                <a class="" href="">Activate</a>
+                            </div>
+                            <div class="btn-deactivate">
+                                <a class="button" href="#modal-popup">Deactivate</a>
+                            </div>
+
+                            <div id="modal-popup" class="overlay">
+
+                                <div class="inner-popup">
+                                    <h2>Apelehin Okikiola</h2>
+                                    <a class="close" href="#">&times;</a>
+                                    <div class="content1">
+                                        Are you sure, you want to deactivate this account?
+                                    </div>
+
+                                    <div class="btn-action">
+                                        <div class="btn-yes"><a href="">Yes</a></div>
+                                        <div class="btn-no"><a href="">No</a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        <div class="footer-st">
+            2019 A Web Banking Application. All Rights Reserved
+        </div>
+    </footer>
+
+    <script src="asset/js/main.js"></script>
+
+</body>
+
+</html>
