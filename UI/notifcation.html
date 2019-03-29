@@ -28,46 +28,30 @@
     </header>
 
     <section class="dashboard-container">
-
         <div class="sidebar-menu-st">
-
             <div class="sidebar-menu-mn">
-
                 <div class="logo">
-
                     <a href="#" class="sidebar-icon"><span></span> </a>
-                    <a href=""> <span id="logo">
+                    <a href="">
+                        <span id="logo">
                             <h1>Staff</h1>
                         </span></a>
-
                 </div>
 
                 <div class="down">
-
                     <p class="text">Welcome Staff</p>
 
-                    <p><a class="tooltips"><span>Kunle</span></a>
+                    <p>
+                        <a class="tooltips"><span>Kunle</span></a>
                     </p>
                 </div>
 
                 <div class="menu">
-
                     <ul id="menu">
-
                         <li id="menu-dashbrd">
-                            <a href="#">
-                                <span> User accounts </span>
+                            <a href="staff-view-all-acct.html">
+                                <span> View all User accounts </span>
                             </a>
-
-                            <ul id="menu-dashbrd-sub">
-                                <!-- get this class and hid -->
-
-                                <li id="menu-dashbrd-edit">
-                                    <a href="staff-view-all-acct.html">View all user accounts</a>
-                                </li>
-
-                            </ul>
-
                         </li>
 
                         <li id="menu-dashbrd">
@@ -86,57 +70,51 @@
                             <a href="index.html">
                                 <span> Log out </span>
                             </a>
-
                         </li>
-
                     </ul>
-
                 </div>
-
             </div>
-
         </div>
 
-
         <div class="left-content">
-
             <div class="inner-content">
+                <div class="hdr-acct">Set Notification</div>
 
-                <div class="outter-dash-add-hm">
+                <div>
 
-                    <div class="container--ml">
-                        <div class="row--ml">
-                            <div class="col-ml">
-                                <div class="box-db">
-                                    <div>User accounts</div>
-                                </div>
+
+                    <div class="inner-content-fm">
+
+                        <form action="">
+                            <input type="text" placeholder="Account Name" name="acct-name" id="inputbx" />
+                            <input type="text" placeholder="Account Number" name="acct-no" id="inputbx" />
+
+                            <div class="custom-select">
+                                <select id="inputbx">
+                                    <option value="0">--- Account Type ---</option>
+                                    <option value="1">Savings</option>
+                                    <option value="2">Current</option>
+                                </select>
                             </div>
 
-                            <div class="col-ml">
-                                <div class="box-db">
-                                    <div>Transactions</div>
+                            <input type="text" placeholder="Email" name="email" id="inputbx" />
+
+                            <input type="text" placeholder="Amount" id="inputbx" />
+
+                            <div class="btn-action">
+                                <div class="btn-yes btn-create-u">
+                                    <a href=""> Send </a>
                                 </div>
                             </div>
+                        </form>
 
-                            <div class="col-ml">
-                                <div class="box-db">
-                                    <div>Welcome Staff</div>
-                                    <div></div>
-                                </div>
-                            </div>
-
-                        </div>
                     </div>
 
                 </div>
 
-
             </div>
-
         </div>
-
     </section>
-
 
     <footer>
         <div class="footer-st">
@@ -145,7 +123,6 @@
     </footer>
 
     <script src="asset/js/main.js"></script>
-
 </body>
 
 </html>
