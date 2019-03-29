@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Banking web application" />
+    <meta name="keywords" content="Banking web application" />
+    <meta name="author" content="Apelehin Okikiola" />
+    <title>Banka:: Staff Dashboard</title>
+    <link rel="stylesheet" href="asset/css/style.css" />
+    <link rel="stylesheet" href="asset/css/admin.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel|Rajdhani" />
+</head>
+
+<body>
+    <header class="header-staff">
+        <nav>
+            <div id="branding">
+                <h1><a href="index.html"> Banka</a></h1>
+            </div>
+        </nav>
+
+        <a href="#" class="nav-trigger">
+            <span></span>
+        </a>
+    </header>
+
+    <section class="dashboard-container">
+
+        <div class="sidebar-menu-st">
+
+            <div class="sidebar-menu-mn">
+
+                <div class="logo">
+
+                    <a href="#" class="sidebar-icon"><span></span> </a>
+                    <a href=""> <span id="logo">
+                            <h1>Staff</h1>
+                        </span></a>
+
+                </div>
+
+                <div class="down">
+
+                    <p class="text">Welcome Staff</p>
+
+                    <p><a class="tooltips"><span>Kunle</span></a>
+                    </p>
+                </div>
+
+                <div class="menu">
+
+                    <ul id="menu">
+
+                        <li id="menu-dashbrd">
+                            <a href="#">
+                                <span> User accounts </span>
+                            </a>
+
+                            <ul id="menu-dashbrd-sub">
+                                <!-- get this class and hid -->
+
+                                <li id="menu-dashbrd-edit">
+                                    <a href="staff-view-all-acct.html">View all user accounts</a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="staff-get-user-transactns.html">
+                                <span> Transactions </span>
+                            </a>
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="notifcation.html">
+                                <span> Notification </span>
+                            </a>
+                        </li>
+
+                        <li id="menu-dashbrd">
+                            <a href="index.html">
+                                <span> Log out </span>
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="left-content">
+
+            <div class="inner-content">
+
+                <div class="hdr-acct"> Credit User Account</div>
+
+                <div class="inner-content-fm">
+
+                    <form action="">
+                        <div>
+                            <label for="">Account Number</label>
+                            <input type="text" placeholder="" name="acct-no" id="inputbx" />
+                        </div>
+
+                        <div>
+                            <label for="">Account Name</label>
+                            <input type="text" name="acct-name" id="inputbx" />
+                        </div>
+
+                        <div>
+                            <label for=""> Credit Account (amount) </label>
+                            <input type="text" name="credit-acct" id="inputbx" />
+                            <small>Amount to be credited into account</small>
+                        </div>
+
+                        <div class="custom-select">
+                            <label for="">User role</label>
+                            <input type="text" placeholder="Staff" name="user-role" id="inputbx" />
+                        </div>
+
+                        <div class="custom-select">
+                            <label for="">Account Type</label>
+                            <input type="text" placeholder="Savings" name="acct-type" id="inputbx" />
+                        </div>
+
+                        <div>
+                            <label for=""> Old Balance </label>
+                            <input type="text" placeholder="NGN200,000" name="available-bal" id="inputbx" />
+                        </div>
+
+                        <div class="btn-action">
+                            <div class="btn-yes btn-create-u">
+                                <a href="staff-view-all-transactns.html"> Credit </a>
+                            </div>
+
+                            <div class="btn-no btn-create-u">
+                                <a href=""> Cancel </a>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+        <div class="footer-st">
+            2019 A Web Banking Application. All Rights Reserved
+        </div>
+    </footer>
+
+    <script src="asset/js/main.js"></script>
+
+</body>
+
+</html>
