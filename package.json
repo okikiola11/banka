@@ -1,0 +1,27 @@
+{
+  "name": "banka",
+  "version": "1.0.0",
+  "description": "A web banking application ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okikiola11/banka.git"
+  },
+  "keywords": [
+    "banking",
+    "staff",
+    "users",
+    "online",
+    "app",
+    "admin"
+  ],
+  "author": "Apelehin Okikiola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okikiola11/banka/issues"
+  },
+  "homepage": "https://github.com/okikiola11/banka#readme"
+}
