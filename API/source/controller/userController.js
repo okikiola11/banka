@@ -1,10 +1,32 @@
 import bcrypt from 'bcryptjs';
+import {
+    body,
+    validationResult,
+} from 'express-validator/check';
 import User from '../utils/userData';
 import authMiddleware from '../middleware/authMiddleware';
 
 class userController {
     static async signupUser(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const validateErrors = errors.array();
+
+                const errArray = validateErrors.map((obj) => {
+                    const rObj = {};
+                    rObj[obj.param] = obj.msg;
+                    rObj.value = obj.value;
+                    return rObj;
+                });
+
+                return res.status(401).json({
+                    status: 401,
+                    error: 'Validation failed, check errors property for more details',
+                    errors: errArray,
+                });
+            }
+
             const {
                 firstName,
                 lastName,
