@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node_modules/.bin/babel ./API/source -d ./API/lib",
     "dev": "nodemon --exec node_modules/.bin/babel-node ./API/lib/index.js",
-    "start": "node ./API/lib/index.js"
+    "start": "npm run build"
   },
   "repository": {
     "type": "git",
