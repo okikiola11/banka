@@ -12,7 +12,6 @@ class authMiddleware {
             expiresIn: 86400, // expires in 24hours
         });
     }
-
 }
 
 export default authMiddleware;
