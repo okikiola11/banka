@@ -35,7 +35,6 @@ class accountsController {
             const {
                 id, // get owner Id from User table
             } = userInfo;
-            console.log(id);
 
             const newlyCreatedAcct = {
                 id: Accounts[Accounts.length - 1].id + 1,
@@ -60,6 +59,27 @@ class accountsController {
                     status: 500,
                     error: 'something went wrong while trying to create an account',
                 });
+        }
+    }
+
+    static async getSingleAccount(req, res) {
+        try {
+            const {
+                accountNumber,
+            } = req.body;
+            const singleAcct = await Accounts.find(
+                singleData => singleData.accountNumber === accountNumber,
+            );
+            return res.status(200).json({
+                status: 200,
+                message: 'Account has been successfully retrieved',
+                data: [singleAcct],
+            });
+        } catch (error) {
+            return res.status(404).json({
+                status: 404,
+                error: 'Account does not exist',
+            });
         }
     }
 }
