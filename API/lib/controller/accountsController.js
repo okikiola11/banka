@@ -69,7 +69,6 @@ function () {
                   return details.id === req.data.id;
                 });
                 id = userInfo.id;
-                console.log(id);
                 newlyCreatedAcct = {
                   id: _accountsData.default[_accountsData.default.length - 1].id + 1,
                   ownerId: id,
@@ -89,20 +88,20 @@ function () {
                   data: [newlyCreatedAcct]
                 }));
 
-              case 15:
-                _context.prev = 15;
+              case 14:
+                _context.prev = 14;
                 _context.t0 = _context["catch"](0);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   error: 'something went wrong while trying to create an account'
                 }));
 
-              case 18:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 15]]);
+        }, _callee, null, [[0, 14]]);
       }));
 
       function createAccount(_x, _x2) {
@@ -110,6 +109,78 @@ function () {
       }
 
       return createAccount;
+    }()
+  }, {
+    key: "updateAccount",
+    value: function () {
+      var _updateAccount = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(req, res) {
+        var accountNumber, accountFound, accountIndex, updatedAccount;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                accountNumber = req.body.accountNumber;
+
+                _accountsData.default.map(function (AccountsData, index) {
+                  if (AccountsData.accountNumber === accountNumber) {
+                    accountFound = AccountsData;
+                    accountIndex = index;
+                  }
+                });
+
+                if (!(accountFound === undefined || accountFound === null)) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(404).json({
+                  status: 404,
+                  error: 'Account Id not found'
+                }));
+
+              case 5:
+                updatedAccount = {
+                  id: accountFound.id,
+                  accountNumber: accountFound.accountNumber,
+                  acctStatus: req.body.acctStatus || accountFound.acctStatus,
+                  email: accountFound.email,
+                  type: accountFound.type,
+                  updatedOn: new Date().toLocaleString()
+                };
+
+                _accountsData.default.splice(accountIndex, 1, updatedAccount);
+
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'Account has been succesfully updated',
+                  data: [updatedAccount]
+                }));
+
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](0);
+                return _context2.abrupt("return", res.status(204).json({
+                  status: 204,
+                  // 204 no available content
+                  error: 'No available account content'
+                }));
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 10]]);
+      }));
+
+      function updateAccount(_x3, _x4) {
+        return _updateAccount.apply(this, arguments);
+      }
+
+      return updateAccount;
     }()
   }]);
 
