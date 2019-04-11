@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import userRoutes from './routes/userRoutes';
+import accountsRoutes from './routes/accountsRoutes';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => res.send('Welcome, to the Web Banking Application!'));
 
 app.use('/api/v1/auth', userRoutes);
+app.use('/api/v1/accounts', accountsRoutes);
 
 app.all('*', (req, res) => {
     res.status(404).json({
