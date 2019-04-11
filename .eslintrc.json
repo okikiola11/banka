@@ -1,22 +1,19 @@
 {
-    "extends": "airbnb-base",
+    "extends": ["airbnb-base", "prettier"],
+    "plugins": [
+        "prettier"
+    ],
     "env": {
         "node": true,
         "browser": true
     },
     "rules": {
-        "indent": [
-            "error",
-            4
+        "prettier/prettier": [
+            "error"
         ],
-        "linebreak-style": 0,
-        "quotes": [
+        "linebreak-style": [
             "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
+            "windows"
         ]
     }
 }

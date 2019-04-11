@@ -33,9 +33,8 @@ class accountsController {
             } = req.body;
             const userInfo = userdata.find(details => details.id === req.data.id);
             const {
-                id, // get owner Id from User table
-            } = userInfo;
-            console.log(id);
+                id,
+            } = userInfo; // get owner Id from User table
 
             const newlyCreatedAcct = {
                 id: Accounts[Accounts.length - 1].id + 1,
@@ -55,11 +54,24 @@ class accountsController {
                 data: [newlyCreatedAcct],
             });
         } catch (error) {
-            return res.status(500)
-                .json({
-                    status: 500,
-                    error: 'something went wrong while trying to create an account',
-                });
+            return res.status(500).json({
+                status: 500,
+                error: 'something went wrong while trying to create an account',
+            });
+        }
+    }
+
+    static async getAllAccount(req, res) {
+        try {
+            return res.status(200).json({
+                status: 200,
+                data: Accounts
+            });
+        } catch (error) {
+            return res.status(404).json({
+                status: 404,
+                error: 'No account record found'
+            });
         }
     }
 }
