@@ -20,5 +20,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var router = (0, _express.Router)();
 router.use(_authMiddleware.default.verifyToken);
 router.post('/', _authorize.default.createAccountAuth, _validator.default.validateAccount(), _accountsController.default.createAccount);
+router.delete('/:accountNumber', _authorize.default.viewAccountAuth, _accountsController.default.deleteAccount);
 var _default = router;
 exports.default = _default;

@@ -10,5 +10,6 @@ const router = Router();
 
 router.use(authMiddleware.verifyToken);
 router.post('/', authorize.createAccountAuth, Validation.validateAccount(), accountsController.createAccount);
+router.delete('/:accountNumber', authorize.viewAccountAuth, accountsController.deleteAccount);
 
 export default router;
