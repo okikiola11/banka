@@ -19,6 +19,18 @@ function () {
   }
 
   _createClass(authorize, null, [{
+    key: "authTransaction",
+    value: function authTransaction(req, res, next) {
+      if (!req.data.userType.staff) {
+        return res.status(403).json({
+          status: 403,
+          message: 'Access denied'
+        });
+      }
+
+      next();
+    }
+  }, {
     key: "createAccountAuth",
     value: function createAccountAuth(req, res, next) {
       if (!req.data.userType.user) {
