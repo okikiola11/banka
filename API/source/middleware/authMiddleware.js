@@ -4,9 +4,10 @@ import config from '../config';
 class authMiddleware {
     // FORMAT OF TOKEN
     // Authorization: <access_token>
-    static generateToken(userdetails) {
+    static generateToken(id, userType) {
         return jwt.sign({
-            userdetails,
+            id,
+            userType,
         }, config.secret, {
             expiresIn: 86400, // expires in 24hours
         });
@@ -20,10 +21,12 @@ class authMiddleware {
                 return res.sendStatus(403);
             }
             const {
-                userdetails,
+                id,
+                userType,
             } = authData;
             req.data = {
-                userdetails,
+                id,
+                userType,
             };
             next();
         });

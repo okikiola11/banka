@@ -28,9 +28,10 @@ function () {
     key: "generateToken",
     // FORMAT OF TOKEN
     // Authorization: <access_token>
-    value: function generateToken(userdetails) {
+    value: function generateToken(id, userType) {
       return _jsonwebtoken.default.sign({
-        userdetails: userdetails
+        id: id,
+        userType: userType
       }, _config.default.secret, {
         expiresIn: 86400 // expires in 24hours
 
@@ -47,9 +48,11 @@ function () {
           return res.sendStatus(403);
         }
 
-        var userdetails = authData.userdetails;
+        var id = authData.id,
+            userType = authData.userType;
         req.data = {
-          userdetails: userdetails
+          id: id,
+          userType: userType
         };
         next();
       });
