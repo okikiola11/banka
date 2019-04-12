@@ -62,14 +62,32 @@ class accountsController {
         }
     }
 
+    static async getAllAccount(req, res) {
+        try {
+            return res.status(200).json({
+                status: 200,
+                message: 'Successfully retrieved all accounts',
+                data: Accounts,
+            });
+        } catch (error) {
+            return res.status(404).json({
+                status: 404,
+                error: 'No account record found',
+            });
+        }
+    }
+
     static async getSingleAccount(req, res) {
         try {
             const {
                 accountNumber,
-            } = req.body;
+            } = req.params;
             const singleAcct = await Accounts.find(
                 singleData => singleData.accountNumber === accountNumber,
             );
+            if (singleAcct === undefined) {
+                throw new Error('Account does not exist');
+            }
             return res.status(200).json({
                 status: 200,
                 message: 'Account has been successfully retrieved',
@@ -79,6 +97,81 @@ class accountsController {
             return res.status(404).json({
                 status: 404,
                 error: 'Account does not exist',
+            });
+        }
+    }
+
+    static async updateAccount(req, res) {
+        try {
+            const {
+                accountNumber,
+            } = req.body;
+            let accountFound;
+            let accountIndex;
+
+            Accounts.map((AccountsData, index) => {
+                if (AccountsData.accountNumber === accountNumber) {
+                    accountFound = AccountsData;
+                    accountIndex = index;
+                }
+            });
+
+            if (accountFound === undefined || accountFound === null) {
+                return res.status(404).json({
+                    status: 404,
+                    error: 'Account Id not found',
+                });
+            }
+
+            const updatedAccount = {
+                id: accountFound.id,
+                accountNumber: accountFound.accountNumber,
+                acctStatus: req.body.acctStatus || accountFound.acctStatus,
+                email: accountFound.email,
+                type: accountFound.type,
+                updatedOn: new Date().toLocaleString(),
+            };
+            Accounts.splice(accountIndex, 1, updatedAccount);
+
+            return res.status(200).json({
+                status: 200,
+                message: 'Account has been succesfully updated',
+                data: [updatedAccount],
+            });
+        } catch (error) {
+            return res.status(204).json({
+                status: 204, // 204 no available content
+                error: 'No available account content',
+            });
+        }
+    }
+
+    static async deleteAccount(req, res) {
+        try {
+            const {
+                accountNumber,
+            } = req.body;
+            const deletedAccount = await Accounts.find(
+                deletedData => deletedData.accountNumber === accountNumber,
+            );
+
+            if (deletedAccount === -1) {
+                return res.status(404).json({
+                    status: 404,
+                    error: 'Oooops! no record with such Id',
+                });
+            }
+            Accounts.splice(deletedAccount);
+
+            return res.status(200).json({
+                status: 200,
+                message: 'Account has been deleted successfully',
+            });
+        } catch (error) {
+            return res.status(204).send({
+                // 204 means no content
+                success: '204',
+                error: 'No account Id content available',
             });
         }
     }

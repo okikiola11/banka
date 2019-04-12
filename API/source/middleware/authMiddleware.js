@@ -4,14 +4,10 @@ import config from '../config';
 class authMiddleware {
     // FORMAT OF TOKEN
     // Authorization: <access_token>
-<<<<<<< HEAD
     static generateToken({
         id,
         userType,
     }) {
-=======
-    static generateToken(id, userType) {
->>>>>>> 443e4f48dd1a4ecfaa0b30a1195f34a28de4efe8
         return jwt.sign({
             id,
             userType,
