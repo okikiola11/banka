@@ -64,6 +64,14 @@ function () {
     value: function validateAccount() {
       return [(0, _check.body)('type').isIn(['savings', 'current']).withMessage('Choose a valid account type').exists().withMessage('Field cannot be empty'), (0, _check.body)('openingBalance').isDecimal().withMessage('You should enter only decimal').exists().withMessage('Field cannot be empty')];
     }
+  }, {
+    key: "validateTransaction",
+    value: function validateTransaction() {
+      return [(0, _check.body)('accountNumber').isNumeric().withMessage('You should enter only numeric').isLength({
+        min: 10,
+        max: 10
+      }).withMessage('Should be atleast 10 characters').exists().withMessage('Field cannot be empty'), (0, _check.body)('amount').isNumeric().withMessage('You should enter only numeric').exists().withMessage('Field cannot be empty'), (0, _check.body)('cashier').isAlpha().withMessage('You should enter only alphabet').exists().withMessage('Field cannot be empty'), (0, _check.body)('transactionType').isIn(['credit', 'deposit']).withMessage('Choose transaction type').exists().withMessage('Field cannot be empty')];
+    }
   }]);
 
   return Validation;

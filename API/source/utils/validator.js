@@ -80,6 +80,28 @@ class Validation {
                 .withMessage('Field cannot be empty'),
         ];
     }
+
+    static validateTransaction() {
+        return [
+            body('accountNumber').isNumeric().withMessage('You should enter only numeric')
+                .isLength({
+                    min: 10,
+                    max: 10,
+                })
+                .withMessage('Should be atleast 10 characters')
+                .exists()
+                .withMessage('Field cannot be empty'),
+            body('amount').isNumeric().withMessage('You should enter only numeric')
+                .exists()
+                .withMessage('Field cannot be empty'),
+            body('cashier').isAlpha().withMessage('You should enter only alphabet')
+                .exists()
+                .withMessage('Field cannot be empty'),
+            body('transactionType').isIn(['credit', 'deposit']).withMessage('Choose transaction type')
+                .exists()
+                .withMessage('Field cannot be empty'),
+        ];
+    }
 }
 
 export default Validation;
