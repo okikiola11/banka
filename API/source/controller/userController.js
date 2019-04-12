@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import {
-    body,
     validationResult,
 } from 'express-validator/check';
 import User from '../utils/userData';
@@ -42,7 +41,8 @@ class userController {
                 admin: false,
                 staff: false,
             };
-            const user = { // new user to be created
+            /* new user to be created */
+            const user = {
                 id: newId,
                 firstName,
                 lastName,
@@ -52,8 +52,8 @@ class userController {
                 password: hashedPassword,
                 userType,
             };
-
             User.push(user);
+
             const payLoad = {
                 newId,
                 firstName,
@@ -64,7 +64,7 @@ class userController {
                 userType,
             };
             const token = authMiddleware.generateToken({
-                newId,
+                id: newId,
                 userType,
             });
 
@@ -133,6 +133,7 @@ class userController {
                 newId,
                 lastName,
             } = user;
+
             const token = authMiddleware.generateToken({
                 id,
                 userType,

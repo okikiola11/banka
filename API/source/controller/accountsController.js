@@ -1,6 +1,8 @@
 import {
     validationResult,
 } from 'express-validator/check';
+import Utility from '../utils/util';
+
 import userdata from '../utils/userData';
 import Accounts from '../utils/accountsData';
 
@@ -26,17 +28,15 @@ class accountsController {
             }
 
             const {
-                accountNumber,
                 type,
                 openingBalance,
-                accountBalance,
             } = req.body;
             const userInfo = userdata.find(details => details.id === req.data.id);
             const {
-                id, // get owner Id from User table
-            } = userInfo;
-            console.log(id);
+                id,
+            } = userInfo; // get owner Id from User table
 
+            const accountNumber = Utility.acctNumberGen();
             const newlyCreatedAcct = {
                 id: Accounts[Accounts.length - 1].id + 1,
                 ownerId: id,
@@ -44,7 +44,7 @@ class accountsController {
                 type,
                 openingBalance,
                 acctStatus: 'active',
-                accountBalance,
+                accountBalance: openingBalance,
                 createdOn: new Date().toLocaleString(),
             };
             Accounts.push(newlyCreatedAcct);
@@ -55,11 +55,10 @@ class accountsController {
                 data: [newlyCreatedAcct],
             });
         } catch (error) {
-            return res.status(500)
-                .json({
-                    status: 500,
-                    error: 'something went wrong while trying to create an account',
-                });
+            return res.status(500).json({
+                status: 500,
+                error: 'something went wrong while trying to create an account',
+            });
         }
     }
 }

@@ -79,8 +79,9 @@ function () {
                   admin: false,
                   staff: false
                 };
+                /* new user to be created */
+
                 user = {
-                  // new user to be created
                   id: newId,
                   firstName: firstName,
                   lastName: lastName,
@@ -103,7 +104,7 @@ function () {
                   userType: userType
                 };
                 token = _authMiddleware.default.generateToken({
-                  newId: newId,
+                  id: newId,
                   userType: userType
                 });
                 return _context.abrupt("return", res.status(201).json({

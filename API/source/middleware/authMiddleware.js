@@ -22,7 +22,9 @@ class authMiddleware {
             const {
                 userdetails,
             } = authData;
-            req.data = userdetails;
+            req.data = {
+                userdetails,
+            };
             next();
         });
     }

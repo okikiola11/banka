@@ -48,7 +48,9 @@ function () {
         }
 
         var userdetails = authData.userdetails;
-        req.data = userdetails;
+        req.data = {
+          userdetails: userdetails
+        };
         next();
       });
     }

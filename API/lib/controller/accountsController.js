@@ -7,6 +7,8 @@ exports.default = void 0;
 
 var _check = require("express-validator/check");
 
+var _util = _interopRequireDefault(require("../utils/util"));
+
 var _userData = _interopRequireDefault(require("../utils/userData"));
 
 var _accountsData = _interopRequireDefault(require("../utils/accountsData"));
@@ -36,7 +38,7 @@ function () {
       var _createAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, _req$body, accountNumber, type, openingBalance, accountBalance, userInfo, id, newlyCreatedAcct;
+        var errors, validateErrors, errArray, _req$body, type, openingBalance, userInfo, id, accountNumber, newlyCreatedAcct;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -64,12 +66,13 @@ function () {
                 }));
 
               case 6:
-                _req$body = req.body, accountNumber = _req$body.accountNumber, type = _req$body.type, openingBalance = _req$body.openingBalance, accountBalance = _req$body.accountBalance;
+                _req$body = req.body, type = _req$body.type, openingBalance = _req$body.openingBalance;
                 userInfo = _userData.default.find(function (details) {
                   return details.id === req.data.id;
                 });
-                id = userInfo.id;
-                console.log(id);
+                id = userInfo.id; // get owner Id from User table
+
+                accountNumber = _util.default.acctNumberGen();
                 newlyCreatedAcct = {
                   id: _accountsData.default[_accountsData.default.length - 1].id + 1,
                   ownerId: id,
@@ -77,7 +80,7 @@ function () {
                   type: type,
                   openingBalance: openingBalance,
                   acctStatus: 'active',
-                  accountBalance: accountBalance,
+                  accountBalance: openingBalance,
                   createdOn: new Date().toLocaleString()
                 };
 
