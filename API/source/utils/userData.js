@@ -14,6 +14,19 @@ const User = [{
     },
     password: bcrypt.hashSync('okiki123', bcrypt.genSaltSync(8)),
 }, {
+    id: 1,
+    firstName: 'Okikiola',
+    lastName: 'Apelehin',
+    email: 'staff@gmail.com',
+    phone: '08023182819',
+    gender: 'female',
+    userType: {
+        user: false,
+        admin: false,
+        staff: true,
+    },
+    password: bcrypt.hashSync('okiki123', bcrypt.genSaltSync(8)),
+}, {
     id: 2,
     firstName: 'Okikiola',
     lastName: 'Apelehin',
