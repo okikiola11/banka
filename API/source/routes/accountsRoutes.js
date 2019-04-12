@@ -10,5 +10,6 @@ const router = Router();
 
 router.use(authMiddleware.verifyToken);
 router.post('/', authorize.createAccountAuth, Validation.validateAccount(), accountsController.createAccount);
+router.get('/:accountNumber', authorize.viewAccountAuth, accountsController.getSingleAccount);
 
 export default router;

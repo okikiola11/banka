@@ -61,6 +61,27 @@ class accountsController {
             });
         }
     }
+
+    static async getSingleAccount(req, res) {
+        try {
+            const {
+                accountNumber,
+            } = req.body;
+            const singleAcct = await Accounts.find(
+                singleData => singleData.accountNumber === accountNumber,
+            );
+            return res.status(200).json({
+                status: 200,
+                message: 'Account has been successfully retrieved',
+                data: [singleAcct],
+            });
+        } catch (error) {
+            return res.status(404).json({
+                status: 404,
+                error: 'Account does not exist',
+            });
+        }
+    }
 }
 
 export default accountsController;

@@ -30,6 +30,19 @@ function () {
 
       next();
     }
+  }, {
+    key: "viewAccountAuth",
+    value: function viewAccountAuth(req, res, next) {
+      // access to both admin&staff
+      if (req.data.userType.user) {
+        return res.status(403).json({
+          status: 403,
+          message: 'Access denied'
+        });
+      }
+
+      next();
+    }
   }]);
 
   return authorize;
