@@ -15,6 +15,8 @@ var _userRoutes = _interopRequireDefault(require("./routes/userRoutes"));
 
 var _accountsRoutes = _interopRequireDefault(require("./routes/accountsRoutes"));
 
+var _transactionRte = _interopRequireDefault(require("./routes/transactionRte"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express.default)();
@@ -27,6 +29,7 @@ app.get('/', function (req, res) {
 });
 app.use('/api/v1/auth', _userRoutes.default);
 app.use('/api/v1/accounts', _accountsRoutes.default);
+app.use('/api/v1/transactions/:accountNumber', _transactionRte.default);
 app.all('*', function (req, res) {
   res.status(404).json({
     status: 404,
