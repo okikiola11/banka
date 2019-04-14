@@ -154,4 +154,47 @@ describe('/ User Account Auth Endpoint ', () => {
                 .end(done);
         });
     });
+
+    describe('/ UPDATE account ', () => {
+        it('should activate or deactivate account ', (done) => {
+            request(app)
+                .patch(`${API_PREFIX}/accounts/2040050222`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(404)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.eql({
+                            status: 404,
+                            error: 'Account Number not found',
+                        })
+                        .to.have.all.keys('status', 'error');
+                });
+
+            request(app)
+                .patch(`${API_PREFIX}/accounts/2040050234`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .send({
+                    accountNumber: '2040050234',
+                    acctStatus: 'active',
+                    type: '',
+                    updatedOn: ''
+                })
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Account has been succesfully updated');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'accountNumber', 'acctStatus', 'type', 'updatedOn'
+                        );
+                })
+                .end(done);
+        });
+    });
 });
