@@ -101,6 +101,51 @@ class accountsController {
         }
     }
 
+    static async updateAccount(req, res) {
+        try {
+            const {
+                accountNumber,
+            } = req.params;
+            let accountFound;
+            let accountIndex;
+
+            Accounts.map((AccountsData, index) => {
+                if (AccountsData.accountNumber === accountNumber) {
+                    accountFound = AccountsData;
+                    accountIndex = index;
+                }
+            });
+
+            if (accountFound === undefined || accountFound === null) {
+                return res.status(404).json({
+                    status: 404,
+                    error: 'Account Id not found',
+                });
+            }
+
+            const updatedAccount = {
+                id: accountFound.id,
+                accountNumber: accountFound.accountNumber,
+                acctStatus: req.body.acctStatus || accountFound.acctStatus,
+                email: accountFound.email,
+                type: accountFound.type,
+                updatedOn: new Date().toLocaleString(),
+            };
+            Accounts.splice(accountIndex, 1, updatedAccount);
+
+            return res.status(200).json({
+                status: 200,
+                message: 'Account has been succesfully updated',
+                data: [updatedAccount],
+            });
+        } catch (error) {
+            return res.status(204).json({
+                status: 204, // 204 no available content
+                error: 'No available account content',
+            });
+        }
+    }
+
     static async deleteAccount(req, res) {
         try {
             const {
