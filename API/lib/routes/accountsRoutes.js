@@ -21,5 +21,8 @@ var router = (0, _express.Router)();
 router.use(_authMiddleware.default.verifyToken);
 router.post('/', _authorize.default.createAccountAuth, _validator.default.validateAccount(), _accountsController.default.createAccount);
 router.patch('/:accountNumber', _authorize.default.viewAccountAuth, _accountsController.default.updateAccount);
+router.get('/', _authorize.default.viewAccountAuth, _accountsController.default.getAllAccount);
+router.get('/:accountNumber', _authorize.default.viewAccountAuth, _accountsController.default.getSingleAccount);
+router.delete('/:accountNumber', _authorize.default.viewAccountAuth, _accountsController.default.deleteAccount);
 var _default = router;
 exports.default = _default;
