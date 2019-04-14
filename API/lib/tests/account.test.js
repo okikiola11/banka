@@ -109,4 +109,19 @@ describe('/ User Account Auth Endpoint ', function () {
       }).end(done);
     });
   });
+  describe('/ DELETE account ', function () {
+    it('should delete a user account ', function (done) {
+      (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
+        expect(response.body).to.eql({
+          status: 404,
+          error: 'Oooops! no record with such Account number'
+        }).to.have.all.keys('status', 'error');
+      });
+      (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(200).expect(function (response) {
+        expect(response.body).to.have.all.keys('status', 'message');
+        expect(response.body.status).to.equal(200);
+        expect(response.body.message).to.equal('Account has been deleted successfully');
+      }).end(done);
+    });
+  });
 });

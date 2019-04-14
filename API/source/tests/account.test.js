@@ -197,4 +197,37 @@ describe('/ User Account Auth Endpoint ', () => {
                 .end(done);
         });
     });
+
+    describe('/ DELETE account ', () => {
+        it('should delete a user account ', (done) => {
+            request(app)
+                .delete(`${API_PREFIX}/accounts/2040050222`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(404)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.eql({
+                            status: 404,
+                            error: 'Oooops! no record with such Account number',
+                        })
+                        .to.have.all.keys('status', 'error');
+                });
+
+            request(app)
+                .delete(`${API_PREFIX}/accounts/2040050234`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Account has been deleted successfully');
+                })
+                .end(done);
+        });
+    });
 });
