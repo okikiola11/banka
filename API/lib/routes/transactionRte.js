@@ -19,6 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = (0, _express.Router)();
 router.use(_authMiddleware.default.verifyToken, _authorize.default.authTransaction);
+router.post('/credit', _validator.default.validateTransaction(), _transaction.default.creditAccount);
 router.post('/debit', _validator.default.validateTransaction(), _transaction.default.debitAccount);
 var _default = router;
 exports.default = _default;
