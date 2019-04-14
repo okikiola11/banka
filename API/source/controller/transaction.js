@@ -6,7 +6,7 @@ import accountData from '../utils/accountsData';
 import userdata from '../utils/userData';
 
 class transaction {
-    static async creditAccount(req, res) {
+    static debitAccount(req, res) {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -29,7 +29,8 @@ class transaction {
                 amount,
                 accountNumber,
             } = req.body;
-            const Account = accountData.find(creditAccount => creditAccount.accountNumber === accountNumber); // get accountNumber from the list of account
+            const Account = accountData.find(account => account.accountNumber === accountNumber); // get accountNumber from the list of account
+            const accountIndex = accountData.indexOf(Account);
 
             if (Account === undefined) { // if acct does not exist
                 return res.status(404).json({
@@ -41,36 +42,43 @@ class transaction {
             const {
                 accountBalance,
             } = Account;
-            const creditAccountBal = parseFloat(+accountBalance + +amount);
+            const getBal = parseInt(accountBalance, 10);
+            const getAmount = parseInt(amount, 10);
+            if (getBal < getAmount) {
+                return res.status(409).json({
+                    status: 409,
+                    message: 'Insufficient funds for this transaction',
+                });
+            }
+            const newAccountBal = parseFloat(accountBalance - amount);
+            Account.accountBalance = newAccountBal;
+            accountData.splice(accountIndex, 1, Account); // replaces 1 element(cuts off) at 1th index
 
-            Account.accountBalance = creditAccountBal;
             const cashierData = userdata.find(details => details.id === req.data.id);
             const {
                 firstName,
                 lastName,
             } = cashierData;
-
-            const newCreditTransaction = {
+            const newTransaction = {
                 transactionId: transactions[transactions.length - 1].transactionId + 1,
                 accountNumber,
                 amount,
                 cashier: `${firstName} ${lastName}`,
-                transactionType: 'credit',
-                accountBalance: creditAccountBal,
+                transactionType: 'debit',
+                accountBalance: newAccountBal,
                 createdOn: new Date().toLocaleString(),
             };
-            transactions.push(newCreditTransaction);
+            transactions.push(newTransaction);
 
             return res.status(201).json({
                 status: 201,
-                message: 'Account has been successfully credited',
-                data: [newCreditTransaction],
+                message: 'Account has been debited successfully',
+                data: [newTransaction],
             });
         } catch (error) {
             return res.status(422).json({
-                // 422 unprocessable entity
                 status: 422,
-                message: 'Transaction not completed',
+                error: 'Transaction failed',
             });
         }
     }
