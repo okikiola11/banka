@@ -88,4 +88,40 @@ describe('/ User Account Auth Endpoint ', function () {
       }).end(done);
     });
   });
+  describe('/ UPDATE account ', function () {
+    it('should activate or deactivate account ', function (done) {
+      (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
+        expect(response.body).to.eql({
+          status: 404,
+          error: 'Account Number not found'
+        }).to.have.all.keys('status', 'error');
+      });
+      (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).send({
+        accountNumber: '2040050234',
+        acctStatus: 'active',
+        type: '',
+        updatedOn: ''
+      }).expect(200).expect(function (response) {
+        expect(response.body).to.have.all.keys('status', 'message', 'data');
+        expect(response.body.status).to.equal(200);
+        expect(response.body.message).to.equal('Account has been succesfully updated');
+        expect(response.body.data[0]).to.have.all.keys('id', 'accountNumber', 'acctStatus', 'type', 'updatedOn');
+      }).end(done);
+    });
+  });
+  describe('/ DELETE account ', function () {
+    it('should delete a user account ', function (done) {
+      (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
+        expect(response.body).to.eql({
+          status: 404,
+          error: 'Oooops! no record with such Account number'
+        }).to.have.all.keys('status', 'error');
+      });
+      (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(200).expect(function (response) {
+        expect(response.body).to.have.all.keys('status', 'message');
+        expect(response.body.status).to.equal(200);
+        expect(response.body.message).to.equal('Account has been deleted successfully');
+      }).end(done);
+    });
+  });
 });
