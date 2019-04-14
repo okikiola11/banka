@@ -62,3 +62,36 @@ describe('/ User Auth Signup Endpoint ', function () {
     });
   });
 });
+describe('/ User Auth Login Endpoint ', function () {
+  describe('/ POST user login ', function () {
+    it('user login validation check', function (done) {
+      (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).set('Accept', 'application/json').send({
+        email: '',
+        password: ''
+      }).expect(401).expect(function (response) {
+        expect(response.body.status).to.equal(401);
+        expect(response.body.error).to.equal('Validation failed, check errors property for more details');
+      }).end(done);
+    });
+    it('POST /auth/signin - User Can\'t login with incorrect password', function (done) {
+      (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).send({
+        email: 'user@gmail.com',
+        password: 'okiki111'
+      }).expect(401).expect(function (response) {
+        expect(response.body.status).to.equal(401);
+        expect(response.body.auth).to.equal('false');
+        expect(response.body.message).to.equal('Incorrect Password');
+      }).end(done);
+    });
+    it('should allow a user to login after signing up ', function (done) {
+      (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).set('Accept', 'application/json').send({
+        email: 'user@gmail.com',
+        password: 'okiki123'
+      }).expect(200).expect(function (response) {
+        expect(response.body.status).to.equal(200);
+        expect(response.body.message).to.equal('Welcome user@gmail.com, you have successfully logged in');
+        expect(response.body.data[0]).to.have.all.keys('auth', 'token', 'payLoad');
+      }).end(done);
+    });
+  });
+});
