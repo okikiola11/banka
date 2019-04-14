@@ -72,4 +72,20 @@ describe('/ User Account Auth Endpoint ', function () {
       }).end(done);
     });
   });
+  describe('/ GET a single user accounts ', function () {
+    it('should get a single account ', function (done) {
+      (0, _supertest.default)(_index.default).get("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(200).expect(function (response) {
+        expect(response.body).to.have.all.keys('status', 'message', 'data');
+        expect(response.body.status).to.equal(200);
+        expect(response.body.message).to.equal('Account has been successfully retrieved');
+        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn');
+      });
+      (0, _supertest.default)(_index.default).get("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
+        expect(response.body).to.eql({
+          status: 404,
+          error: 'Account does not exist'
+        }).to.have.all.keys('status', 'error');
+      }).end(done);
+    });
+  });
 });

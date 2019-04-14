@@ -117,4 +117,41 @@ describe('/ User Account Auth Endpoint ', () => {
                 .end(done);
         });
     });
+
+    describe('/ GET a single user accounts ', () => {
+        it('should get a single account ', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts/2040050234`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Account has been successfully retrieved');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn'
+                        );
+                });
+
+            request(app)
+                .get(`${API_PREFIX}/accounts/2040050222`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(404)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.eql({
+                            status: 404,
+                            error: 'Account does not exist',
+                        })
+                        .to.have.all.keys('status', 'error');
+                })
+                .end(done);
+        });
+    });
 });
