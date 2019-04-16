@@ -15,14 +15,14 @@ The following tools will be needed to run this application successfully:
 
 ## Endpoints
 
-POST request - api/v1/auth/signup
-POST request - api/v1/auth/signin
+- POST request - api/v1/auth/signup
+- POST request - api/v1/auth/signin
 
-POST request - api/v1/accounts
-GET all request - api/v1/accounts
-GET single request - api/v1/accounts/:accountNumber
-PATCH request - api/v1/accounts/:accountNumber
-DELETE - api/v1/accounts/:accountNumber
+- POST request - api/v1/accounts
+- GET all request - api/v1/accounts
+- GET single request - api/v1/accounts/:accountNumber
+- PATCH request - api/v1/accounts/:accountNumber
+- DELETE - api/v1/accounts/:accountNumber
 
-POST request - api/v1/transactions/:accountNumber/credit
-POST request - api/v1/transactions/:accountNumber/debit
+- POST request - api/v1/transactions/:accountNumber/credit
+- POST request - api/v1/transactions/:accountNumber/debit
