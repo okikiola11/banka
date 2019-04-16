@@ -33,62 +33,35 @@
 
     </header>
 
-    <div class="login-container">
+    <div class="register-container-a">
 
         <div class="acct-wrapper">
 
             <form id="create-form">
-                <div class="txt-hdr">Create Account</div>
-
-                <!-- progressbar -->
-                <ul id="progressbar">
-                    <li class="active">Set up account</li>
-                    <li>Account details</li>
-                    <li>Personal Details</li>
-                </ul>
+                <div class="txt-hdr">Set up Account</div>
 
                 <fieldset>
-                    <h2 class="fs-title">Set up Account</h2>
+
+                    <input type="text" placeholder="First name" name="firstname" id="inputbx" />
+                    <input type="text" placeholder="Last name" name="lastname" id="inputbx" />
+                    <input type="text" placeholder="Email" name="email" id="inputbx" />
                     <input type="text" placeholder="Phone number" name="password" id="inputbx" />
                     <input type="text" placeholder="Date of birth" name="password" id="inputbx" />
                     <input type="text" placeholder="BVN (Optional)" name="password" id="inputbx" />
 
-                    <input type="button" value="Next" name="next" class="next action-button" />
-                </fieldset>
-
-                <fieldset>
-                    <h2 class="fs-title">Please enter the following information</h2>
-                    <input type="text" placeholder="First name" name="firstname" id="inputbx" />
-                    <input type="text" placeholder="Last name" name="lastname" id="inputbx" />
-                    <input type="text" placeholder="Email" name="email" id="inputbx" />
                     <textarea name="address" placeholder="Address" id="inputbx" cols="30" rows="10"></textarea>
                     <input type="file" name="file" id="inputbx" />
 
-                    <input type="button" value="Previous" name="previous" class="previous action-button" id="inputbx" />
-                    <input type="button" value="Validate" name="next" class="next action-button" id="inputbx" />
-
-                </fieldset>
-
-                <fieldset>
-                    <h2 class="fs-title">Please enter your PIN</h2>
-                    <input type="text" placeholder="Set up 4 digit PIN" name="pindigit" id="inputbx" />
-                    <input type="text" placeholder="Re-enter 4 digit PIN" name="pindigit" id="inputbx" />
-
-                    <h2 class="fs-title">Please enter your password</h2>
-                    <input type="password" placeholder="Set your password" name="password" id="inputbx" />
-                    <input type="password" placeholder="Re-enter your password" name="c-password" id="inputbx" />
-
-                    <input type="button" value="Previous" name="previous" class="previous action-button" id="inputbx" />
                     <input type="submit" value="Validate" name="next" class="next action-button" id="inputbx" />
 
                 </fieldset>
-
 
             </form>
 
         </div>
 
     </div>
+
 
     <footer>
         <div class="footer">2019 Banking Application. All Rights Reserved </div>
