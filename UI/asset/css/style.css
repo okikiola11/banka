@@ -348,6 +348,16 @@ nav ul li a:focus {
     font-size: 1.2rem;
 }
 
+.btn-span-spac {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.btn-span-spac a {
+    font-size: 1.7rem;
+    color: #2980b9;
+}
+
 a .login-btn {
     color: #ffffff;
     padding: 1.5rem 0rem;
@@ -372,7 +382,7 @@ a {
     background-repeat: no-repeat;
     background-size: 100% 100%;
     min-height: 100vh;
-    background-color: rgb(62, 175, 219);
+    background-color: rgba(18, 168, 225, 0.2);
     margin: 0 1px;
     animation: 1s ease-out 0s 1 slideInFromRight;
     position: relative;
