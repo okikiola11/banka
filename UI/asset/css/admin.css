@@ -26,7 +26,7 @@
   text-align: center;
   color: #ffffff;
   font-size: 1.5rem;
-  background: #002439;
+  background: #2980b9;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -35,7 +35,7 @@
 
 .header-ad,
 .header-staff {
-  background: #78cce2;
+  background: #2980b9;
   color: #ffffff;
   padding: 5px;
   font-family: "Nunito Sans", sans-serif;
@@ -47,7 +47,7 @@
 }
 
 .header-staff {
-  background: #052963;
+  background: #2980b9;
 }
 
 .btn-xss {
@@ -95,7 +95,7 @@
   text-align: center;
   color: #ffffff;
   font-size: 1.5rem;
-  background: #002439;
+  background: #2980b9;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -103,12 +103,12 @@
 }
 
 .footer-st {
-  background: #1b9cfc;
+  background: #2980b9;
 }
 
 .header-ad {
   position: absolute;
-  background: #78cce2;
+  background: #2980b9;
   color: #ffffff;
   padding: 5px;
   font-family: "Nunito Sans", sans-serif;
@@ -200,14 +200,14 @@
 }
 
 .btn-status {
-  background: #78cce2;
+  background: #2980b9;
   padding: 7px;
   border-radius: 9px;
   color: #ffffff;
 }
 
 .btn-status-st {
-  background: #052963;
+  background: #2980b9;
   padding: 7px;
   border-radius: 9px;
   color: #ffffff;
@@ -223,7 +223,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: #052963;
+  background-color: #34495e;
   display: none;
   color: #aaabae;
   box-shadow: 0px 0px 10px 0px rgb(58, 41, 31);
@@ -234,7 +234,7 @@
 }
 
 .sidebar-menu-st {
-  background: #1b9cfc;
+  background: #34495e;
 }
 
 .logo {
@@ -273,20 +273,20 @@ span#logo h1 {
 }
 
 #menu ul li {
-  background-color: #00c6d7;
+  background-color: #2980b9;
 }
 
 #menu li,
 .sidebar-menu-st #menu li {
   position: relative;
   margin: 0;
-  border-bottom: 1px ridge rgba(6, 26, 68, 0.96);
+  border-bottom: 1px ridge #2980b9;
   padding: 0;
   padding: 0;
 }
 
 .sidebar-menu-st #menu li {
-  border-bottom: 1px ridge rgba(88, 177, 159, 0.96);
+  border-bottom: 1px ridge #2980b9;
 }
 
 #menu li ul {
@@ -305,22 +305,22 @@ span#logo h1 {
   text-decoration: none;
   white-space: nowrap;
   z-index: 2;
-  background-color: #021f4e;
+  background-color: #2980b9;
   font-size: 1.2em;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif, sans-serif;
   border: none;
-  border-left: 4px solid #021f4e;
+  border-left: 4px solid #333;
 }
 
 .sidebar-menu-st #menu li a {
-  background-color: #25ccf7;
+  background-color: #2980b9;
   border-left: 4px solid #25ccf7;
 }
 
 #menu li a:hover,
 .sidebar-menu-st #menu li a:hover {
   color: #ffffff;
-  background-color: #002561;
+  background-color: #333;
   transition: color 250ms ease-in-out;
   background-color: 250ms ease-in-out;
   border-left: 4px solid #00c6d7;
@@ -393,7 +393,7 @@ span:after {
 }
 
 .btn-view-acct {
-  background: #00c6d7;
+  background: #2980b9;
   color: #ffffff;
   font-size: 1.4rem;
   padding: 10px;
@@ -415,7 +415,7 @@ span:after {
 }
 
 .btn-create-acct {
-  background: #00c6d7;
+  background: #2980b9;
   padding: 10px;
   font-size: 1.6rem;
   color: #fff;
@@ -554,7 +554,7 @@ span:after {
 
 .btn-yes,
 .btn-activate {
-  background: green;
+  background: #2989b9;
   color: #fff !important;
   padding: 8px;
   margin: 10px 0;
@@ -663,7 +663,7 @@ table {
 
 thead {
   text-align: left;
-  color: #00c6d7;
+  color: #2980b9;
   font-size: 1.6rem;
 }
 
