@@ -19,6 +19,20 @@ header {
   z-index: 4;
 }
 
+.logo--b {
+  height: 44px;
+  position: absolute;
+  right: 7%;
+  font-size: 2.8rem;
+  color: #fff;
+  font-family: "Felipa", cursive;
+}
+
+.logo--b a {
+  color: #fff;
+  text-decoration: none;
+}
+
 /* logo in header(mobile version) and side-nav (tablet & desktop) */
 .logo {
   height: 44px;
@@ -147,6 +161,11 @@ span:after {
   padding-top: 44px;
 }
 
+.content-bx-seting {
+  justify-content: center;
+  display: flex;
+}
+
 .main-inner-content {
   margin-top: 35px;
   border: 1px solid #12a8e1;
@@ -199,7 +218,8 @@ span:after {
 .main-inner-trans {
   border: 1px solid #12a8e1;
   padding: 20px;
-  width: 90%;
+  /* width: 90%; */
+  width: 500px !important;
   border-radius: 5px;
 }
 
@@ -288,6 +308,14 @@ span:after {
   line-height: 2.1;
 }
 
+.dd-wrapper-setings {
+  margin: 40px;
+  padding: 20px 55px;
+  width: 600px;
+  line-height: 2.1;
+  background-color: #f4f4ff;
+}
+
 /* .dd-hdr {
   font-size: 2.4rem;
   letter-spacing: 1px;
@@ -295,7 +323,7 @@ span:after {
 
 .btn-cl {
   width: 98%;
-  background: #e74c3c;
+  background: #2980b9;
   padding: 5px 1px;
   border-radius: 3px;
   margin: 0;
@@ -314,7 +342,7 @@ footer {
   position: fixed !important;
   width: 100%;
   z-index: 3;
-  background: #2c0ef0;
+  background: #2980b9;
   padding: 15px;
   text-align: center;
   letter-spacing: 1px;
@@ -325,17 +353,6 @@ footer {
 .bottom--sp {
   padding-bottom: 90px;
 }
-
-/* #ff-t {
-  position: sticky;
-  width: 100%;
-  z-index: 3;
-  background: #2c0ef0;
-  padding: 15px;
-  text-align: center;
-  color: #ffffff;
-  font-size: 1.7rem;
-} */
 
 #inputbx {
   padding: 1.3em 0.8em;
@@ -360,7 +377,7 @@ footer {
 
 @media screen and (min-width: 600px) {
   header {
-    background-color: #2c0ef0;
+    background-color: #2980b9;
     z-index: 1;
   }
 

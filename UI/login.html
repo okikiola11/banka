@@ -10,7 +10,6 @@
     <meta name="author" content="Apelehin Okikiola" />
     <title>Banka</title>
     <link rel="stylesheet" href="asset/css/style.css" />
-    <script src="asset/js/main.js"></script>
 </head>
 
 <body>
@@ -41,28 +40,28 @@
                 <div class="txt-hdr">User Login</div>
 
                 <div>
-                    <input type="text" placeholder="Email" name="email" id="inputbx" />
+                    <input type="text" placeholder="Email" class="email" name="email" id="inputbx" />
                 </div>
 
                 <div>
-                    <input type="text" placeholder="Password" name="password" id="inputbx" />
+                    <input type="text" placeholder="Password" class="password" name="password" id="inputbx" />
                 </div>
+
+                <a href="">
+                    <!-- user-dashboard.html -->
+                    <div class="login-btn" id="login-form">
+                        Login
+                    </div>
+                </a>
 
                 <div class="btn-span">
                     <div>
                         <span>Don't have an account</span>
-                    </div>
-
-                    <div>
-                        <a href="signup.html" class="btn-xs">Signup</a>
+                        <span class="btn-span-spac">
+                            <a href="signup.html" class="btn-xs">Signup</a>
+                        </span>
                     </div>
                 </div>
-
-                <a href="user-dashboard.html">
-                    <div class="login-btn">
-                        Login
-                    </div>
-                </a>
 
             </form>
 
@@ -76,6 +75,8 @@
     <div class="footer-text">
         Powered by Apelehin Okikiola
     </div>
+
+    <script src="asset/js/login.js"></script>
 
 </body>
 

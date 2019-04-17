@@ -28,7 +28,7 @@ html {
 }
 
 header {
-    background: #2c0ef0;
+    background: #2980b9;
     padding: 5px;
     font-family: "Nunito Sans", sans-serif;
     box-shadow: 0 15px 30px 0 rgba(31, 48, 146, 0.11);
@@ -83,10 +83,10 @@ nav ul li a:focus {
 }
 
 .banner {
-    background-image: url(../images/banner2.jpg);
-    background-size: 100% 100%;
+    background-image: url(../images/banner.jpg);
+    background-size: cover;
     background-repeat: no-repeat;
-    height: 55vh;
+    height: 90vh;
     opacity: 0.8;
     z-index: 1;
 }
@@ -123,7 +123,7 @@ nav ul li a:focus {
 
 .btn-acct {
     padding: 10px;
-    background: #2ecc71;
+    background: #545454;
     font-size: 2.4rem;
     color: #ffffff;
     text-align: center;
@@ -299,8 +299,6 @@ nav ul li a:focus {
     border-radius: 3px;
 }
 
-.acct-wrapper form {}
-
 #inputbx {
     padding: 1.3em 0.8em;
     font-size: 1.2rem;
@@ -320,21 +318,18 @@ nav ul li a:focus {
     font-weight: 700;
     font-size: 2rem;
     letter-spacing: 1px;
+    text-align: center;
 }
 
 .btn-xs {
-    border: 2px solid #57606f;
-    border-radius: 30px;
     margin-bottom: 10px;
-    padding: 9px;
-    font-size: 1.35rem;
+    font-size: 1.55rem;
     color: #000;
     text-decoration: none;
 }
 
 .btn-xs:hover {
-    background: #57606f;
-    color: #ffffff;
+    color: #57606f;
     text-decoration: none;
     transition: background 0.4s;
 }
@@ -351,6 +346,16 @@ nav ul li a:focus {
 
 .btn-span span {
     font-size: 1.2rem;
+}
+
+.btn-span-spac {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.btn-span-spac a {
+    font-size: 1.7rem;
+    color: #2980b9;
 }
 
 a .login-btn {
@@ -377,7 +382,7 @@ a {
     background-repeat: no-repeat;
     background-size: 100% 100%;
     min-height: 100vh;
-    background-color: rgb(62, 175, 219);
+    background-color: rgba(18, 168, 225, 0.2);
     margin: 0 1px;
     animation: 1s ease-out 0s 1 slideInFromRight;
     position: relative;
@@ -527,7 +532,7 @@ CREATE ACCOUNT FORM */
 }
 
 .footer {
-    background-color: #2c0ef0;
+    background-color: #2980b9;
     padding: 18px;
     font-size: 1.7rem;
     text-align: center;
@@ -565,6 +570,11 @@ CREATE ACCOUNT FORM */
         left: 62%;
         width: 450px;
         font-size: 1.6rem;
+    }
+
+    .login-wrapper form {
+        width: 480px;
+        padding: 40px;
     }
 
     .banner-acct {
