@@ -132,6 +132,12 @@
   text-align: center !important;
 }
 
+/* TO CENTRALIZE CONTENT */
+.contt-center {
+  justify-content: center;
+  display: flex;
+}
+
 .dashboard-container {
   position: relative;
   top: 0;
@@ -163,7 +169,7 @@
 }
 
 .inner-content__center {
-  display: flex;
+  /* display: flex; */
 }
 
 .inn-layer {
@@ -395,7 +401,7 @@ span:after {
 }
 
 .hdr-acct {
-  padding-left: 40%;
+  padding-left: 30%;
   font-size: 2.3rem;
   margin-bottom: 20px;
   font-family: "Cinzel", serif;
@@ -553,7 +559,7 @@ span:after {
   padding: 8px;
   margin: 10px 0;
   text-align: center;
-  width: 40% !important;
+  width: 25% !important;
   border-radius: 10px;
   font-weight: 500;
   margin-right: 10px;
@@ -579,7 +585,7 @@ span:after {
   padding: 8px;
   margin: 10px 0;
   text-align: center;
-  width: 42% !important;
+  width: 26% !important;
   border-radius: 10px;
   font-weight: 500;
 }
