@@ -421,11 +421,6 @@ footer {
     margin-left: 80px;
   }
 
-  .main-nn {
-    display: flex;
-
-  }
-
   footer {
     bottom: -10px;
     position: absolute;
