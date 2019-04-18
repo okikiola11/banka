@@ -2,7 +2,6 @@ const loginForm = document.querySelector('#login-form');
 
 loginForm.addEventListener('click', (e) => {
     e.preventDefault();
-    // eslint-disable-next-line no-console
     const email = document.querySelector('.email').value;
     const password = document.querySelector('.password').value;
 

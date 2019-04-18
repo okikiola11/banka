@@ -65,6 +65,11 @@ function () {
       return [(0, _check.body)('type').isIn(['savings', 'current']).withMessage('Choose a valid account type').exists().withMessage('Field cannot be empty'), (0, _check.body)('openingBalance').isDecimal().withMessage('You should enter only decimal').exists().withMessage('Field cannot be empty')];
     }
   }, {
+    key: "validateUpdateAccount",
+    value: function validateUpdateAccount() {
+      return [(0, _check.body)('acctStatus').isIn(['dormant', 'active']).withMessage('Choose a valid account status').exists().withMessage('Field cannot be empty')];
+    }
+  }, {
     key: "validateTransaction",
     value: function validateTransaction() {
       return [(0, _check.body)('accountNumber').isNumeric().withMessage('You should enter only numeric').isLength({

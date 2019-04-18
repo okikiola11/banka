@@ -81,6 +81,14 @@ class Validation {
         ];
     }
 
+    static validateUpdateAccount() {
+        return [
+            body('acctStatus').isIn(['dormant', 'active']).withMessage('Choose a valid account status')
+                .exists()
+                .withMessage('Field cannot be empty'),
+        ];
+    }
+
     static validateTransaction() {
         return [
             body('accountNumber').isNumeric().withMessage('You should enter only numeric')

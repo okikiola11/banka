@@ -7,6 +7,7 @@ const Accounts = [{
     acctStatus: 'active',
     accountBalance: '25000.00',
     createdOn: '30-01-2019',
+    updatedOn: null,
 }, {
     id: 2,
     ownerId: 2,
@@ -16,6 +17,7 @@ const Accounts = [{
     acctStatus: 'dormant',
     accountBalance: '5000.00',
     createdOn: '30-01-2019',
+    updatedOn: null,
 }];
 
 export default Accounts;

@@ -176,6 +176,8 @@ span:after {
 
 .inner-content--flex {
   display: flex;
+  justify-content: space-between;
+
 }
 
 .inner-content--flex-s {
@@ -193,6 +195,10 @@ span:after {
   font-size: 2.3rem;
 }
 
+.inner-cont__display {
+  /* display: flex; */
+}
+
 .txt-1 {
   font-size: 1.8rem;
   padding-right: 20px;
@@ -204,6 +210,12 @@ span:after {
   letter-spacing: 1px;
 }
 
+.txt-12 {
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
 .txt-sidenav {
   color: #fff;
   font-size: 1.8rem;
@@ -213,6 +225,8 @@ span:after {
 
 .main-nn {
   padding: 10px;
+  justify-content: center;
+  display: grid;
 }
 
 .main-inner-trans {
@@ -229,7 +243,7 @@ span:after {
   padding: 10px;
   font-size: 1.6rem;
   border-radius: 6px;
-  width: 45%;
+  width: 86%;
   text-align: center;
 }
 
@@ -314,6 +328,8 @@ span:after {
   width: 600px;
   line-height: 2.1;
   background-color: #f4f4ff;
+  justify-content: center;
+  display: grid;
 }
 
 /* .dd-hdr {
@@ -440,7 +456,8 @@ footer {
   }
 
   .main-inner-content {
-    margin: 35px;
+    display: block;
+    margin: 20px auto;
     width: 50%;
     padding: 25px;
   }

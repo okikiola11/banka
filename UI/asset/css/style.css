@@ -428,12 +428,12 @@ form {
 CREATE ACCOUNT FORM */
 #create-form {
     border: 0 none;
-    margin-top: 500px;
+    margin-top: 450px;
 }
 
 #create-form fieldset {
-    padding: 20px;
-    width: 390px;
+    padding: 35px;
+    width: 590px;
     margin-top: 20px auto;
     background: #f9fbfd;
     border: 1px solid #ddd;
@@ -456,10 +456,9 @@ CREATE ACCOUNT FORM */
 }
 
 .action-button {
-    padding: 1.3rem 0.8rem;
-    font-size: 1.4rem;
+    font-size: 1.5rem !important;
     outline: none;
-    color: #ffffff;
+    color: #ffffff !important;
     letter-spacing: 1px;
     margin: 0.5em;
     width: 43%;
@@ -469,7 +468,7 @@ CREATE ACCOUNT FORM */
 }
 
 .next {
-    background: #2ecc71;
+    background: #2980b9;
 }
 
 #progressbar {
