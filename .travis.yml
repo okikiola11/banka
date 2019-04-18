@@ -1,0 +1,26 @@
+language: node_js
+
+node_js:
+  - "stable"
+
+script:
+  - "npm install"
+  - "npm run build"
+  - "npm test"
+
+cache:
+  directories:
+    - "node_modules"
+
+# after_script:
+#   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+after_success:
+  - npm run coverage
+  - npm run report-coverage
+
+after_success:
+  - npm run coverage
+  - npm run coveralls
+
+
