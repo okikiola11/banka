@@ -12,7 +12,8 @@ var Accounts = [{
   openingBalance: '25000.00',
   acctStatus: 'active',
   accountBalance: '25000.00',
-  createdOn: '30-01-2019'
+  createdOn: '30-01-2019',
+  updatedOn: null
 }, {
   id: 2,
   ownerId: 2,
@@ -21,7 +22,8 @@ var Accounts = [{
   openingBalance: '5000.00',
   acctStatus: 'dormant',
   accountBalance: '5000.00',
-  createdOn: '30-01-2019'
+  createdOn: '30-01-2019',
+  updatedOn: null
 }];
 var _default = Accounts;
 exports.default = _default;
