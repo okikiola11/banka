@@ -292,7 +292,7 @@ nav ul li a:focus {
 .login-wrapper form {
     padding: 20px;
     width: 320px;
-    margin-top: 20px auto;
+    margin: 20px auto;
     background: #f9fbfd;
     border: 1px solid #ddd;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
