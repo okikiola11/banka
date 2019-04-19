@@ -12,7 +12,7 @@ class authMiddleware {
             id,
             userType,
         }, config.secret, {
-            expiresIn: 86400, // expires in 24hours
+            expiresIn: '24h', // expires in 24hours
         });
     }
 
