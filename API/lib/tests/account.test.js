@@ -49,7 +49,7 @@ describe('/ User Account Auth Endpoint ', function () {
         expect(response.body).to.have.all.keys('status', 'message', 'data');
         expect(response.body.status).to.equal(201);
         expect(response.body.message).to.equal('Account has been created');
-        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn');
+        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn');
       }).end(done);
     });
     it('should create user accounts validation check', function (done) {
@@ -68,7 +68,7 @@ describe('/ User Account Auth Endpoint ', function () {
         expect(response.body).to.have.all.keys('status', 'message', 'data');
         expect(response.body.status).to.equal(200);
         expect(response.body.message).to.equal('Successfully retrieved all accounts');
-        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn');
+        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn');
       }).end(done);
     });
   });
@@ -78,8 +78,10 @@ describe('/ User Account Auth Endpoint ', function () {
         expect(response.body).to.have.all.keys('status', 'message', 'data');
         expect(response.body.status).to.equal(200);
         expect(response.body.message).to.equal('Account has been successfully retrieved');
-        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn');
-      });
+        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn');
+      }).end(done);
+    });
+    it('should get an error message if the account number does not exist ', function (done) {
       (0, _supertest.default)(_index.default).get("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
         expect(response.body).to.eql({
           status: 404,
@@ -88,40 +90,49 @@ describe('/ User Account Auth Endpoint ', function () {
       }).end(done);
     });
   });
-  describe('/ UPDATE account ', function () {
-    it('should activate or deactivate account ', function (done) {
-      (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
-        expect(response.body).to.eql({
-          status: 404,
-          error: 'Account Number not found'
-        }).to.have.all.keys('status', 'error');
-      });
-      (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).send({
-        accountNumber: '2040050234',
-        acctStatus: 'active',
-        type: '',
-        updatedOn: ''
-      }).expect(200).expect(function (response) {
-        expect(response.body).to.have.all.keys('status', 'message', 'data');
-        expect(response.body.status).to.equal(200);
-        expect(response.body.message).to.equal('Account has been succesfully updated');
-        expect(response.body.data[0]).to.have.all.keys('id', 'accountNumber', 'acctStatus', 'type', 'updatedOn');
-      }).end(done);
-    });
+});
+describe('/ UPDATE account ', function () {
+  it('should send an error message if account is not found ', function (done) {
+    (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).send({
+      acctStatus: 'active'
+    }).expect(404).expect(function (response) {
+      expect(response.body).to.eql({
+        status: 404,
+        error: 'Account Number not found'
+      }).to.have.all.keys('status', 'error');
+    }).end(done);
   });
-  describe('/ DELETE account ', function () {
-    it('should delete a user account ', function (done) {
-      (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
-        expect(response.body).to.eql({
-          status: 404,
-          error: 'Oooops! no record with such Account number'
-        }).to.have.all.keys('status', 'error');
-      });
-      (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(200).expect(function (response) {
-        expect(response.body).to.have.all.keys('status', 'message');
-        expect(response.body.status).to.equal(200);
-        expect(response.body.message).to.equal('Account has been deleted successfully');
-      }).end(done);
-    });
+  it('should activate or deactivate account ', function (done) {
+    (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).send({
+      acctStatus: 'active'
+    }).expect(200).expect(function (response) {
+      expect(response.body).to.have.all.keys('status', 'message', 'data');
+      expect(response.body.status).to.equal(200);
+      expect(response.body.message).to.equal('Account has been succesfully updated');
+      expect(response.body.data[0]).to.have.all.keys('id', 'accountNumber', 'acctStatus', 'type', 'updatedOn');
+    }).end(done);
+  });
+  it('should send an error message if Validation fails ', function (done) {
+    (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(401).expect(function (response) {
+      expect(response.body.status).to.equal(401);
+      expect(response.body.error).to.equal('Validation failed, check errors property for more details');
+    }).end(done);
+  });
+});
+describe('/ DELETE account ', function () {
+  it('should return an error message if user record was not found ', function (done) {
+    (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(404).expect(function (response) {
+      expect(response.body).to.eql({
+        status: 404,
+        error: 'Oooops! no record with such Account number'
+      }).to.have.all.keys('status', 'error');
+    }).end(done);
+  });
+  it('should delete a user account ', function (done) {
+    (0, _supertest.default)(_index.default).delete("".concat(API_PREFIX, "/accounts/2040050234")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(200).expect(function (response) {
+      expect(response.body).to.have.all.keys('status', 'message');
+      expect(response.body.status).to.equal(200);
+      expect(response.body.message).to.equal('Account has been deleted successfully');
+    }).end(done);
   });
 });

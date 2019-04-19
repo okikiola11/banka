@@ -33,8 +33,8 @@ class accountsController {
             } = req.body;
             const userInfo = userdata.find(details => details.id === req.data.id);
             const {
-                id, // get owner Id from User table
-            } = userInfo;
+                id,
+            } = userInfo; // get owner Id from User table
 
             const accountNumber = Utility.acctNumberGen();
             const newlyCreatedAcct = {
@@ -46,6 +46,7 @@ class accountsController {
                 acctStatus: 'active',
                 accountBalance: openingBalance,
                 createdOn: new Date().toLocaleString(),
+                updatedOn: null,
             };
             Accounts.push(newlyCreatedAcct);
 
@@ -103,45 +104,75 @@ class accountsController {
 
     static async updateAccount(req, res) {
         try {
-            const {
-                accountNumber,
-            } = req.params;
-            let accountFound;
-            let accountIndex;
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const validateErrors = errors.array();
 
-            Accounts.map((AccountsData, index) => {
-                if (AccountsData.accountNumber === accountNumber) {
-                    accountFound = AccountsData;
-                    accountIndex = index;
-                }
-            });
+                const errArray = validateErrors.map((obj) => {
+                    const rObj = {};
+                    rObj[obj.param] = obj.msg;
+                    rObj.value = obj.value;
+                    return rObj;
+                });
 
-            if (accountFound === undefined || accountFound === null) {
-                return res.status(404).json({
-                    status: 404,
-                    error: 'Account Id not found',
+                return res.status(401).json({
+                    status: 401,
+                    error: 'Validation failed, check errors property for more details',
+                    errors: errArray,
                 });
             }
 
-            const updatedAccount = {
-                id: accountFound.id,
-                accountNumber: accountFound.accountNumber,
-                acctStatus: req.body.acctStatus || accountFound.acctStatus,
-                email: accountFound.email,
-                type: accountFound.type,
-                updatedOn: new Date().toLocaleString(),
-            };
-            Accounts.splice(accountIndex, 1, updatedAccount);
+            const {
+                accountNumber,
+            } = req.params;
 
+            const AccountNo = Accounts.find(acc => acc.accountNumber === accountNumber);
+            if (!AccountNo) {
+                return res.status(404).json({
+                    status: 404,
+                    error: 'Account Number not found',
+                });
+            }
+            const {
+                id,
+                ownerId,
+                type,
+                openBalance,
+                accountBalance,
+                createdOn,
+            } = AccountNo;
+            const updatedOn = new Date().toLocaleString();
+            const {
+                acctStatus,
+            } = req.body;
+            const updatedAccount = {
+                id,
+                ownerId,
+                accountNumber,
+                type,
+                acctStatus,
+                openBalance,
+                accountBalance,
+                createdOn,
+                updatedOn,
+            };
+
+            Accounts.splice(Accounts.indexOf(AccountNo), 1, updatedAccount);
             return res.status(200).json({
                 status: 200,
                 message: 'Account has been succesfully updated',
-                data: [updatedAccount],
+                data: [{
+                    id,
+                    type,
+                    accountNumber,
+                    acctStatus,
+                    updatedOn,
+                }],
             });
         } catch (error) {
-            return res.status(204).json({
-                status: 204, // 204 no available content
-                error: 'No available account content',
+            return res.status(500).json({
+                status: 500, // 500 no available content
+                error: 'Something went wrong while trying to update your account',
             });
         }
     }
@@ -150,15 +181,15 @@ class accountsController {
         try {
             const {
                 accountNumber,
-            } = req.body;
+            } = req.params;
             const deletedAccount = await Accounts.find(
                 deletedData => deletedData.accountNumber === accountNumber,
             );
 
-            if (deletedAccount === -1) {
+            if (!deletedAccount) {
                 return res.status(404).json({
                     status: 404,
-                    error: 'Oooops! no record with such Id',
+                    error: 'Oooops! no record with such Account number',
                 });
             }
             Accounts.splice(deletedAccount);
@@ -168,10 +199,9 @@ class accountsController {
                 message: 'Account has been deleted successfully',
             });
         } catch (error) {
-            return res.status(204).send({
-                // 204 means no content
-                success: '204',
-                error: 'No account Id content available',
+            return res.status(500).send({
+                status: '500',
+                error: 'Something went wrong while trying to delete, try again',
             });
         }
     }

@@ -8,37 +8,33 @@ import config from '../config';
 
 import app from '../index';
 
-const { expect } = chai;
+const {
+    expect,
+} = chai;
 
 const API_PREFIX = '/api/v1';
-const token = jwt.sign(
-    {
-        id: 1,
-        userType: {
-            user: true,
-            admin: false,
-            staff: false,
-        },
+const token = jwt.sign({
+    id: 1,
+    userType: {
+        user: true,
+        admin: false,
+        staff: false,
     },
-    config.secret,
-    {
-        expiresIn: 86400, // expires cmdin 24hours
+},
+config.secret, {
+    expiresIn: 86400, // expires cmdin 24hours
+},);
+const staffToken = jwt.sign({
+    id: 1,
+    userType: {
+        user: false,
+        admin: true,
+        staff: true,
     },
-);
-const staffToken = jwt.sign(
-    {
-        id: 1,
-        userType: {
-            user: false,
-            admin: true,
-            staff: true,
-        },
-    },
-    config.secret,
-    {
-        expiresIn: 86400, // expires cmdin 24hours
-    },
-);
+},
+config.secret, {
+    expiresIn: 86400, // expires cmdin 24hours
+},);
 
 describe('/ User Account Auth Endpoint ', () => {
     describe('/ POST accounts - Account Setup (Required)', () => {
@@ -53,19 +49,16 @@ describe('/ User Account Auth Endpoint ', () => {
                 })
                 .expect(201)
                 .expect((response) => {
-                    expect(response.body).to.have.all.keys('status', 'message', 'data');
-                    expect(response.body.status).to.equal(201);
-                    expect(response.body.message).to.equal('Account has been created');
-                    expect(response.body.data[0]).to.have.all.keys(
-                        'id',
-                        'ownerId',
-                        'accountNumber',
-                        'type',
-                        'openingBalance',
-                        'acctStatus',
-                        'accountBalance',
-                        'createdOn',
-                    );
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(201);
+                    expect(response.body.message)
+                        .to.equal('Account has been created');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn',
+                        );
                 })
                 .end(done);
         });
@@ -81,10 +74,10 @@ describe('/ User Account Auth Endpoint ', () => {
                 })
                 .expect(401)
                 .expect((response) => {
-                    expect(response.body.status).to.equal(401);
-                    expect(response.body.error).to.equal(
-                        'Validation failed, check errors property for more details',
-                    );
+                    expect(response.body.status)
+                        .to.equal(401);
+                    expect(response.body.error)
+                        .to.equal('Validation failed, check errors property for more details');
                 })
                 .end(done);
         });
@@ -98,21 +91,16 @@ describe('/ User Account Auth Endpoint ', () => {
                 .set('Authorization', `${staffToken}`)
                 .expect(200)
                 .expect((response) => {
-                    expect(response.body).to.have.all.keys('status', 'message', 'data');
-                    expect(response.body.status).to.equal(200);
-                    expect(response.body.message).to.equal(
-                        'Successfully retrieved all accounts',
-                    );
-                    expect(response.body.data[0]).to.have.all.keys(
-                        'id',
-                        'ownerId',
-                        'accountNumber',
-                        'type',
-                        'openingBalance',
-                        'acctStatus',
-                        'accountBalance',
-                        'createdOn',
-                    );
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Successfully retrieved all accounts');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn',
+                        );
                 })
                 .end(done);
         });
@@ -134,10 +122,13 @@ describe('/ User Account Auth Endpoint ', () => {
                         .to.equal('Account has been successfully retrieved');
                     expect(response.body.data[0])
                         .to.have.all.keys(
-                            'id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn'
+                            'id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn',
                         );
-                });
+                })
+                .end(done);
+        });
 
+        it('should get an error message if the account number does not exist ', (done) => {
             request(app)
                 .get(`${API_PREFIX}/accounts/2040050222`)
                 .set('Accept', 'application/json')
@@ -154,80 +145,101 @@ describe('/ User Account Auth Endpoint ', () => {
                 .end(done);
         });
     });
+});
 
-    describe('/ UPDATE account ', () => {
-        it('should activate or deactivate account ', (done) => {
-            request(app)
-                .patch(`${API_PREFIX}/accounts/2040050222`)
-                .set('Accept', 'application/json')
-                .set('Authorization', `${staffToken}`)
-                .expect(404)
-                .expect((response) => {
-                    expect(response.body)
-                        .to.eql({
-                            status: 404,
-                            error: 'Account Number not found',
-                        })
-                        .to.have.all.keys('status', 'error');
-                });
-
-            request(app)
-                .patch(`${API_PREFIX}/accounts/2040050234`)
-                .set('Accept', 'application/json')
-                .set('Authorization', `${staffToken}`)
-                .send({
-                    accountNumber: '2040050234',
-                    acctStatus: 'active',
-                    type: '',
-                    updatedOn: ''
-                })
-                .expect(200)
-                .expect((response) => {
-                    expect(response.body)
-                        .to.have.all.keys('status', 'message', 'data');
-                    expect(response.body.status)
-                        .to.equal(200);
-                    expect(response.body.message)
-                        .to.equal('Account has been succesfully updated');
-                    expect(response.body.data[0])
-                        .to.have.all.keys(
-                            'id', 'accountNumber', 'acctStatus', 'type', 'updatedOn'
-                        );
-                })
-                .end(done);
-        });
+describe('/ UPDATE account ', () => {
+    it('should send an error message if account is not found ', (done) => {
+        request(app)
+            .patch(`${API_PREFIX}/accounts/2040050222`)
+            .set('Accept', 'application/json')
+            .set('Authorization', `${staffToken}`)
+            .send({
+                acctStatus: 'active',
+            })
+            .expect(404)
+            .expect((response) => {
+                expect(response.body)
+                    .to.eql({
+                        status: 404,
+                        error: 'Account Number not found',
+                    })
+                    .to.have.all.keys('status', 'error');
+            })
+            .end(done);
     });
 
-    describe('/ DELETE account ', () => {
-        it('should delete a user account ', (done) => {
-            request(app)
-                .delete(`${API_PREFIX}/accounts/2040050222`)
-                .set('Accept', 'application/json')
-                .set('Authorization', `${staffToken}`)
-                .expect(404)
-                .expect((response) => {
-                    expect(response.body)
-                        .to.eql({
-                            status: 404,
-                            error: 'Oooops! no record with such Account number',
-                        })
-                        .to.have.all.keys('status', 'error');
-                });
+    it('should activate or deactivate account ', (done) => {
+        request(app)
+            .patch(`${API_PREFIX}/accounts/2040050234`)
+            .set('Accept', 'application/json')
+            .set('Authorization', `${staffToken}`)
+            .send({
+                acctStatus: 'active',
+            })
+            .expect(200)
+            .expect((response) => {
+                expect(response.body)
+                    .to.have.all.keys('status', 'message', 'data');
+                expect(response.body.status)
+                    .to.equal(200);
+                expect(response.body.message)
+                    .to.equal('Account has been succesfully updated');
+                expect(response.body.data[0])
+                    .to.have.all.keys(
+                        'id', 'accountNumber', 'acctStatus', 'type', 'updatedOn',
+                    );
+            })
+            .end(done);
+    });
 
-            request(app)
-                .delete(`${API_PREFIX}/accounts/2040050234`)
-                .set('Accept', 'application/json')
-                .set('Authorization', `${staffToken}`)
-                .expect(200)
-                .expect((response) => {
-                    expect(response.body)
-                        .to.have.all.keys('status', 'message');
-                    expect(response.body.status)
-                        .to.equal(200);
-                    expect(response.body.message)
-                        .to.equal('Account has been deleted successfully');
-                })
-                .end(done);
-        });
+    it('should send an error message if Validation fails ', (done) => {
+        request(app)
+            .patch(`${API_PREFIX}/accounts/2040050222`)
+            .set('Accept', 'application/json')
+            .set('Authorization', `${staffToken}`)
+            .expect(401)
+            .expect((response) => {
+                expect(response.body.status)
+                    .to.equal(401);
+                expect(response.body.error)
+                    .to.equal('Validation failed, check errors property for more details');
+            })
+            .end(done);
+    });
+});
+
+describe('/ DELETE account ', () => {
+    it('should return an error message if user record was not found ', (done) => {
+        request(app)
+            .delete(`${API_PREFIX}/accounts/2040050222`)
+            .set('Accept', 'application/json')
+            .set('Authorization', `${staffToken}`)
+            .expect(404)
+            .expect((response) => {
+                expect(response.body)
+                    .to.eql({
+                        status: 404,
+                        error: 'Oooops! no record with such Account number',
+                    })
+                    .to.have.all.keys('status', 'error');
+            })
+            .end(done);
+    });
+
+    it('should delete a user account ', (done) => {
+        request(app)
+            .delete(`${API_PREFIX}/accounts/2040050234`)
+            .set('Accept', 'application/json')
+            .set('Authorization', `${staffToken}`)
+            .expect(200)
+            .expect((response) => {
+                expect(response.body)
+                    .to.have.all.keys('status', 'message');
+                expect(response.body.status)
+                    .to.equal(200);
+                expect(response.body.message)
+                    .to.equal('Account has been deleted successfully');
+            })
+            .end(done);
     });
 });
