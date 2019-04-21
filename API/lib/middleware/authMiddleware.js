@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
-var _config = _interopRequireDefault(require("../config"));
+var _dotenv = require("dotenv");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16,6 +16,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+(0, _dotenv.config)();
 
 var authMiddleware =
 /*#__PURE__*/
@@ -34,8 +36,8 @@ function () {
       return _jsonwebtoken.default.sign({
         id: id,
         userType: userType
-      }, _config.default.secret, {
-        expiresIn: 86400 // expires in 24hours
+      }, process.env.secret, {
+        expiresIn: '24h' // expires in 24hours
 
       });
     }
@@ -45,7 +47,7 @@ function () {
       // Get the auth header value bcos the token should be sent in the header as the Authorization value
       var bearerHeader = req.headers.authorization;
 
-      _jsonwebtoken.default.verify(bearerHeader, _config.default.secret, function (err, authData) {
+      _jsonwebtoken.default.verify(bearerHeader, process.env.secret, function (err, authData) {
         if (err) {
           return res.sendStatus(403);
         }

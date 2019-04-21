@@ -6,12 +6,13 @@ var _supertest = _interopRequireDefault(require("supertest"));
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
-var _config = _interopRequireDefault(require("../config"));
+var _dotenv = require("dotenv");
 
 var _index = _interopRequireDefault(require("../index"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+(0, _dotenv.config)();
 var expect = _chai.default.expect;
 var API_PREFIX = '/api/v1';
 
@@ -22,7 +23,7 @@ var token = _jsonwebtoken.default.sign({
     admin: false,
     staff: false
   }
-}, _config.default.secret, {
+}, process.env.secret, {
   expiresIn: 86400 // expires cmdin 24hours
 
 });
@@ -34,7 +35,7 @@ var staffToken = _jsonwebtoken.default.sign({
     admin: true,
     staff: true
   }
-}, _config.default.secret, {
+}, process.env.secret, {
   expiresIn: 86400 // expires cmdin 24hours
 
 });

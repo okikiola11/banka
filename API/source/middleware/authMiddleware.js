@@ -1,5 +1,9 @@
 import jwt from 'jsonwebtoken';
-import config from '../config';
+import {
+    config,
+} from 'dotenv';
+
+config();
 
 class authMiddleware {
     // FORMAT OF TOKEN
@@ -11,7 +15,7 @@ class authMiddleware {
         return jwt.sign({
             id,
             userType,
-        }, config.secret, {
+        }, process.env.secret, {
             expiresIn: '24h', // expires in 24hours
         });
     }
@@ -19,7 +23,7 @@ class authMiddleware {
     static verifyToken(req, res, next) {
         // Get the auth header value bcos the token should be sent in the header as the Authorization value
         const bearerHeader = req.headers.authorization;
-        jwt.verify(bearerHeader, config.secret, (err, authData) => {
+        jwt.verify(bearerHeader, process.env.secret, (err, authData) => {
             if (err) {
                 return res.sendStatus(403);
             }
