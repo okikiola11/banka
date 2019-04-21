@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
+import {
+    config,
+} from 'dotenv';
 
-require('dotenv').config();
+config();
 
 class authMiddleware {
     // FORMAT OF TOKEN

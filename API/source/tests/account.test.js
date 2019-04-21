@@ -4,9 +4,13 @@ import request from 'supertest';
 
 import jwt from 'jsonwebtoken';
 
-import config from '../config';
+import {
+    config,
+} from 'dotenv';
 
 import app from '../index';
+
+config();
 
 const {
     expect,
@@ -21,9 +25,9 @@ const token = jwt.sign({
         staff: false,
     },
 },
-config.secret, {
+process.env.secret, {
     expiresIn: 86400, // expires cmdin 24hours
-},);
+});
 const staffToken = jwt.sign({
     id: 1,
     userType: {
@@ -32,9 +36,9 @@ const staffToken = jwt.sign({
         staff: true,
     },
 },
-config.secret, {
+process.env.secret, {
     expiresIn: 86400, // expires cmdin 24hours
-},);
+});
 
 describe('/ User Account Auth Endpoint ', () => {
     describe('/ POST accounts - Account Setup (Required)', () => {

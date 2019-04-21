@@ -1,7 +1,7 @@
 # Banka
 [![Build Status](https://travis-ci.org/okikiola11/banka.svg?branch=develop)](https://travis-ci.org/okikiola11/banka)
 [![Coverage Status](https://coveralls.io/repos/github/okikiola11/banka/badge.svg?branch=develop)](https://coveralls.io/github/okikiola11/banka?branch=develop)
-
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f4e61d5ab7f24714bd43/test_coverage)](https://codeclimate.com/github/okikiola11/banka/test_coverage)
 Banka is a light-weight core banking application that powers banking operations like account creation, customer deposit and withdrawals. This app is meant to support a single bank, where users can signup and create bank accounts online, but must visit the branch to withdraw or deposit money..
 
 ## Clone the Repo
