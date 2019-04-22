@@ -38,7 +38,8 @@ app.all('*', function (req, res) {
 });
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
-  // eslint-disable-next-line no-console
+  console.log('somethimg went wrong 66666'); // eslint-disable-next-line no-console
+
   console.log(" Server is running on PORT: ".concat(port));
 });
 var _default = app;
