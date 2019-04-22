@@ -1,43 +1,47 @@
 import {
-    Client,
+    Pool,
 } from 'pg';
+
 import {
-    dotenv,
+    config,
 } from 'dotenv';
 
-dotenv.config();
+import 'make-runnable';
+
+config();
+
 // or native libpq bindings
 // var pg = require('pg').native
 
-const conString = process.env.ELEPHANTSQL; // Can be found in the Details page
-const client = new Client(conString);
-client.on('connect', () => {
-    console.log('connected to postgres');
+const pool = new Pool({
+    connectionString: process.env.ELEPHANTSQL,
 });
 
-/** *  create users table
- * */
+pool.on('connect', () => {
+    console.log('connected to the db');
+});
+
+/** create Users table */
 const createUsersTable = () => {
     const queryText = `CREATE TABLE IF NOT EXISTS
-        users(
-            ID serial PRIMARY KEY,
-            firstName varchar NOT NULL,
-            lastName varchar NOT NULL,
-            email varchar(128) NOT NULL UNIQUE,
-            phone varchar,
-            gender AS ENUM ('female', 'male'),
-            password varchar(128) NOT NULL,
-            isAdmin boolean NOT NULL DEFAULT
-        )`;
+    users(
+        ID serial PRIMARY KEY,
+        firstName varchar NOT NULL,
+        lastName varchar NOT NULL,
+        email varchar(128) NOT NULL UNIQUE,
+        phone varchar,
+        gender varchar,
+        password varchar(128) NOT NULL
+    )`;
 
-    client.query(queryText)
+    pool.query(queryText)
         .then((res) => {
             console.log(res);
-            client.end();
+            pool.end();
         })
         .catch((err) => {
             console.log(err);
-            client.end();
+            pool.end();
         });
 };
 
@@ -51,49 +55,47 @@ const createAccountsTable = () => {
             accountNumber varchar NOT NULL,
             type varchar NOT NULL,
             openingBalance varchar NOT NULL,
-            acctStatus AS ENUM ('active', 'dormant', 'loan'),
+            acctStatus varchar,
             accountBalance varchar NOT NULL,
             createdOn TIMESTAMP,
             updatedOn TIMESTAMP,
             FOREIGN KEY (ownerID) REFERENCES users (ID) ON DELETE CASCADE
         )`;
 
-    client.query(queryText)
+    pool.query(queryText)
         .then((res) => {
             console.log(res);
-            client.end();
+            pool.end();
         })
         .catch((err) => {
             console.log(err);
-            client.end();
+            pool.end();
         });
 };
 
 /** create Transactions Table
  * */
 const createTransactionsTable = () => {
-    const queryText = `
-    CREATE TABLE IF NOT EXISTS
-    transactions = (
+    const queryText = `CREATE TABLE IF NOT EXISTS
+    transactions(
         transactionId serial PRIMARY KEY,
         accountNumber varchar NOT NULL,
-        amount varchar NOT NULL,
+        amount varchar,
         cashier serial NOT NULL,
-        transactionType AS ENUM ('debit', 'credit'),
+        transactionType varchar,
         accountBalance varchar NOT NULL,
         createdOn TIMESTAMP,
-        FOREIGN KEY (transactionId) REFERENCES users (ID) ON DELETE CASCADE,
-        FOREIGN KEY (cashier) REFERENCES users (ID) ON DELETE CASCADE
+        FOREIGN KEY (transactionId) REFERENCES users (ID) ON DELETE CASCADE
     )`;
 
-    client.query(queryText)
+    pool.query(queryText)
         .then((res) => {
             console.log(res);
-            client.end();
+            pool.end();
         })
         .catch((err) => {
             console.log(err);
-            client.end();
+            pool.end();
         });
 };
 
@@ -101,59 +103,71 @@ const createTransactionsTable = () => {
  */
 const dropUsersTable = () => {
     const queryText = 'DROP TABLE IF EXISTS users returning *';
-    client.query(queryText)
+    pool.query(queryText)
         .then((res) => {
             console.log(res);
-            client.end();
+            pool.end();
         })
         .catch((err) => {
             console.log(err);
-            client.end();
+            pool.end();
         });
 };
 
 /** * Drop Accounts Table */
 const dropAccountTable = () => {
     const queryText = 'DROP TABLE IF EXISTS accounts returning *';
-    client.query(queryText)
+    this.pool.query(queryText)
         .then((res) => {
             console.log(res);
-            client.end();
+            this.pool.end();
         })
         .catch((err) => {
             console.log(err);
-            client.end();
+            this.pool.end();
         });
 };
 
 /** * Drop Accounts Table */
 const dropTransactionTable = () => {
     const queryText = 'DROP TABLE IF EXISTS transactions returning *';
-    client.query(queryText)
+    this.pool.query(queryText)
         .then((res) => {
             console.log(res);
-            client.end();
+            this.pool.end();
         })
         .catch((err) => {
             console.log(err);
-            client.end();
+            this.pool.end();
         });
 };
 
-/** * Create All Tables */
+/** create all tables
+ */
 const createAllTables = () => {
     createUsersTable();
     createAccountsTable();
     createTransactionsTable();
 };
-/** * Drop All Tables */
+
 const dropAllTables = () => {
     dropUsersTable();
     dropAccountTable();
     dropTransactionTable();
 };
 
-client.on('remove', () => {
+pool.on('remove', () => {
     console.log('client removed');
     process.exit(0);
 });
+
+export default {
+    createUsersTable,
+    createAccountsTable,
+    createTransactionsTable,
+    createAllTables,
+    dropUsersTable,
+    dropAccountTable,
+    dropTransactionTable,
+    dropAllTables,
+};
