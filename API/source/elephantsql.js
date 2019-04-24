@@ -1,12 +1,11 @@
 import {
     Pool,
 } from 'pg';
+import format from 'pg-format';
 
 import {
     config,
 } from 'dotenv';
-
-import 'make-runnable';
 
 config();
 
@@ -21,6 +20,55 @@ pool.on('connect', () => {
     console.log('connected to the db');
 });
 
+const usertype = () => {
+    const queryText = 'SELECT * FROM members';
+
+    pool.query(queryText, (err, result) => {
+        if (err) {
+            console.log(err.stack);
+        } else {
+            if (result.rows.length !== 0) {
+                return;
+            }
+            const values = [
+                ['user'],
+                ['admin'],
+                ['staff'],
+            ];
+            const query1 = format('INSERT INTO members (userType) VALUES %L returning *', values);
+
+            pool.query(query1)
+                .then((res) => {
+                    console.log(res.rows);
+                    pool.end();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    pool.end();
+                });
+        }
+    });
+};
+
+
+const createUserTypeTable = () => {
+    const queryText = `CREATE TABLE IF NOT EXISTS
+    members(
+        ID serial PRIMARY KEY,
+        userType varchar NOT NULL
+    )`;
+
+    pool.query(queryText)
+        .then((res) => {
+            usertype();
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+            pool.end();
+        });
+};
+
 /** create Users table */
 const createUsersTable = () => {
     const queryText = `CREATE TABLE IF NOT EXISTS
@@ -28,10 +76,12 @@ const createUsersTable = () => {
         ID serial PRIMARY KEY,
         firstName varchar NOT NULL,
         lastName varchar NOT NULL,
+        memberID INTEGER,
         email varchar(128) NOT NULL UNIQUE,
         phone varchar,
         gender varchar,
-        password varchar(128) NOT NULL
+        password varchar(128) NOT NULL,
+        FOREIGN KEY (memberID) REFERENCES members (ID) ON DELETE CASCADE
     )`;
 
     pool.query(queryText)
@@ -102,7 +152,7 @@ const createTransactionsTable = () => {
 /** * Drop Users Table
  */
 const dropUsersTable = () => {
-    const queryText = 'DROP TABLE IF EXISTS users returning *';
+    const queryText = 'DROP TABLE IF EXISTS users CASCADE';
     pool.query(queryText)
         .then((res) => {
             console.log(res);
@@ -115,8 +165,22 @@ const dropUsersTable = () => {
 };
 
 /** * Drop Accounts Table */
+const dropUserType = () => {
+    const queryText = 'DROP TABLE IF EXISTS members CASCADE returning *';
+    this.pool.query(queryText)
+        .then((res) => {
+            console.log(res);
+            this.pool.end();
+        })
+        .catch((err) => {
+            console.log(err);
+            this.pool.end();
+        });
+};
+
+/** * Drop Accounts Table */
 const dropAccountTable = () => {
-    const queryText = 'DROP TABLE IF EXISTS accounts returning *';
+    const queryText = 'DROP TABLE IF EXISTS accounts CASCADE returning *';
     this.pool.query(queryText)
         .then((res) => {
             console.log(res);
@@ -130,7 +194,7 @@ const dropAccountTable = () => {
 
 /** * Drop Accounts Table */
 const dropTransactionTable = () => {
-    const queryText = 'DROP TABLE IF EXISTS transactions returning *';
+    const queryText = 'DROP TABLE IF EXISTS transactions CASCADE returning *';
     this.pool.query(queryText)
         .then((res) => {
             console.log(res);
@@ -146,6 +210,7 @@ const dropTransactionTable = () => {
  */
 const createAllTables = () => {
     createUsersTable();
+    createUserTypeTable();
     createAccountsTable();
     createTransactionsTable();
 };
@@ -153,6 +218,7 @@ const createAllTables = () => {
 const dropAllTables = () => {
     dropUsersTable();
     dropAccountTable();
+    dropUserType();
     dropTransactionTable();
 };
 
@@ -161,13 +227,17 @@ pool.on('remove', () => {
     process.exit(0);
 });
 
-export default {
+module.exports = {
     createUsersTable,
+    createUserTypeTable,
     createAccountsTable,
     createTransactionsTable,
     createAllTables,
     dropUsersTable,
     dropAccountTable,
+    dropUserType,
     dropTransactionTable,
     dropAllTables,
 };
+
+require('make-runnable');

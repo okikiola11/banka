@@ -39,8 +39,8 @@ describe('/ User Auth Signup Endpoint ', function () {
         phone: '',
         gender: '',
         password: ''
-      }).expect(401).expect(function (response) {
-        expect(response.body.status).to.equal(401);
+      }).expect(400).expect(function (response) {
+        expect(response.body.status).to.equal(400);
         expect(response.body.error).to.equal('Validation failed, check errors property for more details');
         expect(response.body).to.have.all.keys('status', 'error', 'errors');
       }).end(done);
@@ -68,8 +68,8 @@ describe('/ User Auth Login Endpoint ', function () {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).set('Accept', 'application/json').send({
         email: '',
         password: ''
-      }).expect(401).expect(function (response) {
-        expect(response.body.status).to.equal(401);
+      }).expect(400).expect(function (response) {
+        expect(response.body.status).to.equal(400);
         expect(response.body.error).to.equal('Validation failed, check errors property for more details');
       }).end(done);
     });
@@ -77,8 +77,8 @@ describe('/ User Auth Login Endpoint ', function () {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).send({
         email: 'user@gmail.com',
         password: 'okiki111'
-      }).expect(401).expect(function (response) {
-        expect(response.body.status).to.equal(401);
+      }).expect(400).expect(function (response) {
+        expect(response.body.status).to.equal(400);
         expect(response.body.auth).to.equal('false');
         expect(response.body.message).to.equal('Incorrect Password');
       }).end(done);

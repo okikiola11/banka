@@ -32,10 +32,12 @@ function () {
     // Authorization: <access_token>
     value: function generateToken(_ref) {
       var id = _ref.id,
-          userType = _ref.userType;
+          type = _ref.type,
+          isadmin = _ref.isadmin;
       return _jsonwebtoken.default.sign({
         id: id,
-        userType: userType
+        type: type,
+        isadmin: isadmin
       }, process.env.secret, {
         expiresIn: '24h' // expires in 24hours
 
@@ -53,10 +55,12 @@ function () {
         }
 
         var id = authData.id,
-            userType = authData.userType;
+            type = authData.type,
+            isAdmin = authData.isAdmin;
         req.data = {
           id: id,
-          userType: userType
+          type: type,
+          isAdmin: isAdmin
         };
         next();
       });

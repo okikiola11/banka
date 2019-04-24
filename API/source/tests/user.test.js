@@ -4,7 +4,9 @@ import request from 'supertest';
 
 import app from '../index';
 
-const { expect } = chai;
+const {
+    expect,
+} = chai;
 
 const API_PREFIX = '/api/v1';
 
@@ -33,8 +35,7 @@ describe('Test case for the default for the banka route /', () => {
                         .to.be.an('object')
                         .to.eql({
                             status: 404,
-                            message:
-                'The endpoint you have requested does not exist on this server',
+                            message: 'The endpoint you have requested does not exist on this server',
                         })
                         .to.have.all.keys('status', 'message');
                 })
@@ -57,9 +58,9 @@ describe('/ User Auth Signup Endpoint ', () => {
                     gender: '',
                     password: '',
                 })
-                .expect(401)
+                .expect(400)
                 .expect((response) => {
-                    expect(response.body.status).to.equal(401);
+                    expect(response.body.status).to.equal(400);
                     expect(response.body.error).to.equal(
                         'Validation failed, check errors property for more details',
                     );
@@ -106,9 +107,9 @@ describe('/ User Auth Login Endpoint ', () => {
                     email: '',
                     password: '',
                 })
-                .expect(401)
+                .expect(400)
                 .expect((response) => {
-                    expect(response.body.status).to.equal(401);
+                    expect(response.body.status).to.equal(400);
                     expect(response.body.error).to.equal(
                         'Validation failed, check errors property for more details',
                     );
@@ -123,9 +124,9 @@ describe('/ User Auth Login Endpoint ', () => {
                     email: 'user@gmail.com',
                     password: 'okiki111',
                 })
-                .expect(401)
+                .expect(400)
                 .expect((response) => {
-                    expect(response.body.status).to.equal(401);
+                    expect(response.body.status).to.equal(400);
                     expect(response.body.auth).to.equal('false');
                     expect(response.body.message).to.equal('Incorrect Password');
                 })
