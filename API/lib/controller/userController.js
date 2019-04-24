@@ -9,11 +9,21 @@ var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
 var _check = require("express-validator/check");
 
-var _userData = _interopRequireDefault(require("../utils/userData"));
+var _elephantsql = _interopRequireDefault(require("../elephantsql"));
+
+var _userModel = _interopRequireDefault(require("../models/userModel"));
 
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -25,20 +35,20 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var userController =
+var UserController =
 /*#__PURE__*/
 function () {
-  function userController() {
-    _classCallCheck(this, userController);
+  function UserController() {
+    _classCallCheck(this, UserController);
   }
 
-  _createClass(userController, null, [{
+  _createClass(UserController, null, [{
     key: "signupUser",
     value: function () {
       var _signupUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, _req$body, firstName, lastName, email, phone, gender, hashedPassword, newId, userType, user, payLoad, token;
+        var errors, validateErrors, errArray, _req$body, firstName, lastName, email, hashedPassword, client, _client$rows, user, id, type, isadmin, payLoad, token;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -59,53 +69,40 @@ function () {
                   rObj.value = obj.value;
                   return rObj;
                 });
-                return _context.abrupt("return", res.status(401).json({
-                  status: 401,
+                return _context.abrupt("return", res.status(400).json({
+                  status: 400,
                   error: 'Validation failed, check errors property for more details',
                   errors: errArray
                 }));
 
               case 6:
-                _req$body = req.body, firstName = _req$body.firstName, lastName = _req$body.lastName, email = _req$body.email, phone = _req$body.phone, gender = _req$body.gender;
+                _req$body = req.body, firstName = _req$body.firstName, lastName = _req$body.lastName, email = _req$body.email;
                 _context.next = 9;
                 return _bcryptjs.default.hash(req.body.password, 8);
 
               case 9:
                 hashedPassword = _context.sent;
-                newId = _userData.default[_userData.default.length - 1].id + 1; // get the id of the newly created user
+                _context.next = 12;
+                return _userModel.default.SaveClient(firstName, lastName, email, hashedPassword);
 
-                userType = {
-                  user: true,
-                  admin: false,
-                  staff: false
-                };
+              case 12:
+                client = _context.sent;
+
                 /* new user to be created */
-
-                user = {
-                  id: newId,
-                  firstName: firstName,
-                  lastName: lastName,
-                  email: email,
-                  phone: phone,
-                  gender: gender,
-                  password: hashedPassword,
-                  userType: userType
-                };
-
-                _userData.default.push(user);
-
+                _client$rows = _slicedToArray(client.rows, 1), user = _client$rows[0];
+                id = user.id, type = user.type, isadmin = user.isadmin;
                 payLoad = {
-                  newId: newId,
+                  id: id,
                   firstName: firstName,
                   lastName: lastName,
                   email: email,
-                  phone: phone,
-                  gender: gender,
-                  userType: userType
+                  type: type,
+                  isadmin: isadmin
                 };
                 token = _authMiddleware.default.generateToken({
-                  id: newId,
-                  userType: userType
+                  id: id,
+                  type: type,
+                  isadmin: isadmin
                 });
                 return _context.abrupt("return", res.status(201).json({
                   status: 201,
@@ -117,20 +114,20 @@ function () {
                   }]
                 }));
 
-              case 19:
-                _context.prev = 19;
+              case 20:
+                _context.prev = 20;
                 _context.t0 = _context["catch"](0);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   error: 'something went wrong while trying to create a user'
                 }));
 
-              case 22:
+              case 23:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 19]]);
+        }, _callee, null, [[0, 20]]);
       }));
 
       function signupUser(_x, _x2) {
@@ -174,7 +171,7 @@ function () {
 
               case 6:
                 _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
-                user = _userData.default.find(function (member) {
+                user = _userModel.default.find(function (member) {
                   return member.email === email;
                 });
 
@@ -250,8 +247,8 @@ function () {
     }()
   }]);
 
-  return userController;
+  return UserController;
 }();
 
-var _default = userController;
+var _default = UserController;
 exports.default = _default;

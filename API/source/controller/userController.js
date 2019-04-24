@@ -2,10 +2,10 @@ import bcrypt from 'bcryptjs';
 import {
     validationResult,
 } from 'express-validator/check';
-import User from '../utils/userData';
+import User from '../models/userModel';
 import authMiddleware from '../middleware/authMiddleware';
 
-class userController {
+class UserController {
     static async signupUser(req, res) {
         try {
             const errors = validationResult(req);
@@ -19,8 +19,8 @@ class userController {
                     return rObj;
                 });
 
-                return res.status(401).json({
-                    status: 401,
+                return res.status(400).json({
+                    status: 400,
                     error: 'Validation failed, check errors property for more details',
                     errors: errArray,
                 });
@@ -30,42 +30,31 @@ class userController {
                 firstName,
                 lastName,
                 email,
-                phone,
-                gender,
             } = req.body;
             const hashedPassword = await bcrypt.hash(req.body.password, 8);
 
-            const newId = User[User.length - 1].id + 1; // get the id of the newly created user
-            const userType = {
-                user: true,
-                admin: false,
-                staff: false,
-            };
+            const client = await User.SaveClient(firstName, lastName, email, hashedPassword);
+
             /* new user to be created */
-            const user = {
-                id: newId,
-                firstName,
-                lastName,
-                email,
-                phone,
-                gender,
-                password: hashedPassword,
-                userType,
-            };
-            User.push(user);
+            const [user] = client.rows;
+            const {
+                id,
+                type,
+                isadmin,
+            } = user;
 
             const payLoad = {
-                newId,
+                id,
                 firstName,
                 lastName,
                 email,
-                phone,
-                gender,
-                userType,
+                type,
+                isadmin,
             };
             const token = authMiddleware.generateToken({
-                id: newId,
-                userType,
+                id,
+                type,
+                isadmin,
             });
 
             return res.status(201).json({
@@ -99,8 +88,8 @@ class userController {
                     return rObj;
                 });
 
-                return res.status(401).json({
-                    status: 401,
+                return res.status(400).json({
+                    status: 400,
                     error: 'Validation failed, check errors property for more details',
                     errors: errArray,
                 });
@@ -164,4 +153,4 @@ class userController {
     }
 }
 
-export default userController;
+export default UserController;

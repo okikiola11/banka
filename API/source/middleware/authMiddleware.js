@@ -10,11 +10,13 @@ class authMiddleware {
     // Authorization: <access_token>
     static generateToken({
         id,
-        userType,
+        type,
+        isadmin,
     }) {
         return jwt.sign({
             id,
-            userType,
+            type,
+            isadmin,
         }, process.env.secret, {
             expiresIn: '24h', // expires in 24hours
         });
@@ -29,11 +31,13 @@ class authMiddleware {
             }
             const {
                 id,
-                userType,
+                type,
+                isAdmin,
             } = authData;
             req.data = {
                 id,
-                userType,
+                type,
+                isAdmin,
             };
             next();
         });
