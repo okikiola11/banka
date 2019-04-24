@@ -51,11 +51,9 @@ function () {
 
               case 4:
                 result = _context.sent;
-                console.log(result);
-                console.log('heuifkkf');
                 return _context.abrupt("return", result);
 
-              case 8:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -68,7 +66,18 @@ function () {
       }
 
       return SaveClient;
-    }()
+    }() // static async findByEmail(email) {
+    //     console.log('ayobsfggh is male');
+    //     const query = `
+    //         SELECT * FROM users WHERE email = $1
+    //     `;
+    //     // const values = [email];
+    //     const result = await db.query(query);
+    //     console.log(result);
+    //     console.log('ayobsfggh');
+    //     return result;
+    // }
+
   }]);
 
   return User;

@@ -20,6 +20,18 @@ class User {
 
         return result;
     }
+
+    // static async findByEmail(email) {
+    //     console.log('ayobsfggh is male');
+    //     const query = `
+    //         SELECT * FROM users WHERE email = $1
+    //     `;
+    //     // const values = [email];
+    //     const result = await db.query(query);
+    //     console.log(result);
+    //     console.log('ayobsfggh');
+    //     return result;
+    // }
 }
 
 export default User;

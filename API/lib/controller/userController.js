@@ -9,11 +9,11 @@ var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
 var _check = require("express-validator/check");
 
-var _elephantsql = _interopRequireDefault(require("../elephantsql"));
-
 var _userModel = _interopRequireDefault(require("../models/userModel"));
 
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
+
+var _db = _interopRequireDefault(require("../db"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48,7 +48,7 @@ function () {
       var _signupUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, _req$body, firstName, lastName, email, hashedPassword, client, _client$rows, user, id, type, isadmin, payLoad, token;
+        var errors, validateErrors, errArray, _req$body, firstName, lastName, email, hashedPassword, userData, client, _client$rows, user, id, type, isadmin, payLoad, token;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -77,15 +77,33 @@ function () {
 
               case 6:
                 _req$body = req.body, firstName = _req$body.firstName, lastName = _req$body.lastName, email = _req$body.email;
-                _context.next = 9;
+                console.log(req.body);
+                _context.next = 10;
                 return _bcryptjs.default.hash(req.body.password, 8);
 
-              case 9:
+              case 10:
                 hashedPassword = _context.sent;
-                _context.next = 12;
+                _context.next = 13;
+                return _userModel.default.findByEmail(email);
+
+              case 13:
+                userData = _context.sent;
+
+                if (!(userData.name === 'error')) {
+                  _context.next = 16;
+                  break;
+                }
+
+                return _context.abrupt("return", res.status(409).json({
+                  status: 409,
+                  message: 'User email already exist'
+                }));
+
+              case 16:
+                _context.next = 18;
                 return _userModel.default.SaveClient(firstName, lastName, email, hashedPassword);
 
-              case 12:
+              case 18:
                 client = _context.sent;
 
                 /* new user to be created */
@@ -114,20 +132,21 @@ function () {
                   }]
                 }));
 
-              case 20:
-                _context.prev = 20;
+              case 26:
+                _context.prev = 26;
                 _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   error: 'something went wrong while trying to create a user'
                 }));
 
-              case 23:
+              case 30:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 20]]);
+        }, _callee, null, [[0, 26]]);
       }));
 
       function signupUser(_x, _x2) {
@@ -142,7 +161,7 @@ function () {
       var _loginUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res) {
-        var errors, validateErrors, errArray, _req$body2, email, password, user, passwordIsValid, id, userType, firstName, newId, lastName, token, payLoad;
+        var errors, validateErrors, errArray, _req$body2, email, password, text, _ref, rows, passwordIsValid, id, isadmin, firstName, lastName, token, payLoad;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -163,59 +182,70 @@ function () {
                   rObj.value = obj.value;
                   return rObj;
                 });
-                return _context2.abrupt("return", res.status(401).json({
-                  status: 401,
+                return _context2.abrupt("return", res.status(400).json({
+                  status: 400,
                   error: 'Validation failed, check errors property for more details',
                   errors: errArray
                 }));
 
               case 6:
-                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
-                user = _userModel.default.find(function (member) {
-                  return member.email === email;
-                });
+                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password; // const user = User.find(member => member.email === email);
+                // if (!user) {
+                //     return res.status(404).send('No user found.');
+                // }
 
-                if (user) {
-                  _context2.next = 10;
+                text = "\n                SELECT * FROM users WHERE email = $1\n            ";
+                _context2.next = 10;
+                return _db.default.query(text, email);
+
+              case 10:
+                _ref = _context2.sent;
+                rows = _ref.rows;
+
+                if (rows[0]) {
+                  _context2.next = 14;
                   break;
                 }
 
-                return _context2.abrupt("return", res.status(404).send('No user found.'));
+                return _context2.abrupt("return", res.status(400).json({
+                  status: 400,
+                  error: 'User not found'
+                }));
 
-              case 10:
-                _context2.next = 12;
-                return _bcryptjs.default.compare(password, user.password);
+              case 14:
+                _context2.next = 16;
+                return _bcryptjs.default.compare(password, _userModel.default.password);
 
-              case 12:
+              case 16:
                 passwordIsValid = _context2.sent;
 
                 if (passwordIsValid) {
-                  _context2.next = 15;
+                  _context2.next = 19;
                   break;
                 }
 
-                return _context2.abrupt("return", res.status(401).json({
-                  status: 401,
+                return _context2.abrupt("return", res.status(400).json({
+                  status: 400,
                   auth: 'false',
                   message: 'Incorrect Password'
                 }));
 
-              case 15:
-                id = user.id, userType = user.userType, firstName = user.firstName, newId = user.newId, lastName = user.lastName;
+              case 19:
+                id = rows.id, isadmin = rows.isadmin, firstName = rows.firstName, lastName = rows.lastName;
                 token = _authMiddleware.default.generateToken({
                   id: id,
-                  userType: userType
+                  isadmin: isadmin
                 });
                 payLoad = {
-                  newId: newId,
+                  id: id,
                   firstName: firstName,
                   lastName: lastName,
                   email: email,
-                  userType: userType
+                  isadmin: isadmin
                 };
                 return _context2.abrupt("return", res.status(200).json({
                   status: 200,
-                  message: "Welcome ".concat(user.email, ", you have successfully logged in"),
+                  message: "Welcome ".concat(rows.email, ", you have successfully logged in"),
                   data: [{
                     auth: 'true',
                     token: token,
@@ -223,20 +253,20 @@ function () {
                   }]
                 }));
 
-              case 21:
-                _context2.prev = 21;
+              case 25:
+                _context2.prev = 25;
                 _context2.t0 = _context2["catch"](0);
                 return _context2.abrupt("return", res.status(404).json({
                   status: 404,
                   message: 'User record does not exist'
                 }));
 
-              case 24:
+              case 28:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 21]]);
+        }, _callee2, null, [[0, 25]]);
       }));
 
       function loginUser(_x3, _x4) {

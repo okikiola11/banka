@@ -4,6 +4,7 @@ import {
 } from 'express-validator/check';
 import User from '../models/userModel';
 import authMiddleware from '../middleware/authMiddleware';
+import db from '../db';
 
 class UserController {
     static async signupUser(req, res) {
@@ -100,16 +101,24 @@ class UserController {
                 password,
             } = req.body;
 
-            const user = User.find(member => member.email === email);
-
-            if (!user) {
-                return res.status(404).send('No user found.');
+            const text = `
+                SELECT * FROM users WHERE email = $1
+            `;
+            const values = [email];
+            const {
+                rows,
+            } = await db.query(text, values);
+            if (!rows[0]) {
+                return res.status(400).json({
+                    status: 400,
+                    error: 'User not found',
+                });
             }
 
-            const passwordIsValid = await bcrypt.compare(password, user.password);
+            const passwordIsValid = await bcrypt.compare(password, rows[0].password);
             if (!passwordIsValid) {
-                return res.status(401).json({
-                    status: 401,
+                return res.status(400).json({
+                    status: 400,
                     auth: 'false',
                     message: 'Incorrect Password',
                 });
@@ -117,27 +126,26 @@ class UserController {
 
             const {
                 id,
-                userType,
+                isadmin,
                 firstName,
-                newId,
                 lastName,
-            } = user;
+            } = rows;
 
             const token = authMiddleware.generateToken({
                 id,
-                userType,
+                isadmin,
             });
             const payLoad = {
-                newId,
+                id,
                 firstName,
                 lastName,
                 email,
-                userType,
+                isadmin,
             };
 
             return res.status(200).json({
                 status: 200,
-                message: `Welcome ${user.email}, you have successfully logged in`,
+                message: `Welcome ${rows.email}, you have successfully logged in`,
                 data: [{
                     auth: 'true',
                     token,
