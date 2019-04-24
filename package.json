@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node_modules/.bin/babel ./API/source -d ./API/lib",
     "dev": "nodemon --exec node_modules/.bin/babel-node ./API/lib/index.js",
+    "start-dev": "nodemon --exec babel-node ./API/source/index.js",
     "start": "node ./API/lib/index.js",
     "start-db": "babel-node ./API/source/db/migrations.js",
     "test": "nyc node_modules/.bin/mocha ./API/lib/tests/*.test.js --timeout 30000 --exit",
