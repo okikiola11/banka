@@ -43,6 +43,18 @@ class Accounts {
             SELECT * FROM accounts WHERE accountNumber = $1
         `;
         // const account = db.query(query);
+        const values = [status, accountNumber];
+        const {
+            rows,
+        } = await db.query(query, values);
+
+        return rows[0];
+    }
+
+    static async deleteAccount(accountNumber) {
+        const query = `
+            DELETE FROM accounts WHERE accountNumber = $1;
+        `;
         const values = [accountNumber];
         const {
             rows,
