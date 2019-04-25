@@ -33,7 +33,7 @@ function () {
   }, {
     key: "createAccountAuth",
     value: function createAccountAuth(req, res, next) {
-      if (!req.data.userType.user) {
+      if (req.data.isAdmin === 'true') {
         return res.status(403).json({
           status: 403,
           message: 'Access denied'
@@ -46,7 +46,7 @@ function () {
     key: "viewAccountAuth",
     value: function viewAccountAuth(req, res, next) {
       // access to both admin&staff
-      if (req.data.userType.user) {
+      if (req.data.type === 'client') {
         return res.status(403).json({
           status: 403,
           message: 'Access denied'

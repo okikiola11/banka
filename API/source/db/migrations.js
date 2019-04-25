@@ -27,7 +27,7 @@ const createTables = async () => {
             accountNumber varchar NOT NULL UNIQUE,
             type varchar NOT NULL,
             status varchar,
-            balance varchar NOT NULL,
+            balance float(2) NOT NULL,
             createdOn TIMESTAMP NOT NULL DEFAULT NOW(),
             updatedOn TIMESTAMP NULL,
             FOREIGN KEY (ownerID) REFERENCES users (ID) ON DELETE CASCADE

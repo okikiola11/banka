@@ -39,12 +39,6 @@ class Validation {
             body('email').isEmail().withMessage('Should be a valid email')
                 .exists()
                 .withMessage('Field cannot be empty'),
-            body('phone').isNumeric().withMessage('You should enter only numeric')
-                .exists()
-                .withMessage('Field cannot be empty'),
-            body('gender').isIn(['male', 'female']).withMessage('Choose a gender')
-                .exists()
-                .withMessage('Field cannot be empty'),
             body('password').isAlphanumeric().withMessage('You should enter only alphanumeric')
                 .isLength({
                     min: 5,
@@ -73,9 +67,6 @@ class Validation {
     static validateAccount() {
         return [
             body('type').isIn(['savings', 'current']).withMessage('Choose a valid account type')
-                .exists()
-                .withMessage('Field cannot be empty'),
-            body('openingBalance').isDecimal().withMessage('You should enter only decimal')
                 .exists()
                 .withMessage('Field cannot be empty'),
         ];

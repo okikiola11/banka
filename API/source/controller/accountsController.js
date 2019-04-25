@@ -2,9 +2,9 @@ import {
     validationResult,
 } from 'express-validator/check';
 import Utility from '../utils/util';
-
-import userdata from '../utils/userData';
-import Accounts from '../utils/accountsData';
+import db from '../db';
+import Accounts from '../models/accountModel';
+import User from '../models/userModel';
 
 class accountsController {
     static async createAccount(req, res) {
@@ -20,8 +20,8 @@ class accountsController {
                     return rObj;
                 });
 
-                return res.status(401).json({
-                    status: 401,
+                return res.status(400).json({
+                    status: 400,
                     error: 'Validation failed, check errors property for more details',
                     errors: errArray,
                 });
@@ -29,31 +29,35 @@ class accountsController {
 
             const {
                 type,
-                openingBalance,
             } = req.body;
-            const userInfo = userdata.find(details => details.id === req.data.id);
-            const {
-                id,
-            } = userInfo; // get owner Id from User table
 
             const accountNumber = Utility.acctNumberGen();
-            const newlyCreatedAcct = {
-                id: Accounts[Accounts.length - 1].id + 1,
-                ownerId: id,
-                accountNumber,
-                type,
-                openingBalance,
-                acctStatus: 'active',
-                accountBalance: openingBalance,
-                createdOn: new Date().toLocaleString(),
-                updatedOn: null,
-            };
-            Accounts.push(newlyCreatedAcct);
+            const {
+                id,
+            } = req.data; // get owner Id from User table
+            const newAccount = await Accounts.SaveAccount(accountNumber, id, 'draft', parseFloat(0), type);
+            const {
+                balance,
+            } = newAccount;
+
+            const userData = await User.findById(id);
+            const {
+                firstname,
+                lastname,
+                email,
+            } = userData;
 
             return res.status(201).json({
                 status: 201,
                 message: 'Account has been created',
-                data: [newlyCreatedAcct],
+                data: {
+                    accountNumber,
+                    firstName: firstname, // account owner first name
+                    lastName: lastname, // account owner last name
+                    email, // account owner email
+                    type,
+                    openBalance: balance,
+                },
             });
         } catch (error) {
             return res.status(500).json({
@@ -65,15 +69,23 @@ class accountsController {
 
     static async getAllAccount(req, res) {
         try {
+            const accounts = await Accounts.getAllAccounts();
+            if (accounts.length === 0) {
+                return res.status(200).json({
+                    status: 200,
+                    message: 'There are no existing account',
+                    data: accounts,
+                });
+            }
             return res.status(200).json({
                 status: 200,
                 message: 'Successfully retrieved all accounts',
-                data: Accounts,
+                data: accounts,
             });
         } catch (error) {
-            return res.status(404).json({
-                status: 404,
-                error: 'No account record found',
+            return res.status(500).json({
+                status: 500,
+                error: 'Something went wrong while trying to retrieve all accounts',
             });
         }
     }
@@ -83,21 +95,37 @@ class accountsController {
             const {
                 accountNumber,
             } = req.params;
-            const singleAcct = await Accounts.find(
-                singleData => singleData.accountNumber === accountNumber,
-            );
-            if (singleAcct === undefined) {
+            const account = await Accounts.getSingleAccount(accountNumber);
+            if (!account) {
                 throw new Error('Account does not exist');
+            }
+            const {
+                ownerid,
+            } = account; // check if user is actually the acct owner
+            if (ownerid !== req.data.id && req.data.type === 'client') {
+                throw new Error('Unauthorized');
             }
             return res.status(200).json({
                 status: 200,
                 message: 'Account has been successfully retrieved',
-                data: [singleAcct],
+                data: [account],
             });
         } catch (error) {
-            return res.status(404).json({
-                status: 404,
-                error: 'Account does not exist',
+            if (error.message === 'Account does not exist') {
+                return res.status(404).json({
+                    status: 404,
+                    message: 'Account does not exist',
+                });
+            }
+            if (error.message === 'Unauthorized') {
+                return res.status(403).json({
+                    status: 403,
+                    message: 'This account does not belong to you',
+                });
+            }
+            return res.status(500).json({
+                status: 500,
+                message: 'Something went wrong while trying to retrieve account',
             });
         }
     }

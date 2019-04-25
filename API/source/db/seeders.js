@@ -1,6 +1,6 @@
 const seeders = `
     INSERT INTO users (firstName, lastName, email, password, type, isAdmin)
-    VALUES ('John', 'Doe', 'john.doe@gmail.com', 'john', 'staff', 'true' );
+    VALUES ('John', 'Doe', 'john.doe@gmail.com', 'johnny', 'staff', 'true' );
 
     INSERT INTO users (firstName, lastName, email, password, type)
     VALUES ('mary', 'Doe', 'mary.doe@gmail.com', 'mary', 'staff');
