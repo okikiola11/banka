@@ -74,7 +74,7 @@ class Validation {
 
     static validateUpdateAccount() {
         return [
-            body('acctStatus').isIn(['dormant', 'active']).withMessage('Choose a valid account status')
+            body('status').isIn(['dormant', 'active']).withMessage('Choose a valid account status')
                 .exists()
                 .withMessage('Field cannot be empty'),
         ];

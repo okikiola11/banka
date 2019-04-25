@@ -34,7 +34,19 @@ class Accounts {
         const {
             rows,
         } = await db.query(query, values);
-        console.log(rows);
+
+        return rows[0];
+    }
+
+    static async updateAccount(status, accountNumber) {
+        const query = `
+            SELECT * FROM accounts WHERE accountNumber = $1
+        `;
+        // const account = db.query(query);
+        const values = [accountNumber];
+        const {
+            rows,
+        } = await db.query(query, values);
 
         return rows[0];
     }

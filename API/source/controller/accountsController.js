@@ -143,57 +143,34 @@ class accountsController {
                     return rObj;
                 });
 
-                return res.status(401).json({
-                    status: 401,
+                return res.status(400).json({
+                    status: 400,
                     error: 'Validation failed, check errors property for more details',
                     errors: errArray,
                 });
             }
-
+            const {
+                status,
+            } = req.body;
             const {
                 accountNumber,
             } = req.params;
 
-            const AccountNo = Accounts.find(acc => acc.accountNumber === accountNumber);
-            if (!AccountNo) {
+            const account = await Accounts.updateAccount(status, accountNumber);
+            if (!account) {
                 return res.status(404).json({
                     status: 404,
                     error: 'Account Number not found',
                 });
             }
-            const {
-                id,
-                ownerId,
-                type,
-                openBalance,
-                accountBalance,
-                createdOn,
-            } = AccountNo;
             const updatedOn = new Date().toLocaleString();
-            const {
-                acctStatus,
-            } = req.body;
-            const updatedAccount = {
-                id,
-                ownerId,
-                accountNumber,
-                type,
-                acctStatus,
-                openBalance,
-                accountBalance,
-                createdOn,
-                updatedOn,
-            };
 
-            Accounts.splice(Accounts.indexOf(AccountNo), 1, updatedAccount);
             return res.status(200).json({
                 status: 200,
                 message: 'Account has been succesfully updated',
                 data: [{
-                    id,
-                    type,
                     accountNumber,
-                    acctStatus,
+                    status,
                     updatedOn,
                 }],
             });

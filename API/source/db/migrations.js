@@ -14,7 +14,7 @@ const createTables = async () => {
         firstName varchar NOT NULL,
         lastName varchar NOT NULL,
         email varchar(128) NOT NULL UNIQUE,
-        password varchar(128) NOT NULL,
+        password varchar(355) NOT NULL,
         type VARCHAR(6) NOT NULL DEFAULT ('client'),
         isAdmin BOOLEAN NOT NULL DEFAULT (false),
         createdOn TIMESTAMP NOT NULL DEFAULT NOW()
