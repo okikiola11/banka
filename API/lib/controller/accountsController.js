@@ -9,9 +9,11 @@ var _check = require("express-validator/check");
 
 var _util = _interopRequireDefault(require("../utils/util"));
 
-var _userData = _interopRequireDefault(require("../utils/userData"));
+var _db = _interopRequireDefault(require("../db"));
 
-var _accountsData = _interopRequireDefault(require("../utils/accountsData"));
+var _accountModel = _interopRequireDefault(require("../models/accountModel"));
+
+var _userModel = _interopRequireDefault(require("../models/userModel"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,8 +40,7 @@ function () {
       var _createAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, _req$body, type, openingBalance, userInfo, id, accountNumber, newlyCreatedAcct;
-
+        var errors, validateErrors, errArray, type, accountNumber, id, newAccount, balance, userData, firstname, lastname, email;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -59,54 +60,59 @@ function () {
                   rObj.value = obj.value;
                   return rObj;
                 });
-                return _context.abrupt("return", res.status(401).json({
-                  status: 401,
+                return _context.abrupt("return", res.status(400).json({
+                  status: 400,
                   error: 'Validation failed, check errors property for more details',
                   errors: errArray
                 }));
 
               case 6:
-                _req$body = req.body, type = _req$body.type, openingBalance = _req$body.openingBalance;
-                userInfo = _userData.default.find(function (details) {
-                  return details.id === req.data.id;
-                });
-                id = userInfo.id; // get owner Id from User table
-
+                type = req.body.type;
                 accountNumber = _util.default.acctNumberGen();
-                newlyCreatedAcct = {
-                  id: _accountsData.default[_accountsData.default.length - 1].id + 1,
-                  ownerId: id,
-                  accountNumber: accountNumber,
-                  type: type,
-                  openingBalance: openingBalance,
-                  acctStatus: 'active',
-                  accountBalance: openingBalance,
-                  createdOn: new Date().toLocaleString(),
-                  updatedOn: null
-                };
+                id = req.data.id; // get owner Id from User table
 
-                _accountsData.default.push(newlyCreatedAcct);
+                _context.next = 11;
+                return _accountModel.default.SaveAccount(accountNumber, id, 'draft', parseFloat(0), type);
 
+              case 11:
+                newAccount = _context.sent;
+                balance = newAccount.balance;
+                _context.next = 15;
+                return _userModel.default.findById(id);
+
+              case 15:
+                userData = _context.sent;
+                firstname = userData.firstname, lastname = userData.lastname, email = userData.email;
                 return _context.abrupt("return", res.status(201).json({
                   status: 201,
                   message: 'Account has been created',
-                  data: [newlyCreatedAcct]
+                  data: {
+                    accountNumber: accountNumber,
+                    firstName: firstname,
+                    // account owner first name
+                    lastName: lastname,
+                    // account owner last name
+                    email: email,
+                    // account owner email
+                    type: type,
+                    openBalance: balance
+                  }
                 }));
 
-              case 15:
-                _context.prev = 15;
+              case 20:
+                _context.prev = 20;
                 _context.t0 = _context["catch"](0);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   error: 'something went wrong while trying to create an account'
                 }));
 
-              case 18:
+              case 23:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 15]]);
+        }, _callee, null, [[0, 20]]);
       }));
 
       function createAccount(_x, _x2) {
@@ -121,31 +127,50 @@ function () {
       var _getAllAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res) {
+        var accounts;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.prev = 0;
+                _context2.next = 3;
+                return _accountModel.default.getAllAccounts();
+
+              case 3:
+                accounts = _context2.sent;
+
+                if (!(accounts.length === 0)) {
+                  _context2.next = 6;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'There are no existing account',
+                  data: accounts
+                }));
+
+              case 6:
                 return _context2.abrupt("return", res.status(200).json({
                   status: 200,
                   message: 'Successfully retrieved all accounts',
-                  data: _accountsData.default
+                  data: accounts
                 }));
 
-              case 4:
-                _context2.prev = 4;
+              case 9:
+                _context2.prev = 9;
                 _context2.t0 = _context2["catch"](0);
-                return _context2.abrupt("return", res.status(404).json({
-                  status: 404,
-                  error: 'No account record found'
+                return _context2.abrupt("return", res.status(500).json({
+                  status: 500,
+                  error: 'Something went wrong while trying to retrieve all accounts'
                 }));
 
-              case 7:
+              case 12:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 4]]);
+        }, _callee2, null, [[0, 9]]);
       }));
 
       function getAllAccount(_x3, _x4) {
@@ -160,7 +185,7 @@ function () {
       var _getSingleAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee3(req, res) {
-        var accountNumber, singleAcct;
+        var accountNumber, account, ownerId;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -168,14 +193,12 @@ function () {
                 _context3.prev = 0;
                 accountNumber = req.params.accountNumber;
                 _context3.next = 4;
-                return _accountsData.default.find(function (singleData) {
-                  return singleData.accountNumber === accountNumber;
-                });
+                return _accountModel.default.getSingleAccount(accountNumber);
 
               case 4:
-                singleAcct = _context3.sent;
+                account = _context3.sent;
 
-                if (!(singleAcct === undefined)) {
+                if (account) {
                   _context3.next = 7;
                   break;
                 }
@@ -183,26 +206,59 @@ function () {
                 throw new Error('Account does not exist');
 
               case 7:
+                ownerId = account.ownerId; // check if user is actually the acct owner
+
+                if (!(ownerId !== req.data.id && req.data.type === 'client')) {
+                  _context3.next = 10;
+                  break;
+                }
+
+                throw new Error('Unauthorized');
+
+              case 10:
                 return _context3.abrupt("return", res.status(200).json({
                   status: 200,
                   message: 'Account has been successfully retrieved',
-                  data: [singleAcct]
-                }));
-
-              case 10:
-                _context3.prev = 10;
-                _context3.t0 = _context3["catch"](0);
-                return _context3.abrupt("return", res.status(404).json({
-                  status: 404,
-                  error: 'Account does not exist'
+                  data: [account]
                 }));
 
               case 13:
+                _context3.prev = 13;
+                _context3.t0 = _context3["catch"](0);
+
+                if (!(_context3.t0.message === 'Account does not exist')) {
+                  _context3.next = 17;
+                  break;
+                }
+
+                return _context3.abrupt("return", res.status(404).json({
+                  status: 404,
+                  message: 'Account does not exist'
+                }));
+
+              case 17:
+                if (!(_context3.t0.message === 'Unauthorized')) {
+                  _context3.next = 19;
+                  break;
+                }
+
+                return _context3.abrupt("return", res.status(403).json({
+                  status: 403,
+                  message: 'This account does not belong to you'
+                }));
+
+              case 19:
+                return _context3.abrupt("return", res.status(500).json({
+                  status: 500,
+                  message: 'Something went wrong while trying to retrieve account'
+                }));
+
+              case 20:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 10]]);
+        }, _callee3, null, [[0, 13]]);
       }));
 
       function getSingleAccount(_x5, _x6) {
@@ -245,7 +301,7 @@ function () {
 
               case 6:
                 accountNumber = req.params.accountNumber;
-                AccountNo = _accountsData.default.find(function (acc) {
+                AccountNo = _accountModel.default.find(function (acc) {
                   return acc.accountNumber === accountNumber;
                 });
 
@@ -275,7 +331,7 @@ function () {
                   updatedOn: updatedOn
                 };
 
-                _accountsData.default.splice(_accountsData.default.indexOf(AccountNo), 1, updatedAccount);
+                _accountModel.default.splice(_accountModel.default.indexOf(AccountNo), 1, updatedAccount);
 
                 return _context4.abrupt("return", res.status(200).json({
                   status: 200,
@@ -326,7 +382,7 @@ function () {
                 _context5.prev = 0;
                 accountNumber = req.params.accountNumber;
                 _context5.next = 4;
-                return _accountsData.default.find(function (deletedData) {
+                return _accountModel.default.find(function (deletedData) {
                   return deletedData.accountNumber === accountNumber;
                 });
 
@@ -344,7 +400,7 @@ function () {
                 }));
 
               case 7:
-                _accountsData.default.splice(deletedAccount);
+                _accountModel.default.splice(deletedAccount);
 
                 return _context5.abrupt("return", res.status(200).json({
                   status: 200,

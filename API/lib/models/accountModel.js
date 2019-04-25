@@ -19,34 +19,27 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var User =
+var Accounts =
 /*#__PURE__*/
 function () {
-  function User(firstName, lastName, email, password, type, isAdmin) {
-    _classCallCheck(this, User);
-
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.password = password;
-    this.type = type;
-    this.isAdmin = isAdmin;
+  function Accounts() {
+    _classCallCheck(this, Accounts);
   }
 
-  _createClass(User, null, [{
-    key: "SaveClient",
+  _createClass(Accounts, null, [{
+    key: "SaveAccount",
     value: function () {
-      var _SaveClient = _asyncToGenerator(
+      var _SaveAccount = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(firstName, lastName, email, password) {
+      regeneratorRuntime.mark(function _callee(accountNumber, ownerid, status, balance, type) {
         var query, values, _ref, rows;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                query = "INSERT INTO\n            users(firstName, lastName, email, password)\n            VALUES($1, $2, $3, $4)\n            returning *";
-                values = [firstName, lastName, email, password];
+                query = "\n            INSERT INTO\n            accounts(accountNumber, ownerid, status, balance, type)\n            VALUES ($1, $2, $3, $4, $5)\n            returning *\n        ";
+                values = [accountNumber, ownerid, status, balance, type];
                 _context.next = 4;
                 return _index.default.query(query, values);
 
@@ -63,35 +56,34 @@ function () {
         }, _callee);
       }));
 
-      function SaveClient(_x, _x2, _x3, _x4) {
-        return _SaveClient.apply(this, arguments);
+      function SaveAccount(_x, _x2, _x3, _x4, _x5) {
+        return _SaveAccount.apply(this, arguments);
       }
 
-      return SaveClient;
+      return SaveAccount;
     }()
   }, {
-    key: "findByEmail",
+    key: "getAllAccounts",
     value: function () {
-      var _findByEmail = _asyncToGenerator(
+      var _getAllAccounts = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee2(email) {
-        var query, values, _ref2, rows;
+      regeneratorRuntime.mark(function _callee2() {
+        var query, _ref2, rows;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                query = "\n            SELECT * FROM users WHERE email = $1\n        ";
-                values = [email];
-                _context2.next = 4;
-                return _index.default.query(query, values);
+                query = "\n            SELECT * FROM accounts\n        ";
+                _context2.next = 3;
+                return _index.default.queryPool(query);
 
-              case 4:
+              case 3:
                 _ref2 = _context2.sent;
                 rows = _ref2.rows;
-                return _context2.abrupt("return", rows[0]);
+                return _context2.abrupt("return", rows);
 
-              case 7:
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -99,26 +91,26 @@ function () {
         }, _callee2);
       }));
 
-      function findByEmail(_x5) {
-        return _findByEmail.apply(this, arguments);
+      function getAllAccounts() {
+        return _getAllAccounts.apply(this, arguments);
       }
 
-      return findByEmail;
+      return getAllAccounts;
     }()
   }, {
-    key: "findById",
+    key: "getSingleAccount",
     value: function () {
-      var _findById = _asyncToGenerator(
+      var _getSingleAccount = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(id) {
+      regeneratorRuntime.mark(function _callee3(accountNumber) {
         var query, values, _ref3, rows;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                query = "\n            SELECT * FROM users WHERE id = $1\n        ";
-                values = [id];
+                query = "\n            SELECT * FROM accounts WHERE accountnumber = $1\n        ";
+                values = [accountNumber];
                 _context3.next = 4;
                 return _index.default.query(query, values);
 
@@ -135,16 +127,16 @@ function () {
         }, _callee3);
       }));
 
-      function findById(_x6) {
-        return _findById.apply(this, arguments);
+      function getSingleAccount(_x6) {
+        return _getSingleAccount.apply(this, arguments);
       }
 
-      return findById;
+      return getSingleAccount;
     }()
   }]);
 
-  return User;
+  return Accounts;
 }();
 
-var _default = User;
+var _default = Accounts;
 exports.default = _default;

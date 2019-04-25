@@ -16,22 +16,34 @@ class User {
             VALUES($1, $2, $3, $4)
             returning *`;
         const values = [firstName, lastName, email, password];
-        const result = await db.query(query, values);
+        const {
+            rows,
+        } = await db.query(query, values);
 
-        return result;
+        return rows[0];
     }
 
-    // static async findByEmail(email) {
-    //     console.log('ayobsfggh is male');
-    //     const query = `
-    //         SELECT * FROM users WHERE email = $1
-    //     `;
-    //     // const values = [email];
-    //     const result = await db.query(query);
-    //     console.log(result);
-    //     console.log('ayobsfggh');
-    //     return result;
-    // }
+    static async findByEmail(email) {
+        const query = `
+            SELECT * FROM users WHERE email = $1
+        `;
+        const values = [email];
+        const {
+            rows,
+        } = await db.query(query, values);
+        return rows[0];
+    }
+
+    static async findById(id) {
+        const query = `
+            SELECT * FROM users WHERE id = $1
+        `;
+        const values = [id];
+        const {
+            rows,
+        } = await db.query(query, values);
+        return rows[0];
+    }
 }
 
 export default User;

@@ -32,12 +32,12 @@ class authMiddleware {
             const {
                 id,
                 type,
-                isAdmin,
+                isadmin,
             } = authData;
             req.data = {
                 id,
                 type,
-                isAdmin,
+                isadmin,
             };
             next();
         });

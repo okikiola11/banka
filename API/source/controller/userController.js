@@ -32,17 +32,23 @@ class UserController {
                 lastName,
                 email,
             } = req.body;
+            const member = await User.findByEmail(email);
+            if (member) { // if email already exist
+                return res.status(409).json({
+                    status: 409,
+                    message: 'Email already exist',
+                });
+            }
             const hashedPassword = await bcrypt.hash(req.body.password, 8);
 
             const client = await User.SaveClient(firstName, lastName, email, hashedPassword);
 
             /* new user to be created */
-            const [user] = client.rows;
             const {
                 id,
                 type,
                 isadmin,
-            } = user;
+            } = client;
 
             const payLoad = {
                 id,
@@ -101,21 +107,14 @@ class UserController {
                 password,
             } = req.body;
 
-            const text = `
-                SELECT * FROM users WHERE email = $1
-            `;
-            const values = [email];
-            const {
-                rows,
-            } = await db.query(text, values);
-            if (!rows[0]) {
+            const client = await User.findByEmail(email);
+            if (!client) {
                 return res.status(400).json({
                     status: 400,
                     error: 'User not found',
                 });
             }
-
-            const passwordIsValid = await bcrypt.compare(password, rows[0].password);
+            const passwordIsValid = await bcrypt.compare(password, client.password);
             if (!passwordIsValid) {
                 return res.status(400).json({
                     status: 400,
@@ -126,14 +125,16 @@ class UserController {
 
             const {
                 id,
+                type,
                 isadmin,
                 firstName,
                 lastName,
-            } = rows;
+            } = client;
 
             const token = authMiddleware.generateToken({
                 id,
                 isadmin,
+                type,
             });
             const payLoad = {
                 id,
@@ -141,11 +142,12 @@ class UserController {
                 lastName,
                 email,
                 isadmin,
+                type,
             };
 
             return res.status(200).json({
                 status: 200,
-                message: `Welcome ${rows.email}, you have successfully logged in`,
+                message: `Welcome ${email}, you have successfully logged in`,
                 data: [{
                     auth: 'true',
                     token,

@@ -9,10 +9,10 @@ import authorize from '../middleware/authorize';
 const router = Router();
 
 router.use(authMiddleware.verifyToken);
-router.post('/', authorize.createAccountAuth, Validation.validateAccount(), accountsController.createAccount);
+router.post('/', Validation.validateAccount(), accountsController.createAccount);
 router.patch('/:accountNumber', authorize.viewAccountAuth, Validation.validateUpdateAccount(), accountsController.updateAccount);
 router.get('/', authorize.viewAccountAuth, accountsController.getAllAccount);
-router.get('/:accountNumber', authorize.viewAccountAuth, accountsController.getSingleAccount);
+router.get('/:accountNumber', accountsController.getSingleAccount);
 router.delete('/:accountNumber', authorize.viewAccountAuth, accountsController.deleteAccount);
 
 export default router;
