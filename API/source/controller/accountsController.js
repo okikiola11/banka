@@ -187,18 +187,13 @@ class accountsController {
             const {
                 accountNumber,
             } = req.params;
-            const deletedAccount = await Accounts.find(
-                deletedData => deletedData.accountNumber === accountNumber,
-            );
-
+            const deletedAccount = await Accounts.deleteAccount(accountNumber);
             if (!deletedAccount) {
                 return res.status(404).json({
                     status: 404,
                     error: 'Oooops! no record with such Account number',
                 });
             }
-            Accounts.splice(deletedAccount);
-
             return res.status(200).json({
                 status: 200,
                 message: 'Account has been deleted successfully',
