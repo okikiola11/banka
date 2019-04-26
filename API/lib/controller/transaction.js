@@ -7,11 +7,11 @@ exports.default = void 0;
 
 var _check = require("express-validator/check");
 
-var _transactionsData = _interopRequireDefault(require("../utils/transactionsData"));
+var _transactionModel = _interopRequireDefault(require("../models/transactionModel"));
 
-var _accountsData = _interopRequireDefault(require("../utils/accountsData"));
+var _accountModel = _interopRequireDefault(require("../models/accountModel"));
 
-var _userData = _interopRequireDefault(require("../utils/userData"));
+var _userModel = _interopRequireDefault(require("../models/userModel"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,7 +38,7 @@ function () {
       var _creditAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, _req$body, amount, accountNumber, Account, accountBalance, creditAccountBal, cashierData, firstName, lastName, newCreditTransaction;
+        var errors, validateErrors, errArray, _req$body, amount, accountNumber, account, balance, creditAccountBal, credit, transactionData, transactionid;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -59,20 +59,22 @@ function () {
                   rObj.value = obj.value;
                   return rObj;
                 });
-                return _context.abrupt("return", res.status(401).json({
-                  status: 401,
+                return _context.abrupt("return", res.status(400).json({
+                  status: 400,
                   error: 'Validation failed, check errors property for more details',
                   errors: errArray
                 }));
 
               case 6:
                 _req$body = req.body, amount = _req$body.amount, accountNumber = _req$body.accountNumber;
-                Account = _accountsData.default.find(function (creditAccount) {
-                  return creditAccount.accountNumber === accountNumber;
-                }); // get accountNumber from the list of account
+                _context.next = 9;
+                return _accountModel.default.getSingleAccount(accountNumber);
 
-                if (!(Account === undefined)) {
-                  _context.next = 10;
+              case 9:
+                account = _context.sent;
+
+                if (account) {
+                  _context.next = 12;
                   break;
                 }
 
@@ -81,47 +83,49 @@ function () {
                   message: 'Account does not exist'
                 }));
 
-              case 10:
-                accountBalance = Account.accountBalance;
-                creditAccountBal = parseFloat(+accountBalance + +amount);
-                Account.accountBalance = creditAccountBal;
-                cashierData = _userData.default.find(function (details) {
-                  return details.id === req.data.id;
-                });
-                firstName = cashierData.firstName, lastName = cashierData.lastName;
-                newCreditTransaction = {
-                  transactionId: _transactionsData.default[_transactionsData.default.length - 1].transactionId + 1,
-                  accountNumber: accountNumber,
-                  amount: amount,
-                  cashier: "".concat(firstName, " ").concat(lastName),
-                  transactionType: 'credit',
-                  accountBalance: creditAccountBal,
-                  createdOn: new Date().toLocaleString()
-                };
+              case 12:
+                balance = account.balance;
+                creditAccountBal = parseFloat(+balance + +amount);
+                _context.next = 16;
+                return _accountModel.default.updateAccountBal(accountNumber, creditAccountBal);
 
-                _transactionsData.default.push(newCreditTransaction);
+              case 16:
+                credit = _context.sent;
+                console.log(credit);
+                _context.next = 20;
+                return _transactionModel.default.creditTransaction(accountNumber, amount, req.data.id, 'credit', creditAccountBal);
 
+              case 20:
+                transactionData = _context.sent;
+                transactionid = transactionData.transactionid;
                 return _context.abrupt("return", res.status(201).json({
                   status: 201,
                   message: 'Account has been successfully credited',
-                  data: [newCreditTransaction]
+                  data: {
+                    transactionId: transactionid,
+                    accountNumber: accountNumber,
+                    amount: amount,
+                    cashier: req.data.id,
+                    transactionType: 'credit',
+                    accountBalance: creditAccountBal
+                  }
                 }));
 
-              case 20:
-                _context.prev = 20;
+              case 25:
+                _context.prev = 25;
                 _context.t0 = _context["catch"](0);
-                return _context.abrupt("return", res.status(422).json({
-                  // 422 unprocessable entity
-                  status: 422,
-                  message: 'Transaction not completed'
+                console.log(_context.t0.stack);
+                return _context.abrupt("return", res.status(500).json({
+                  status: 500,
+                  message: 'Something went wrong while trying to credit your account'
                 }));
 
-              case 23:
+              case 29:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 20]]);
+        }, _callee, null, [[0, 25]]);
       }));
 
       function creditAccount(_x, _x2) {
@@ -154,13 +158,11 @@ function () {
         var _req$body2 = req.body,
             amount = _req$body2.amount,
             accountNumber = _req$body2.accountNumber;
-
-        var Account = _accountsData.default.find(function (account) {
+        var Account = accountData.find(function (account) {
           return account.accountNumber === accountNumber;
         }); // get accountNumber from the list of account
 
-
-        var accountIndex = _accountsData.default.indexOf(Account);
+        var accountIndex = accountData.indexOf(Account);
 
         if (Account === undefined) {
           // if acct does not exist
@@ -183,18 +185,15 @@ function () {
 
         var newAccountBal = parseFloat(accountBalance - amount);
         Account.accountBalance = newAccountBal;
+        accountData.splice(accountIndex, 1, Account); // replaces 1 element(cuts off) at 1th index
 
-        _accountsData.default.splice(accountIndex, 1, Account); // replaces 1 element(cuts off) at 1th index
-
-
-        var cashierData = _userData.default.find(function (details) {
+        var cashierData = userdata.find(function (details) {
           return details.id === req.data.id;
         });
-
         var firstName = cashierData.firstName,
             lastName = cashierData.lastName;
         var newTransaction = {
-          transactionId: _transactionsData.default[_transactionsData.default.length - 1].transactionId + 1,
+          transactionId: transactions[transactions.length - 1].transactionId + 1,
           accountNumber: accountNumber,
           amount: amount,
           cashier: "".concat(firstName, " ").concat(lastName),
@@ -202,9 +201,7 @@ function () {
           accountBalance: newAccountBal,
           createdOn: new Date().toLocaleString()
         };
-
-        _transactionsData.default.push(newTransaction);
-
+        transactions.push(newTransaction);
         return res.status(201).json({
           status: 201,
           message: 'Account has been debited successfully',

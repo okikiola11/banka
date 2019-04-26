@@ -11,7 +11,7 @@ const router = Router();
 router.use(authMiddleware.verifyToken);
 router.post('/', Validation.validateAccount(), accountsController.createAccount);
 router.patch('/:accountNumber', authorize.viewAccountAuth, Validation.validateUpdateAccount(), accountsController.updateAccount);
-router.get('/', authorize.viewAccountAuth, accountsController.getAllAccount);
+router.get('/', authorize.clientAccount, accountsController.getAllAccount);
 router.get('/:accountNumber', accountsController.getSingleAccount);
 router.delete('/:accountNumber', authorize.viewAccountAuth, accountsController.deleteAccount);
 
