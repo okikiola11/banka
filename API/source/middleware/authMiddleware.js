@@ -17,7 +17,7 @@ class authMiddleware {
             id,
             type,
             isadmin,
-        }, process.env.secret, {
+        }, process.env.SECRET, {
             expiresIn: '24h', // expires in 24hours
         });
     }
@@ -25,7 +25,7 @@ class authMiddleware {
     static verifyToken(req, res, next) {
         // Get the auth header value bcos the token should be sent in the header as the Authorization value
         const bearerHeader = req.headers.authorization;
-        jwt.verify(bearerHeader, process.env.secret, (err, authData) => {
+        jwt.verify(bearerHeader, process.env.SECRET, (err, authData) => {
             if (err) {
                 return res.sendStatus(403);
             }
