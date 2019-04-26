@@ -116,9 +116,14 @@ function () {
                   status: 201,
                   message: 'New User has been created',
                   data: [{
+                    id: id,
                     auth: 'true',
                     token: token,
-                    payLoad: payLoad
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    type: type,
+                    isadmin: isadmin
                   }]
                 }));
 
@@ -150,7 +155,7 @@ function () {
       var _loginUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res) {
-        var errors, validateErrors, errArray, _req$body2, email, password, client, passwordIsValid, id, type, isadmin, firstName, lastName, token, payLoad;
+        var errors, validateErrors, errArray, _req$body2, email, password, client, passwordIsValid, id, type, isadmin, firstname, lastname, token;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -214,44 +219,39 @@ function () {
                 }));
 
               case 17:
-                id = client.id, type = client.type, isadmin = client.isadmin, firstName = client.firstName, lastName = client.lastName;
+                id = client.id, type = client.type, isadmin = client.isadmin, firstname = client.firstname, lastname = client.lastname;
                 token = _authMiddleware.default.generateToken({
                   id: id,
                   isadmin: isadmin,
                   type: type
                 });
-                payLoad = {
-                  id: id,
-                  firstName: firstName,
-                  lastName: lastName,
-                  email: email,
-                  isadmin: isadmin,
-                  type: type
-                };
                 return _context2.abrupt("return", res.status(200).json({
                   status: 200,
                   message: "Welcome ".concat(email, ", you have successfully logged in"),
                   data: [{
+                    id: id,
                     auth: 'true',
                     token: token,
-                    payLoad: payLoad
+                    firstName: firstname,
+                    lastName: lastname,
+                    email: email
                   }]
                 }));
 
-              case 23:
-                _context2.prev = 23;
+              case 22:
+                _context2.prev = 22;
                 _context2.t0 = _context2["catch"](0);
                 return _context2.abrupt("return", res.status(404).json({
                   status: 404,
                   message: 'User record does not exist'
                 }));
 
-              case 26:
+              case 25:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 23]]);
+        }, _callee2, null, [[0, 22]]);
       }));
 
       function loginUser(_x3, _x4) {

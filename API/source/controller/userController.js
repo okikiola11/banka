@@ -68,9 +68,14 @@ class UserController {
                 status: 201,
                 message: 'New User has been created',
                 data: [{
+                    id,
                     auth: 'true',
                     token,
-                    payLoad,
+                    firstName,
+                    lastName,
+                    email,
+                    type,
+                    isadmin,
                 }],
             });
         } catch (error) {
@@ -108,6 +113,7 @@ class UserController {
             } = req.body;
 
             const client = await User.findByEmail(email);
+
             if (!client) {
                 return res.status(400).json({
                     status: 400,
@@ -127,8 +133,8 @@ class UserController {
                 id,
                 type,
                 isadmin,
-                firstName,
-                lastName,
+                firstname,
+                lastname,
             } = client;
 
             const token = authMiddleware.generateToken({
@@ -136,22 +142,16 @@ class UserController {
                 isadmin,
                 type,
             });
-            const payLoad = {
-                id,
-                firstName,
-                lastName,
-                email,
-                isadmin,
-                type,
-            };
-
             return res.status(200).json({
                 status: 200,
                 message: `Welcome ${email}, you have successfully logged in`,
                 data: [{
+                    id,
                     auth: 'true',
                     token,
-                    payLoad,
+                    firstName: firstname,
+                    lastName: lastname,
+                    email,
                 }],
             });
         } catch (error) {

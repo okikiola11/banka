@@ -18,27 +18,23 @@ const {
 
 const API_PREFIX = '/api/v1';
 const token = jwt.sign({
-    id: 1,
-    userType: {
-        user: true,
-        admin: false,
-        staff: false,
+        id: 1,
+        type: 'client',
     },
-},
-process.env.secret, {
-    expiresIn: 86400, // expires cmdin 24hours
-});
+    process.env.secret, {
+        expiresIn: 86400, // expires cmdin 24hours
+    });
 const staffToken = jwt.sign({
-    id: 1,
-    userType: {
-        user: false,
-        admin: true,
-        staff: true,
+        id: 1,
+        userType: {
+            user: false,
+            admin: true,
+            staff: true,
+        },
     },
-},
-process.env.secret, {
-    expiresIn: 86400, // expires cmdin 24hours
-});
+    process.env.secret, {
+        expiresIn: 86400, // expires cmdin 24hours
+    });
 
 describe('/ User Account Auth Endpoint ', () => {
     describe('/ POST accounts - Account Setup (Required)', () => {
@@ -61,7 +57,7 @@ describe('/ User Account Auth Endpoint ', () => {
                         .to.equal('Account has been created');
                     expect(response.body.data[0])
                         .to.have.all.keys(
-                            'id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn',
+                            'accountNumber', 'firstName', 'lastName', 'email', 'type', 'openingBalance',
                         );
                 })
                 .end(done);

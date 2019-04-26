@@ -33,9 +33,9 @@ function () {
   }
 
   _createClass(Transaction, null, [{
-    key: "creditTransaction",
+    key: "transact",
     value: function () {
-      var _creditTransaction = _asyncToGenerator(
+      var _transact = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(accountNumber, amount, cashierID, transactionType, accountBalance) {
         var query, values, _ref, rows;
@@ -62,11 +62,11 @@ function () {
         }, _callee);
       }));
 
-      function creditTransaction(_x, _x2, _x3, _x4, _x5) {
-        return _creditTransaction.apply(this, arguments);
+      function transact(_x, _x2, _x3, _x4, _x5) {
+        return _transact.apply(this, arguments);
       }
 
-      return creditTransaction;
+      return transact;
     }()
   }]);
 
