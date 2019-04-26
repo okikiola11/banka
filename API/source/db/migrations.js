@@ -49,7 +49,7 @@ const createTables = async () => {
     try {
         await db.queryPool(queryText + seeders);
     } catch (err) {
-        console.log(err.stack);
+        console.log(err);
     }
 };
 

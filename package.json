@@ -10,6 +10,7 @@
     "start": "node ./API/lib/index.js",
     "start-db": "babel-node ./API/source/db/migrations.js",
     "test": "nyc node_modules/.bin/mocha ./API/lib/tests/*.test.js --timeout 30000 --exit",
+    "test-chk": "npm run start-db && npm run build && nyc node_modules/.bin/mocha ./API/lib/tests/*.test.js --timeout 30000 --exit",
     "test-watch": "nodemon --exec  \"npm test\"",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"

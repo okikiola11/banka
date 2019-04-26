@@ -36,8 +36,6 @@ describe('/ User Auth Signup Endpoint ', function () {
         firstName: '',
         lastName: '',
         email: '',
-        phone: '',
-        gender: '',
         password: ''
       }).expect(400).expect(function (response) {
         expect(response.body.status).to.equal(400);
@@ -50,14 +48,11 @@ describe('/ User Auth Signup Endpoint ', function () {
         firstName: 'Okikiola',
         lastName: 'Apelehin',
         email: 'user@gmail.com',
-        phone: '08023182819',
-        gender: 'female',
-        user: true,
         password: 'okiki123'
       }).expect(201).expect(function (response) {
         expect(response.body.status).to.equal(201);
         expect(response.body.message).to.equal('New User has been created');
-        expect(response.body.data[0]).to.have.all.keys('auth', 'token', 'payLoad');
+        expect(response.body.data[0]).to.have.all.keys('id', 'auth', 'token', 'firstName', 'lastName', 'email', 'type', 'isadmin');
       }).end(done);
     });
   });
@@ -85,12 +80,12 @@ describe('/ User Auth Login Endpoint ', function () {
     });
     it('should allow a user to login after signing up ', function (done) {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).set('Accept', 'application/json').send({
-        email: 'user@gmail.com',
-        password: 'okiki123'
+        email: 'john.doe@gmail.com',
+        password: 'johnny'
       }).expect(200).expect(function (response) {
         expect(response.body.status).to.equal(200);
-        expect(response.body.message).to.equal('Welcome user@gmail.com, you have successfully logged in');
-        expect(response.body.data[0]).to.have.all.keys('auth', 'token', 'payLoad');
+        expect(response.body.message).to.equal('Welcome john.doe@gmail.com, you have successfully logged in');
+        expect(response.body.data[0]).to.have.all.keys('id', 'auth', 'token', 'firstName', 'lastName', 'email');
       }).end(done);
     });
   });

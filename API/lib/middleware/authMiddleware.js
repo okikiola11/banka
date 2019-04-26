@@ -38,7 +38,7 @@ function () {
         id: id,
         type: type,
         isadmin: isadmin
-      }, process.env.secret, {
+      }, process.env.SECRET, {
         expiresIn: '24h' // expires in 24hours
 
       });
@@ -49,7 +49,7 @@ function () {
       // Get the auth header value bcos the token should be sent in the header as the Authorization value
       var bearerHeader = req.headers.authorization;
 
-      _jsonwebtoken.default.verify(bearerHeader, process.env.secret, function (err, authData) {
+      _jsonwebtoken.default.verify(bearerHeader, process.env.SECRET, function (err, authData) {
         if (err) {
           return res.sendStatus(403);
         }
