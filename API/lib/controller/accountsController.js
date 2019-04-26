@@ -93,7 +93,7 @@ function () {
                     email: email,
                     // account owner email
                     type: type,
-                    openBalance: balance
+                    openingBalance: balance
                   }
                 }));
 

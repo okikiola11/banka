@@ -38,7 +38,7 @@ function () {
       var _creditAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, _req$body, amount, accountNumber, account, balance, creditAccountBal, credit, transactionData, transactionid;
+        var errors, validateErrors, errArray, _req$body, amount, accountNumber, account, balance, creditAccountBal, transactionData, transactionid;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -90,12 +90,10 @@ function () {
                 return _accountModel.default.updateAccountBal(accountNumber, creditAccountBal);
 
               case 16:
-                credit = _context.sent;
-                console.log(credit);
-                _context.next = 20;
-                return _transactionModel.default.creditTransaction(accountNumber, amount, req.data.id, 'credit', creditAccountBal);
+                _context.next = 18;
+                return _transactionModel.default.transact(accountNumber, amount, req.data.id, 'credit', creditAccountBal);
 
-              case 20:
+              case 18:
                 transactionData = _context.sent;
                 transactionid = transactionData.transactionid;
                 return _context.abrupt("return", res.status(201).json({
@@ -111,21 +109,20 @@ function () {
                   }
                 }));
 
-              case 25:
-                _context.prev = 25;
+              case 23:
+                _context.prev = 23;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0.stack);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   message: 'Something went wrong while trying to credit your account'
                 }));
 
-              case 29:
+              case 26:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 25]]);
+        }, _callee, null, [[0, 23]]);
       }));
 
       function creditAccount(_x, _x2) {
@@ -136,84 +133,117 @@ function () {
     }()
   }, {
     key: "debitAccount",
-    value: function debitAccount(req, res) {
-      try {
-        var errors = (0, _check.validationResult)(req);
+    value: function () {
+      var _debitAccount = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(req, res) {
+        var errors, validateErrors, errArray, _req$body2, amount, accountNumber, account, balance, getBal, getAmount, newAccountBal, transactionData, transactionid;
 
-        if (!errors.isEmpty()) {
-          var validateErrors = errors.array();
-          var errArray = validateErrors.map(function (obj) {
-            var rObj = {};
-            rObj[obj.param] = obj.msg;
-            rObj.value = obj.value;
-            return rObj;
-          });
-          return res.status(401).json({
-            status: 401,
-            error: 'Validation failed, check errors property for more details',
-            errors: errArray
-          });
-        }
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                errors = (0, _check.validationResult)(req);
 
-        var _req$body2 = req.body,
-            amount = _req$body2.amount,
-            accountNumber = _req$body2.accountNumber;
-        var Account = accountData.find(function (account) {
-          return account.accountNumber === accountNumber;
-        }); // get accountNumber from the list of account
+                if (errors.isEmpty()) {
+                  _context2.next = 6;
+                  break;
+                }
 
-        var accountIndex = accountData.indexOf(Account);
+                validateErrors = errors.array();
+                errArray = validateErrors.map(function (obj) {
+                  var rObj = {};
+                  rObj[obj.param] = obj.msg;
+                  rObj.value = obj.value;
+                  return rObj;
+                });
+                return _context2.abrupt("return", res.status(400).json({
+                  status: 400,
+                  error: 'Validation failed, check errors property for more details',
+                  errors: errArray
+                }));
 
-        if (Account === undefined) {
-          // if acct does not exist
-          return res.status(404).json({
-            status: 404,
-            message: 'Account does not exist'
-          });
-        }
+              case 6:
+                _req$body2 = req.body, amount = _req$body2.amount, accountNumber = _req$body2.accountNumber;
+                _context2.next = 9;
+                return _accountModel.default.getSingleAccount(accountNumber);
 
-        var accountBalance = Account.accountBalance;
-        var getBal = parseInt(accountBalance, 10);
-        var getAmount = parseInt(amount, 10);
+              case 9:
+                account = _context2.sent;
 
-        if (getBal < getAmount) {
-          return res.status(409).json({
-            status: 409,
-            message: 'Insufficient funds for this transaction'
-          });
-        }
+                if (account) {
+                  _context2.next = 12;
+                  break;
+                }
 
-        var newAccountBal = parseFloat(accountBalance - amount);
-        Account.accountBalance = newAccountBal;
-        accountData.splice(accountIndex, 1, Account); // replaces 1 element(cuts off) at 1th index
+                return _context2.abrupt("return", res.status(404).json({
+                  status: 404,
+                  message: 'Account does not exist'
+                }));
 
-        var cashierData = userdata.find(function (details) {
-          return details.id === req.data.id;
-        });
-        var firstName = cashierData.firstName,
-            lastName = cashierData.lastName;
-        var newTransaction = {
-          transactionId: transactions[transactions.length - 1].transactionId + 1,
-          accountNumber: accountNumber,
-          amount: amount,
-          cashier: "".concat(firstName, " ").concat(lastName),
-          transactionType: 'debit',
-          accountBalance: newAccountBal,
-          createdOn: new Date().toLocaleString()
-        };
-        transactions.push(newTransaction);
-        return res.status(201).json({
-          status: 201,
-          message: 'Account has been debited successfully',
-          data: [newTransaction]
-        });
-      } catch (error) {
-        return res.status(422).json({
-          status: 422,
-          error: 'Transaction failed'
-        });
+              case 12:
+                balance = account.balance;
+                getBal = parseInt(balance, 10);
+                getAmount = parseInt(amount, 10);
+
+                if (!(getBal < getAmount)) {
+                  _context2.next = 17;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(409).json({
+                  status: 409,
+                  message: 'Insufficient funds for this transaction'
+                }));
+
+              case 17:
+                newAccountBal = parseFloat(getBal - getAmount);
+                _context2.next = 20;
+                return _accountModel.default.updateAccountBal(accountNumber, newAccountBal);
+
+              case 20:
+                _context2.next = 22;
+                return _transactionModel.default.transact(accountNumber, amount, req.data.id, 'debit', newAccountBal);
+
+              case 22:
+                transactionData = _context2.sent;
+                transactionid = transactionData.transactionid;
+                return _context2.abrupt("return", res.status(201).json({
+                  status: 201,
+                  message: 'Account has been successfully debited',
+                  data: {
+                    transactionId: transactionid,
+                    accountNumber: accountNumber,
+                    amount: amount,
+                    cashier: req.data.id,
+                    transactionType: 'debit',
+                    accountBalance: newAccountBal
+                  }
+                }));
+
+              case 27:
+                _context2.prev = 27;
+                _context2.t0 = _context2["catch"](0);
+                return _context2.abrupt("return", res.status(500).json({
+                  status: 500,
+                  error: 'Something went wrong'
+                }));
+
+              case 30:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 27]]);
+      }));
+
+      function debitAccount(_x3, _x4) {
+        return _debitAccount.apply(this, arguments);
       }
-    }
+
+      return debitAccount;
+    }()
   }]);
 
   return transaction;

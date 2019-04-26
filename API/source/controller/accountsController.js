@@ -55,7 +55,7 @@ class accountsController {
                     lastName: lastname, // account owner last name
                     email, // account owner email
                     type,
-                    openBalance: balance,
+                    openingBalance: balance,
                 },
             });
         } catch (error) {

@@ -18,11 +18,7 @@ var API_PREFIX = '/api/v1';
 
 var token = _jsonwebtoken.default.sign({
   id: 1,
-  userType: {
-    user: true,
-    admin: false,
-    staff: false
-  }
+  type: 'client'
 }, process.env.secret, {
   expiresIn: 86400 // expires cmdin 24hours
 
@@ -50,7 +46,7 @@ describe('/ User Account Auth Endpoint ', function () {
         expect(response.body).to.have.all.keys('status', 'message', 'data');
         expect(response.body.status).to.equal(201);
         expect(response.body.message).to.equal('Account has been created');
-        expect(response.body.data[0]).to.have.all.keys('id', 'ownerId', 'accountNumber', 'type', 'openingBalance', 'acctStatus', 'accountBalance', 'createdOn', 'updatedOn');
+        expect(response.body.data[0]).to.have.all.keys('accountNumber', 'firstName', 'lastName', 'email', 'type', 'openingBalance');
       }).end(done);
     });
     it('should create user accounts validation check', function (done) {
