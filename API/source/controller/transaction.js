@@ -41,9 +41,8 @@ class transaction {
                 balance,
             } = account;
             const creditAccountBal = parseFloat(+balance + +amount);
-            const credit = await Accounts.updateAccountBal(accountNumber, creditAccountBal);
-            console.log(credit);
-            const transactionData = await Transaction.creditTransaction(accountNumber, amount, req.data.id, 'credit', creditAccountBal);
+            await Accounts.updateAccountBal(accountNumber, creditAccountBal);
+            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'credit', creditAccountBal);
 
             const {
                 transactionid,
@@ -61,7 +60,6 @@ class transaction {
                 },
             });
         } catch (error) {
-            console.log(error.stack);
             return res.status(500).json({
                 status: 500,
                 message: 'Something went wrong while trying to credit your account',
@@ -69,7 +67,7 @@ class transaction {
         }
     }
 
-    static debitAccount(req, res) {
+    static async debitAccount(req, res) {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -82,8 +80,8 @@ class transaction {
                     return rObj;
                 });
 
-                return res.status(401).json({
-                    status: 401,
+                return res.status(400).json({
+                    status: 400,
                     error: 'Validation failed, check errors property for more details',
                     errors: errArray,
                 });
@@ -92,10 +90,8 @@ class transaction {
                 amount,
                 accountNumber,
             } = req.body;
-            const Account = accountData.find(account => account.accountNumber === accountNumber); // get accountNumber from the list of account
-            const accountIndex = accountData.indexOf(Account);
-
-            if (Account === undefined) { // if acct does not exist
+            const account = await Accounts.getSingleAccount(accountNumber);
+            if (!account) { // if acct does not exist
                 return res.status(404).json({
                     status: 404,
                     message: 'Account does not exist',
@@ -103,9 +99,10 @@ class transaction {
             }
 
             const {
-                accountBalance,
-            } = Account;
-            const getBal = parseInt(accountBalance, 10);
+                balance,
+            } = account;
+
+            const getBal = parseInt(balance, 10);
             const getAmount = parseInt(amount, 10);
             if (getBal < getAmount) {
                 return res.status(409).json({
@@ -113,35 +110,29 @@ class transaction {
                     message: 'Insufficient funds for this transaction',
                 });
             }
-            const newAccountBal = parseFloat(accountBalance - amount);
-            Account.accountBalance = newAccountBal;
-            accountData.splice(accountIndex, 1, Account); // replaces 1 element(cuts off) at 1th index
+            const newAccountBal = parseFloat(getBal - getAmount);
+            await Accounts.updateAccountBal(accountNumber, newAccountBal);
+            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'debit', newAccountBal);
 
-            const cashierData = userdata.find(details => details.id === req.data.id);
             const {
-                firstName,
-                lastName,
-            } = cashierData;
-            const newTransaction = {
-                transactionId: transactions[transactions.length - 1].transactionId + 1,
-                accountNumber,
-                amount,
-                cashier: `${firstName} ${lastName}`,
-                transactionType: 'debit',
-                accountBalance: newAccountBal,
-                createdOn: new Date().toLocaleString(),
-            };
-            transactions.push(newTransaction);
-
+                transactionid,
+            } = transactionData;
             return res.status(201).json({
                 status: 201,
-                message: 'Account has been debited successfully',
-                data: [newTransaction],
-            });
+                message: 'Account has been successfully debited',
+                data: {
+                    transactionId: transactionid,
+                    accountNumber,
+                    amount,
+                    cashier: req.data.id,
+                    transactionType: 'debit',
+                    accountBalance: newAccountBal,
+                },
+            })
         } catch (error) {
-            return res.status(422).json({
-                status: 422,
-                error: 'Transaction failed',
+            return res.status(500).json({
+                status: 500,
+                error: 'Something went wrong',
             });
         }
     }

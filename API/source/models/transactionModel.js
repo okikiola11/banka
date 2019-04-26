@@ -9,7 +9,7 @@ class Transaction {
         this.accountBalance = accountBalance;
     }
 
-    static async creditTransaction(accountNumber, amount, cashierID, transactionType, accountBalance) {
+    static async transact(accountNumber, amount, cashierID, transactionType, accountBalance) {
         const query = `
             INSERT INTO
             transactions(accountnumber, amount, cashierid, transactiontype, accountbalance)
