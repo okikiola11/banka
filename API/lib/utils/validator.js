@@ -67,7 +67,7 @@ function () {
   }, {
     key: "validateUpdateAccount",
     value: function validateUpdateAccount() {
-      return [(0, _check.body)('acctStatus').isIn(['dormant', 'active']).withMessage('Choose a valid account status').exists().withMessage('Field cannot be empty')];
+      return [(0, _check.body)('status').isIn(['dormant', 'active']).withMessage('Choose a valid account status').exists().withMessage('Field cannot be empty')];
     }
   }, {
     key: "validateTransaction",

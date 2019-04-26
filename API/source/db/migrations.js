@@ -42,8 +42,7 @@ const createTables = async () => {
             transactionType varchar,
             accountBalance varchar NOT NULL,
             createdOn TIMESTAMP NOT NULL DEFAULT NOW(),
-            FOREIGN KEY (cashierID) REFERENCES users (ID) ON DELETE CASCADE,
-            FOREIGN KEY (accountNumber) REFERENCES accounts (accountNumber) ON DELETE CASCADE
+            FOREIGN KEY (cashierID) REFERENCES users (ID) ON DELETE CASCADE
         );
     `;
     // await db.query(queryText + seeders);

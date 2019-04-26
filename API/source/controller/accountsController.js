@@ -2,7 +2,6 @@ import {
     validationResult,
 } from 'express-validator/check';
 import Utility from '../utils/util';
-import db from '../db';
 import Accounts from '../models/accountModel';
 import User from '../models/userModel';
 
@@ -69,6 +68,57 @@ class accountsController {
 
     static async getAllAccount(req, res) {
         try {
+            const isQuery = Object.keys(req.query).length;
+            if (isQuery) {
+                const {
+                    status,
+                } = req.query;
+                if (status === 'dormant') {
+                    const accounts = await Accounts.getDormantAccount();
+                    if (accounts.length === 0) {
+                        return res.status(200).json({
+                            status: 200,
+                            message: 'There are no existing dormant account',
+                            data: accounts,
+                        });
+                    }
+                    return res.status(200).json({
+                        status: 200,
+                        message: 'Successfully retrieved all dormant accounts',
+                        data: accounts,
+                    });
+                }
+                if (status === 'active') {
+                    const accounts = await Accounts.getActiveAccount();
+                    if (accounts.length === 0) {
+                        return res.status(200).json({
+                            status: 200,
+                            message: 'There are no existing active account',
+                            data: accounts,
+                        });
+                    }
+                    return res.status(200).json({
+                        status: 200,
+                        message: 'Successfully retrieved all active accounts',
+                        data: accounts,
+                    });
+                }
+                if (status === 'draft') {
+                    const accounts = await Accounts.getDraftAccount();
+                    if (accounts.length === 0) {
+                        return res.status(200).json({
+                            status: 200,
+                            message: 'There are no existing draft account',
+                            data: accounts,
+                        });
+                    }
+                    return res.status(200).json({
+                        status: 200,
+                        message: 'Successfully retrieved all draft accounts',
+                        data: accounts,
+                    });
+                }
+            }
             const accounts = await Accounts.getAllAccounts();
             if (accounts.length === 0) {
                 return res.status(200).json({
@@ -163,7 +213,6 @@ class accountsController {
                     error: 'Account Number not found',
                 });
             }
-            const updatedOn = new Date().toLocaleString();
 
             return res.status(200).json({
                 status: 200,
@@ -171,7 +220,6 @@ class accountsController {
                 data: [{
                     accountNumber,
                     status,
-                    updatedOn,
                 }],
             });
         } catch (error) {

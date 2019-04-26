@@ -57,8 +57,8 @@ describe('/ User Account Auth Endpoint ', function () {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/accounts")).set('Accept', 'application/json').set('Authorization', "".concat(token)).send({
         type: '',
         openingBalance: '25000.00'
-      }).expect(401).expect(function (response) {
-        expect(response.body.status).to.equal(401);
+      }).expect(400).expect(function (response) {
+        expect(response.body.status).to.equal(400);
         expect(response.body.error).to.equal('Validation failed, check errors property for more details');
       }).end(done);
     });
@@ -114,8 +114,8 @@ describe('/ UPDATE account ', function () {
     }).end(done);
   });
   it('should send an error message if Validation fails ', function (done) {
-    (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(401).expect(function (response) {
-      expect(response.body.status).to.equal(401);
+    (0, _supertest.default)(_index.default).patch("".concat(API_PREFIX, "/accounts/2040050222")).set('Accept', 'application/json').set('Authorization', "".concat(staffToken)).expect(400).expect(function (response) {
+      expect(response.body.status).to.equal(400);
       expect(response.body.error).to.equal('Validation failed, check errors property for more details');
     }).end(done);
   });

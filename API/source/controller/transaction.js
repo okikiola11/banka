@@ -1,9 +1,9 @@
 import {
     validationResult,
 } from 'express-validator/check';
-import transactions from '../utils/transactionsData';
-import accountData from '../utils/accountsData';
-import userdata from '../utils/userData';
+import Transaction from '../models/transactionModel';
+import Accounts from '../models/accountModel';
+import User from '../models/userModel';
 
 class transaction {
     static async creditAccount(req, res) {
@@ -19,8 +19,8 @@ class transaction {
                     return rObj;
                 });
 
-                return res.status(401).json({
-                    status: 401,
+                return res.status(400).json({
+                    status: 400,
                     error: 'Validation failed, check errors property for more details',
                     errors: errArray,
                 });
@@ -29,9 +29,8 @@ class transaction {
                 amount,
                 accountNumber,
             } = req.body;
-            const Account = accountData.find(creditAccount => creditAccount.accountNumber === accountNumber); // get accountNumber from the list of account
-
-            if (Account === undefined) { // if acct does not exist
+            const account = await Accounts.getSingleAccount(accountNumber);
+            if (!account) { // if acct does not exist
                 return res.status(404).json({
                     status: 404,
                     message: 'Account does not exist',
@@ -39,38 +38,33 @@ class transaction {
             }
 
             const {
-                accountBalance,
-            } = Account;
-            const creditAccountBal = parseFloat(+accountBalance + +amount);
+                balance,
+            } = account;
+            const creditAccountBal = parseFloat(+balance + +amount);
+            const credit = await Accounts.updateAccountBal(accountNumber, creditAccountBal);
+            console.log(credit);
+            const transactionData = await Transaction.creditTransaction(accountNumber, amount, req.data.id, 'credit', creditAccountBal);
 
-            Account.accountBalance = creditAccountBal;
-            const cashierData = userdata.find(details => details.id === req.data.id);
             const {
-                firstName,
-                lastName,
-            } = cashierData;
-
-            const newCreditTransaction = {
-                transactionId: transactions[transactions.length - 1].transactionId + 1,
-                accountNumber,
-                amount,
-                cashier: `${firstName} ${lastName}`,
-                transactionType: 'credit',
-                accountBalance: creditAccountBal,
-                createdOn: new Date().toLocaleString(),
-            };
-            transactions.push(newCreditTransaction);
-
+                transactionid,
+            } = transactionData;
             return res.status(201).json({
                 status: 201,
                 message: 'Account has been successfully credited',
-                data: [newCreditTransaction],
+                data: {
+                    transactionId: transactionid,
+                    accountNumber,
+                    amount,
+                    cashier: req.data.id,
+                    transactionType: 'credit',
+                    accountBalance: creditAccountBal,
+                },
             });
         } catch (error) {
-            return res.status(422).json({
-                // 422 unprocessable entity
-                status: 422,
-                message: 'Transaction not completed',
+            console.log(error.stack);
+            return res.status(500).json({
+                status: 500,
+                message: 'Something went wrong while trying to credit your account',
             });
         }
     }

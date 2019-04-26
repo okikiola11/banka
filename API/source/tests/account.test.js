@@ -76,10 +76,10 @@ describe('/ User Account Auth Endpoint ', () => {
                     type: '',
                     openingBalance: '25000.00',
                 })
-                .expect(401)
+                .expect(400)
                 .expect((response) => {
                     expect(response.body.status)
-                        .to.equal(401);
+                        .to.equal(400);
                     expect(response.body.error)
                         .to.equal('Validation failed, check errors property for more details');
                 })
@@ -201,10 +201,10 @@ describe('/ UPDATE account ', () => {
             .patch(`${API_PREFIX}/accounts/2040050222`)
             .set('Accept', 'application/json')
             .set('Authorization', `${staffToken}`)
-            .expect(401)
+            .expect(400)
             .expect((response) => {
                 expect(response.body.status)
-                    .to.equal(401);
+                    .to.equal(400);
                 expect(response.body.error)
                     .to.equal('Validation failed, check errors property for more details');
             })

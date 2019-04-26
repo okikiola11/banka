@@ -34,8 +34,6 @@ function () {
       var id = _ref.id,
           type = _ref.type,
           isadmin = _ref.isadmin;
-      console.log(id, type, isadmin);
-      console.log('hello world');
       return _jsonwebtoken.default.sign({
         id: id,
         type: type,
