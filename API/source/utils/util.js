@@ -1,6 +1,10 @@
 import uniqueRandom from 'unique-random';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 import Accounts from './accountsData';
+
+dotenv.config();
 
 class Utility {
     static acctNumberGen() {
@@ -17,6 +21,16 @@ class Utility {
         }
         return accountNo;
     }
+
+    // static generateToken(payload) {
+    //     return jwt.sign(payload, process.env.secret, {
+    //         expiresIn: '24h',
+    //     });
+    // }
+
+    // static decodeToken(token) {
+    //     return jwt.verify(token, process.env.secret);
+    // }
 }
 
 export default Utility;

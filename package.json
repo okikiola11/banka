@@ -6,11 +6,14 @@
   "scripts": {
     "build": "node_modules/.bin/babel ./API/source -d ./API/lib",
     "dev": "nodemon --exec node_modules/.bin/babel-node ./API/lib/index.js",
+    "start-dev": "nodemon --exec babel-node ./API/source/index.js",
     "start": "node ./API/lib/index.js",
+    "start-db": "babel-node ./API/source/db/migrations.js",
     "test": "nyc node_modules/.bin/mocha ./API/lib/tests/*.test.js --timeout 30000 --exit",
+    "test-chk": "npm run start-db && npm run build && nyc node_modules/.bin/mocha ./API/lib/tests/*.test.js --timeout 30000 --exit",
     "test-watch": "nodemon --exec  \"npm test\"",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
-    "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -34,9 +37,14 @@
     "@babel/polyfill": "^7.4.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "express-validator": "^5.3.1",
     "jsonwebtoken": "^8.5.1",
+    "make-runnable": "^1.3.6",
+    "pg": "^7.10.0",
+    "pg-connection-string": "^2.0.0",
+    "pg-format": "^1.0.4",
     "unique-random": "^2.0.0"
   },
   "devDependencies": {
@@ -45,6 +53,7 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.4.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
@@ -54,6 +63,7 @@
     "mocha-lcov-reporter": "^1.3.0",
     "nodemon": "^1.18.10",
     "nyc": "^14.0.0",
+    "prettier": "^1.17.0",
     "supertest": "^4.0.2"
   }
 }

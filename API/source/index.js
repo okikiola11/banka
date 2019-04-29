@@ -14,9 +14,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.get('/', (req, res) => res.send('Welcome, to the Web Banking Application!'));
 
-app.use('/api/v1/auth', userRoutes);
+app.use('/api/v1', userRoutes);
 app.use('/api/v1/accounts', accountsRoutes);
-app.use('/api/v1/transactions/:accountNumber', transactionRoutes);
+app.use('/api/v1/transactions', transactionRoutes);
 
 app.all('*', (req, res) => {
     res.status(404).json({
@@ -30,5 +30,6 @@ app.listen(port, () => {
     // eslint-disable-next-line no-console
     console.log(` Server is running on PORT: ${port}`);
 });
+
 
 export default app;

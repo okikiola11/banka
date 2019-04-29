@@ -7,9 +7,7 @@ exports.default = void 0;
 
 var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
-var _check = require("express-validator/check");
-
-var _userData = _interopRequireDefault(require("../utils/userData"));
+var _userModel = _interopRequireDefault(require("../models/userModel"));
 
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
 
@@ -25,112 +23,102 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var userController =
+var UserController =
 /*#__PURE__*/
 function () {
-  function userController() {
-    _classCallCheck(this, userController);
+  function UserController() {
+    _classCallCheck(this, UserController);
   }
 
-  _createClass(userController, null, [{
+  _createClass(UserController, null, [{
     key: "signupUser",
     value: function () {
       var _signupUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, _req$body, firstName, lastName, email, phone, gender, hashedPassword, newId, userType, user, payLoad, token;
+        var _req$body, firstName, lastName, email, type, isadmin, accountType, isAdmin, member, hashedPassword, client, id, token;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                errors = (0, _check.validationResult)(req);
+                _req$body = req.body, firstName = _req$body.firstName, lastName = _req$body.lastName, email = _req$body.email, type = _req$body.type, isadmin = _req$body.isadmin;
 
-                if (errors.isEmpty()) {
-                  _context.next = 6;
+                // get isadmin type
+                if (type === undefined) {
+                  accountType = 'client';
+                } else {
+                  accountType = type;
+                }
+
+                if (isadmin === undefined) {
+                  isAdmin = false;
+                } else {
+                  isAdmin = true;
+                }
+
+                _context.next = 6;
+                return _userModel.default.findByEmail(email);
+
+              case 6:
+                member = _context.sent;
+
+                if (!member) {
+                  _context.next = 9;
                   break;
                 }
 
-                validateErrors = errors.array();
-                errArray = validateErrors.map(function (obj) {
-                  var rObj = {};
-                  rObj[obj.param] = obj.msg;
-                  rObj.value = obj.value;
-                  return rObj;
-                });
-                return _context.abrupt("return", res.status(401).json({
-                  status: 401,
-                  error: 'Validation failed, check errors property for more details',
-                  errors: errArray
+                return _context.abrupt("return", res.status(409).json({
+                  status: 409,
+                  message: 'Email already exist'
                 }));
 
-              case 6:
-                _req$body = req.body, firstName = _req$body.firstName, lastName = _req$body.lastName, email = _req$body.email, phone = _req$body.phone, gender = _req$body.gender;
-                _context.next = 9;
+              case 9:
+                _context.next = 11;
                 return _bcryptjs.default.hash(req.body.password, 8);
 
-              case 9:
+              case 11:
                 hashedPassword = _context.sent;
-                newId = _userData.default[_userData.default.length - 1].id + 1; // get the id of the newly created user
+                _context.next = 14;
+                return _userModel.default.SaveClient(firstName, lastName, email, hashedPassword, accountType, isAdmin);
 
-                userType = {
-                  user: true,
-                  admin: false,
-                  staff: false
-                };
+              case 14:
+                client = _context.sent;
+
                 /* new user to be created */
-
-                user = {
-                  id: newId,
-                  firstName: firstName,
-                  lastName: lastName,
-                  email: email,
-                  phone: phone,
-                  gender: gender,
-                  password: hashedPassword,
-                  userType: userType
-                };
-
-                _userData.default.push(user);
-
-                payLoad = {
-                  newId: newId,
-                  firstName: firstName,
-                  lastName: lastName,
-                  email: email,
-                  phone: phone,
-                  gender: gender,
-                  userType: userType
-                };
+                id = client.id;
                 token = _authMiddleware.default.generateToken({
-                  id: newId,
-                  userType: userType
+                  id: id,
+                  type: accountType,
+                  isadmin: isAdmin
                 });
                 return _context.abrupt("return", res.status(201).json({
                   status: 201,
                   message: 'New User has been created',
                   data: [{
-                    auth: 'true',
+                    id: id,
                     token: token,
-                    payLoad: payLoad
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email
                   }]
                 }));
 
-              case 19:
-                _context.prev = 19;
+              case 20:
+                _context.prev = 20;
                 _context.t0 = _context["catch"](0);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   error: 'something went wrong while trying to create a user'
                 }));
 
-              case 22:
+              case 23:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 19]]);
+        }, _callee, null, [[0, 20]]);
       }));
 
       function signupUser(_x, _x2) {
@@ -145,101 +133,81 @@ function () {
       var _loginUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res) {
-        var errors, validateErrors, errArray, _req$body2, email, password, user, passwordIsValid, id, userType, firstName, newId, lastName, token, payLoad;
+        var _req$body2, email, password, client, passwordIsValid, id, type, isadmin, firstname, lastname, token;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.prev = 0;
-                errors = (0, _check.validationResult)(req);
+                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
+                _context2.next = 4;
+                return _userModel.default.findByEmail(email);
 
-                if (errors.isEmpty()) {
-                  _context2.next = 6;
+              case 4:
+                client = _context2.sent;
+
+                if (client) {
+                  _context2.next = 7;
                   break;
                 }
 
-                validateErrors = errors.array();
-                errArray = validateErrors.map(function (obj) {
-                  var rObj = {};
-                  rObj[obj.param] = obj.msg;
-                  rObj.value = obj.value;
-                  return rObj;
-                });
-                return _context2.abrupt("return", res.status(401).json({
-                  status: 401,
-                  error: 'Validation failed, check errors property for more details',
-                  errors: errArray
+                return _context2.abrupt("return", res.status(404).json({
+                  status: 404,
+                  error: 'User not found'
                 }));
 
-              case 6:
-                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
-                user = _userData.default.find(function (member) {
-                  return member.email === email;
-                });
+              case 7:
+                _context2.next = 9;
+                return _bcryptjs.default.compare(password, client.password);
 
-                if (user) {
-                  _context2.next = 10;
-                  break;
-                }
-
-                return _context2.abrupt("return", res.status(404).send('No user found.'));
-
-              case 10:
-                _context2.next = 12;
-                return _bcryptjs.default.compare(password, user.password);
-
-              case 12:
+              case 9:
                 passwordIsValid = _context2.sent;
 
                 if (passwordIsValid) {
-                  _context2.next = 15;
+                  _context2.next = 12;
                   break;
                 }
 
-                return _context2.abrupt("return", res.status(401).json({
-                  status: 401,
+                return _context2.abrupt("return", res.status(403).json({
+                  status: 403,
                   auth: 'false',
                   message: 'Incorrect Password'
                 }));
 
-              case 15:
-                id = user.id, userType = user.userType, firstName = user.firstName, newId = user.newId, lastName = user.lastName;
+              case 12:
+                id = client.id, type = client.type, isadmin = client.isadmin, firstname = client.firstname, lastname = client.lastname;
                 token = _authMiddleware.default.generateToken({
                   id: id,
-                  userType: userType
+                  isadmin: isadmin,
+                  type: type
                 });
-                payLoad = {
-                  newId: newId,
-                  firstName: firstName,
-                  lastName: lastName,
-                  email: email,
-                  userType: userType
-                };
                 return _context2.abrupt("return", res.status(200).json({
                   status: 200,
-                  message: "Welcome ".concat(user.email, ", you have successfully logged in"),
-                  data: [{
-                    auth: 'true',
+                  message: "Welcome ".concat(email, ", you have successfully logged in"),
+                  data: {
+                    id: id,
                     token: token,
-                    payLoad: payLoad
-                  }]
+                    firstName: firstname,
+                    lastName: lastname,
+                    email: email
+                  }
                 }));
 
-              case 21:
-                _context2.prev = 21;
+              case 17:
+                _context2.prev = 17;
                 _context2.t0 = _context2["catch"](0);
                 return _context2.abrupt("return", res.status(404).json({
                   status: 404,
                   message: 'User record does not exist'
                 }));
 
-              case 24:
+              case 20:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 21]]);
+        }, _callee2, null, [[0, 17]]);
       }));
 
       function loginUser(_x3, _x4) {
@@ -250,8 +218,8 @@ function () {
     }()
   }]);
 
-  return userController;
+  return UserController;
 }();
 
-var _default = userController;
+var _default = UserController;
 exports.default = _default;

@@ -1,37 +1,18 @@
-import {
-    validationResult,
-} from 'express-validator/check';
-import transactions from '../utils/transactionsData';
-import accountData from '../utils/accountsData';
-import userdata from '../utils/userData';
+import Transaction from '../models/transactionModel';
+import Accounts from '../models/accountModel';
 
 class transaction {
     static async creditAccount(req, res) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                const validateErrors = errors.array();
-
-                const errArray = validateErrors.map((obj) => {
-                    const rObj = {};
-                    rObj[obj.param] = obj.msg;
-                    rObj.value = obj.value;
-                    return rObj;
-                });
-
-                return res.status(401).json({
-                    status: 401,
-                    error: 'Validation failed, check errors property for more details',
-                    errors: errArray,
-                });
-            }
             const {
                 amount,
-                accountNumber,
             } = req.body;
-            const Account = accountData.find(creditAccount => creditAccount.accountNumber === accountNumber); // get accountNumber from the list of account
+            const {
+                accountNumber,
+            } = req.params;
+            const account = await Accounts.getSingleAccount(accountNumber);
 
-            if (Account === undefined) { // if acct does not exist
+            if (!account) { // if acct does not exist
                 return res.status(404).json({
                     status: 404,
                     message: 'Account does not exist',
@@ -39,69 +20,47 @@ class transaction {
             }
 
             const {
-                accountBalance,
-            } = Account;
-            const creditAccountBal = parseFloat(+accountBalance + +amount);
+                balance,
+            } = account;
 
-            Account.accountBalance = creditAccountBal;
-            const cashierData = userdata.find(details => details.id === req.data.id);
+            const creditAccountBal = parseFloat(+balance + +amount);
+            await Accounts.updateAccountBal(accountNumber, creditAccountBal);
+            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'credit', creditAccountBal, balance);
+
             const {
-                firstName,
-                lastName,
-            } = cashierData;
-
-            const newCreditTransaction = {
-                transactionId: transactions[transactions.length - 1].transactionId + 1,
-                accountNumber,
-                amount,
-                cashier: `${firstName} ${lastName}`,
-                transactionType: 'credit',
-                accountBalance: creditAccountBal,
-                createdOn: new Date().toLocaleString(),
-            };
-            transactions.push(newCreditTransaction);
-
+                transactionid,
+            } = transactionData;
             return res.status(201).json({
                 status: 201,
                 message: 'Account has been successfully credited',
-                data: [newCreditTransaction],
+                data: {
+                    transactionId: transactionid,
+                    accountNumber,
+                    amount,
+                    cashier: req.data.id,
+                    transactionType: 'credit',
+                    accountBalance: creditAccountBal,
+                },
             });
         } catch (error) {
-            return res.status(422).json({
-                // 422 unprocessable entity
-                status: 422,
-                message: 'Transaction not completed',
+            console.log(error.stack);
+            return res.status(500).json({
+                status: 500,
+                message: 'Something went wrong while trying to credit your account',
             });
         }
     }
 
-    static debitAccount(req, res) {
+    static async debitAccount(req, res) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                const validateErrors = errors.array();
-
-                const errArray = validateErrors.map((obj) => {
-                    const rObj = {};
-                    rObj[obj.param] = obj.msg;
-                    rObj.value = obj.value;
-                    return rObj;
-                });
-
-                return res.status(401).json({
-                    status: 401,
-                    error: 'Validation failed, check errors property for more details',
-                    errors: errArray,
-                });
-            }
             const {
                 amount,
-                accountNumber,
             } = req.body;
-            const Account = accountData.find(account => account.accountNumber === accountNumber); // get accountNumber from the list of account
-            const accountIndex = accountData.indexOf(Account);
-
-            if (Account === undefined) { // if acct does not exist
+            const {
+                accountNumber,
+            } = req.params;
+            const account = await Accounts.getSingleAccount(accountNumber);
+            if (!account) { // if acct does not exist
                 return res.status(404).json({
                     status: 404,
                     message: 'Account does not exist',
@@ -109,9 +68,10 @@ class transaction {
             }
 
             const {
-                accountBalance,
-            } = Account;
-            const getBal = parseInt(accountBalance, 10);
+                balance,
+            } = account;
+
+            const getBal = parseInt(balance, 10);
             const getAmount = parseInt(amount, 10);
             if (getBal < getAmount) {
                 return res.status(409).json({
@@ -119,35 +79,71 @@ class transaction {
                     message: 'Insufficient funds for this transaction',
                 });
             }
-            const newAccountBal = parseFloat(accountBalance - amount);
-            Account.accountBalance = newAccountBal;
-            accountData.splice(accountIndex, 1, Account); // replaces 1 element(cuts off) at 1th index
-
-            const cashierData = userdata.find(details => details.id === req.data.id);
+            const newAccountBal = parseFloat(getBal - getAmount);
+            await Accounts.updateAccountBal(accountNumber, newAccountBal);
+            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'debit', balance, newAccountBal);
             const {
-                firstName,
-                lastName,
-            } = cashierData;
-            const newTransaction = {
-                transactionId: transactions[transactions.length - 1].transactionId + 1,
-                accountNumber,
-                amount,
-                cashier: `${firstName} ${lastName}`,
-                transactionType: 'debit',
-                accountBalance: newAccountBal,
-                createdOn: new Date().toLocaleString(),
-            };
-            transactions.push(newTransaction);
-
+                transactionid,
+            } = transactionData;
             return res.status(201).json({
                 status: 201,
-                message: 'Account has been debited successfully',
-                data: [newTransaction],
+                message: 'Account has been successfully debited',
+                data: {
+                    transactionId: transactionid,
+                    accountNumber,
+                    amount,
+                    cashier: req.data.id,
+                    transactionType: 'debit',
+                    accountBalance: newAccountBal,
+                },
             });
         } catch (error) {
-            return res.status(422).json({
-                status: 422,
-                error: 'Transaction failed',
+            return res.status(500).json({
+                status: 500,
+                error: 'Something went wrong while trying to debit your account',
+            });
+        }
+    }
+
+    static async getSingleTransactions(req, res) {
+        try {
+            const {
+                transactionId,
+            } = req.params;
+
+            const allTransaction = await Transaction.getSingleTransactions(transactionId);
+            if (!allTransaction) { // no transactions
+                return res.status(404).json({
+                    status: 404,
+                    error: 'No account transaction found',
+                });
+            }
+            const {
+                transactionid,
+                amount,
+                transactiontype,
+                newbalance,
+                oldbalance,
+                createdon,
+                accountnumber,
+            } = allTransaction;
+            return res.status(200).json({
+                status: 200,
+                message: 'Transaction has been successfully retrieved',
+                data: {
+                    transactionId: transactionid,
+                    createdOn: createdon,
+                    type: transactiontype,
+                    accountNumber: accountnumber,
+                    amount,
+                    oldBalance: oldbalance,
+                    newBalance: newbalance,
+                },
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                error: 'Something went wrong while trying to retrieve all accounts',
             });
         }
     }

@@ -36,11 +36,9 @@ describe('/ User Auth Signup Endpoint ', function () {
         firstName: '',
         lastName: '',
         email: '',
-        phone: '',
-        gender: '',
         password: ''
-      }).expect(401).expect(function (response) {
-        expect(response.body.status).to.equal(401);
+      }).expect(400).expect(function (response) {
+        expect(response.body.status).to.equal(400);
         expect(response.body.error).to.equal('Validation failed, check errors property for more details');
         expect(response.body).to.have.all.keys('status', 'error', 'errors');
       }).end(done);
@@ -50,14 +48,11 @@ describe('/ User Auth Signup Endpoint ', function () {
         firstName: 'Okikiola',
         lastName: 'Apelehin',
         email: 'user@gmail.com',
-        phone: '08023182819',
-        gender: 'female',
-        user: true,
         password: 'okiki123'
       }).expect(201).expect(function (response) {
         expect(response.body.status).to.equal(201);
         expect(response.body.message).to.equal('New User has been created');
-        expect(response.body.data[0]).to.have.all.keys('auth', 'token', 'payLoad');
+        expect(response.body.data[0]).to.have.all.keys('id', 'token', 'firstName', 'lastName', 'email');
       }).end(done);
     });
   });
@@ -68,8 +63,8 @@ describe('/ User Auth Login Endpoint ', function () {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).set('Accept', 'application/json').send({
         email: '',
         password: ''
-      }).expect(401).expect(function (response) {
-        expect(response.body.status).to.equal(401);
+      }).expect(400).expect(function (response) {
+        expect(response.body.status).to.equal(400);
         expect(response.body.error).to.equal('Validation failed, check errors property for more details');
       }).end(done);
     });
@@ -77,20 +72,19 @@ describe('/ User Auth Login Endpoint ', function () {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).send({
         email: 'user@gmail.com',
         password: 'okiki111'
-      }).expect(401).expect(function (response) {
-        expect(response.body.status).to.equal(401);
-        expect(response.body.auth).to.equal('false');
+      }).expect(403).expect(function (response) {
+        expect(response.body.status).to.equal(403);
         expect(response.body.message).to.equal('Incorrect Password');
       }).end(done);
     });
     it('should allow a user to login after signing up ', function (done) {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).set('Accept', 'application/json').send({
-        email: 'user@gmail.com',
-        password: 'okiki123'
+        email: 'john.doe@gmail.com',
+        password: 'johnny'
       }).expect(200).expect(function (response) {
         expect(response.body.status).to.equal(200);
-        expect(response.body.message).to.equal('Welcome user@gmail.com, you have successfully logged in');
-        expect(response.body.data[0]).to.have.all.keys('auth', 'token', 'payLoad');
+        expect(response.body.message).to.equal('Welcome john.doe@gmail.com, you have successfully logged in');
+        expect(response.body.data).to.have.all.keys('id', 'token', 'firstName', 'lastName', 'email');
       }).end(done);
     });
   });
