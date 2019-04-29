@@ -40,7 +40,8 @@ const createTables = async () => {
             amount varchar,
             cashierID INTEGER NOT NULL,
             transactionType varchar,
-            accountBalance varchar NOT NULL,
+            oldBalance varchar NOT NULL,
+            newBalance varchar NOT NULL,
             createdOn TIMESTAMP NOT NULL DEFAULT NOW(),
             FOREIGN KEY (cashierID) REFERENCES users (ID) ON DELETE CASCADE
         );

@@ -22,15 +22,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var User =
 /*#__PURE__*/
 function () {
-  function User(firstName, lastName, email, password, type, isAdmin) {
+  function User() {
     _classCallCheck(this, User);
-
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.password = password;
-    this.type = type;
-    this.isAdmin = isAdmin;
   }
 
   _createClass(User, null, [{
@@ -38,15 +31,15 @@ function () {
     value: function () {
       var _SaveClient = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(firstName, lastName, email, password) {
+      regeneratorRuntime.mark(function _callee(firstName, lastName, email, password, accountType, isAdmin) {
         var query, values, _ref, rows;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                query = "INSERT INTO\n            users(firstName, lastName, email, password)\n            VALUES($1, $2, $3, $4)\n            returning *";
-                values = [firstName, lastName, email, password];
+                query = "INSERT INTO\n            users(firstName, lastName, email, password, type, isadmin)\n            VALUES($1, $2, $3, $4, $5, $6)\n            returning *";
+                values = [firstName, lastName, email, password, accountType, isAdmin];
                 _context.next = 4;
                 return _index.default.query(query, values);
 
@@ -63,7 +56,7 @@ function () {
         }, _callee);
       }));
 
-      function SaveClient(_x, _x2, _x3, _x4) {
+      function SaveClient(_x, _x2, _x3, _x4, _x5, _x6) {
         return _SaveClient.apply(this, arguments);
       }
 
@@ -99,7 +92,7 @@ function () {
         }, _callee2);
       }));
 
-      function findByEmail(_x5) {
+      function findByEmail(_x7) {
         return _findByEmail.apply(this, arguments);
       }
 
@@ -135,7 +128,7 @@ function () {
         }, _callee3);
       }));
 
-      function findById(_x6) {
+      function findById(_x8) {
         return _findById.apply(this, arguments);
       }
 

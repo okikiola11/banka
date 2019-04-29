@@ -18,22 +18,22 @@ const {
 
 const API_PREFIX = '/api/v1';
 const token = jwt.sign({
-    id: 1,
-    type: 'client',
-},
-process.env.SECRET, {
-    expiresIn: 86400, // expires cmdin 24hours
-});
+        id: 4,
+        type: 'client',
+    },
+    process.env.SECRET, {
+        expiresIn: 86400, // expires cmdin 24hours
+    });
 const staffToken = jwt.sign({
-    id: 1,
-    type: 'staff',
-    isAdmin: false,
-},
-process.env.SECRET, {
-    expiresIn: 86400, // expires cmdin 24hours
-});
+        id: 1,
+        type: 'staff',
+        isAdmin: false,
+    },
+    process.env.SECRET, {
+        expiresIn: 86400, // expires cmdin 24hours
+    });
 
-describe('/ User Account Auth Endpoint ', () => {
+describe('/ Account Endpoint ', () => {
     describe('/ POST accounts - Account Setup (Required)', () => {
         it('should be able to create a bank account', (done) => {
             request(app)
@@ -81,6 +81,87 @@ describe('/ User Account Auth Endpoint ', () => {
     });
 
     describe('/ GET all accounts ', () => {
+        it('should get all dormant accounts ', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts?status=dormant`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Successfully retrieved all dormant accounts');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon',
+                        );
+                })
+                .end(done);
+        });
+        it('should return only all dormant accounts owned by the client in the event that a client makes a request with this route', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts?status=dormant`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${token}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Successfully retrieved all dormant accounts');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon',
+                        );
+                    expect(response.body.data[0].id).to.equal(response.body.data[0].ownerid);
+                })
+                .end(done);
+        });
+        it('should get all active accounts ', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts?status=active`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Successfully retrieved all active accounts');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon',
+                        );
+                })
+                .end(done);
+        });
+        it('should get all draft accounts ', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts?status=draft`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Successfully retrieved all draft accounts');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon',
+                        );
+                })
+                .end(done);
+        });
         it('should get all account ', (done) => {
             request(app)
                 .get(`${API_PREFIX}/accounts`)
@@ -106,7 +187,7 @@ describe('/ User Account Auth Endpoint ', () => {
     describe('/ GET a single user accounts ', () => {
         it('should get a single account ', (done) => {
             request(app)
-                .get(`${API_PREFIX}/accounts/2050030400`)
+                .get(`${API_PREFIX}/accounts/2050030485`)
                 .set('Accept', 'application/json')
                 .set('Authorization', `${staffToken}`)
                 .expect(200)
@@ -167,7 +248,7 @@ describe('/ UPDATE account ', () => {
 
     it('should activate or deactivate account ', (done) => {
         request(app)
-            .patch(`${API_PREFIX}/accounts/2050030400`)
+            .patch(`${API_PREFIX}/accounts/2050030485`)
             .set('Accept', 'application/json')
             .set('Authorization', `${staffToken}`)
             .send({
@@ -225,7 +306,7 @@ describe('/ DELETE account ', () => {
 
     it('should delete a user account ', (done) => {
         request(app)
-            .delete(`${API_PREFIX}/accounts/2050030400`)
+            .delete(`${API_PREFIX}/accounts/2050030485`)
             .set('Accept', 'application/json')
             .set('Authorization', `${staffToken}`)
             .expect(200)

@@ -81,9 +81,10 @@ describe('/ User Auth Signup Endpoint ', () => {
                 .expect((response) => {
                     expect(response.body.status).to.equal(201);
                     expect(response.body.message).to.equal('New User has been created');
-                    expect(response.body.data[0]).to.have.all.keys(
-                        'id', 'auth', 'token', 'firstName', 'lastName', 'email', 'type', 'isadmin',
-                    );
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'token', 'firstName', 'lastName', 'email',
+                        );
                 })
                 .end(done);
         });
@@ -117,10 +118,9 @@ describe('/ User Auth Login Endpoint ', () => {
                     email: 'user@gmail.com',
                     password: 'okiki111',
                 })
-                .expect(400)
+                .expect(403)
                 .expect((response) => {
-                    expect(response.body.status).to.equal(400);
-                    expect(response.body.auth).to.equal('false');
+                    expect(response.body.status).to.equal(403);
                     expect(response.body.message).to.equal('Incorrect Password');
                 })
                 .end(done);
@@ -140,9 +140,8 @@ describe('/ User Auth Login Endpoint ', () => {
                     expect(response.body.message).to.equal(
                         'Welcome john.doe@gmail.com, you have successfully logged in',
                     );
-                    expect(response.body.data[0]).to.have.all.keys(
+                    expect(response.body.data).to.have.all.keys(
                         'id',
-                        'auth',
                         'token',
                         'firstName',
                         'lastName',

@@ -1,37 +1,30 @@
 import bcrypt from 'bcryptjs';
-import {
-    validationResult,
-} from 'express-validator/check';
 import User from '../models/userModel';
 import authMiddleware from '../middleware/authMiddleware';
-import db from '../db';
 
 class UserController {
     static async signupUser(req, res) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                const validateErrors = errors.array();
-
-                const errArray = validateErrors.map((obj) => {
-                    const rObj = {};
-                    rObj[obj.param] = obj.msg;
-                    rObj.value = obj.value;
-                    return rObj;
-                });
-
-                return res.status(400).json({
-                    status: 400,
-                    error: 'Validation failed, check errors property for more details',
-                    errors: errArray,
-                });
-            }
-
             const {
                 firstName,
                 lastName,
                 email,
+                type,
+                isadmin,
             } = req.body;
+            let accountType; // get accttype
+            let isAdmin; // get isadmin type
+            if (type === undefined) {
+                accountType = 'client';
+            } else {
+                accountType = type;
+            }
+            if (isadmin === undefined) {
+                isAdmin = false;
+            } else {
+                isAdmin = true;
+            }
+
             const member = await User.findByEmail(email);
             if (member) { // if email already exist
                 return res.status(409).json({
@@ -41,41 +34,27 @@ class UserController {
             }
             const hashedPassword = await bcrypt.hash(req.body.password, 8);
 
-            const client = await User.SaveClient(firstName, lastName, email, hashedPassword);
-
+            const client = await User.SaveClient(firstName, lastName, email, hashedPassword, accountType, isAdmin);
             /* new user to be created */
             const {
                 id,
-                type,
-                isadmin,
+                // type,
+                // isadmin,
             } = client;
-
-            const payLoad = {
-                id,
-                firstName,
-                lastName,
-                email,
-                type,
-                isadmin,
-            };
             const token = authMiddleware.generateToken({
                 id,
-                type,
-                isadmin,
+                type: accountType,
+                isadmin: isAdmin,
             });
-
             return res.status(201).json({
                 status: 201,
                 message: 'New User has been created',
                 data: [{
                     id,
-                    auth: 'true',
                     token,
                     firstName,
                     lastName,
                     email,
-                    type,
-                    isadmin,
                 }],
             });
         } catch (error) {
@@ -89,24 +68,6 @@ class UserController {
 
     static async loginUser(req, res) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                const validateErrors = errors.array();
-
-                const errArray = validateErrors.map((obj) => {
-                    const rObj = {};
-                    rObj[obj.param] = obj.msg;
-                    rObj.value = obj.value;
-                    return rObj;
-                });
-
-                return res.status(400).json({
-                    status: 400,
-                    error: 'Validation failed, check errors property for more details',
-                    errors: errArray,
-                });
-            }
-
             const {
                 email,
                 password,
@@ -115,15 +76,15 @@ class UserController {
             const client = await User.findByEmail(email);
 
             if (!client) {
-                return res.status(400).json({
-                    status: 400,
+                return res.status(404).json({
+                    status: 404,
                     error: 'User not found',
                 });
             }
             const passwordIsValid = await bcrypt.compare(password, client.password);
             if (!passwordIsValid) {
-                return res.status(400).json({
-                    status: 400,
+                return res.status(403).json({
+                    status: 403,
                     auth: 'false',
                     message: 'Incorrect Password',
                 });
@@ -145,14 +106,13 @@ class UserController {
             return res.status(200).json({
                 status: 200,
                 message: `Welcome ${email}, you have successfully logged in`,
-                data: [{
+                data: {
                     id,
-                    auth: 'true',
                     token,
                     firstName: firstname,
                     lastName: lastname,
                     email,
-                }],
+                },
             });
         } catch (error) {
             return res.status(404).json({

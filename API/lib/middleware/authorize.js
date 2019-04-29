@@ -30,13 +30,14 @@ function () {
     key: "authTransaction",
     value: function authTransaction(req, res, next) {
       if (!req.data.type === 'staff') {
+        console.log('rgggggggggggggggggggggggggggggggggg');
         return res.status(403).json({
           status: 403,
           message: 'Access denied'
         });
       }
 
-      next();
+      return next();
     }
   }, {
     key: "clientAccount",

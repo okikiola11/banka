@@ -52,7 +52,7 @@ describe('/ User Auth Signup Endpoint ', function () {
       }).expect(201).expect(function (response) {
         expect(response.body.status).to.equal(201);
         expect(response.body.message).to.equal('New User has been created');
-        expect(response.body.data[0]).to.have.all.keys('id', 'auth', 'token', 'firstName', 'lastName', 'email', 'type', 'isadmin');
+        expect(response.body.data[0]).to.have.all.keys('id', 'token', 'firstName', 'lastName', 'email');
       }).end(done);
     });
   });
@@ -72,9 +72,8 @@ describe('/ User Auth Login Endpoint ', function () {
       (0, _supertest.default)(_index.default).post("".concat(API_PREFIX, "/auth/signin")).send({
         email: 'user@gmail.com',
         password: 'okiki111'
-      }).expect(400).expect(function (response) {
-        expect(response.body.status).to.equal(400);
-        expect(response.body.auth).to.equal('false');
+      }).expect(403).expect(function (response) {
+        expect(response.body.status).to.equal(403);
         expect(response.body.message).to.equal('Incorrect Password');
       }).end(done);
     });
@@ -85,7 +84,7 @@ describe('/ User Auth Login Endpoint ', function () {
       }).expect(200).expect(function (response) {
         expect(response.body.status).to.equal(200);
         expect(response.body.message).to.equal('Welcome john.doe@gmail.com, you have successfully logged in');
-        expect(response.body.data[0]).to.have.all.keys('id', 'auth', 'token', 'firstName', 'lastName', 'email');
+        expect(response.body.data).to.have.all.keys('id', 'token', 'firstName', 'lastName', 'email');
       }).end(done);
     });
   });

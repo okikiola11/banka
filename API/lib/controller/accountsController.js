@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _check = require("express-validator/check");
-
 var _util = _interopRequireDefault(require("../utils/util"));
 
 var _accountModel = _interopRequireDefault(require("../models/accountModel"));
@@ -38,47 +36,26 @@ function () {
       var _createAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var errors, validateErrors, errArray, type, accountNumber, id, newAccount, balance, userData, firstname, lastname, email;
+        var type, accountNumber, id, newAccount, balance, userData, firstname, lastname, email;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                errors = (0, _check.validationResult)(req);
-
-                if (errors.isEmpty()) {
-                  _context.next = 6;
-                  break;
-                }
-
-                validateErrors = errors.array();
-                errArray = validateErrors.map(function (obj) {
-                  var rObj = {};
-                  rObj[obj.param] = obj.msg;
-                  rObj.value = obj.value;
-                  return rObj;
-                });
-                return _context.abrupt("return", res.status(400).json({
-                  status: 400,
-                  error: 'Validation failed, check errors property for more details',
-                  errors: errArray
-                }));
-
-              case 6:
                 type = req.body.type;
                 accountNumber = _util.default.acctNumberGen();
                 id = req.data.id; // get owner Id from User table
 
-                _context.next = 11;
+                _context.next = 6;
                 return _accountModel.default.SaveAccount(accountNumber, id, 'draft', parseFloat(0), type);
 
-              case 11:
+              case 6:
                 newAccount = _context.sent;
                 balance = newAccount.balance;
-                _context.next = 15;
+                _context.next = 10;
                 return _userModel.default.findById(id);
 
-              case 15:
+              case 10:
                 userData = _context.sent;
                 firstname = userData.firstname, lastname = userData.lastname, email = userData.email;
                 return _context.abrupt("return", res.status(201).json({
@@ -97,20 +74,20 @@ function () {
                   }
                 }));
 
-              case 20:
-                _context.prev = 20;
+              case 15:
+                _context.prev = 15;
                 _context.t0 = _context["catch"](0);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   error: 'something went wrong while trying to create an account'
                 }));
 
-              case 23:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 20]]);
+        }, _callee, null, [[0, 15]]);
       }));
 
       function createAccount(_x, _x2) {
@@ -371,43 +348,22 @@ function () {
       var _updateAccount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4(req, res) {
-        var errors, validateErrors, errArray, status, accountNumber, account;
+        var status, accountNumber, account;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.prev = 0;
-                errors = (0, _check.validationResult)(req);
-
-                if (errors.isEmpty()) {
-                  _context4.next = 6;
-                  break;
-                }
-
-                validateErrors = errors.array();
-                errArray = validateErrors.map(function (obj) {
-                  var rObj = {};
-                  rObj[obj.param] = obj.msg;
-                  rObj.value = obj.value;
-                  return rObj;
-                });
-                return _context4.abrupt("return", res.status(400).json({
-                  status: 400,
-                  error: 'Validation failed, check errors property for more details',
-                  errors: errArray
-                }));
-
-              case 6:
                 status = req.body.status;
                 accountNumber = req.params.accountNumber;
-                _context4.next = 10;
+                _context4.next = 5;
                 return _accountModel.default.updateAccount(status, accountNumber);
 
-              case 10:
+              case 5:
                 account = _context4.sent;
 
                 if (account) {
-                  _context4.next = 13;
+                  _context4.next = 8;
                   break;
                 }
 
@@ -416,7 +372,7 @@ function () {
                   error: 'Account Number not found'
                 }));
 
-              case 13:
+              case 8:
                 return _context4.abrupt("return", res.status(200).json({
                   status: 200,
                   message: 'Account has been succesfully updated',
@@ -426,8 +382,8 @@ function () {
                   }]
                 }));
 
-              case 16:
-                _context4.prev = 16;
+              case 11:
+                _context4.prev = 11;
                 _context4.t0 = _context4["catch"](0);
                 return _context4.abrupt("return", res.status(500).json({
                   status: 500,
@@ -435,12 +391,12 @@ function () {
                   error: 'Something went wrong while trying to update your account'
                 }));
 
-              case 19:
+              case 14:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, null, [[0, 16]]);
+        }, _callee4, null, [[0, 11]]);
       }));
 
       function updateAccount(_x7, _x8) {

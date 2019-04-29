@@ -1,34 +1,15 @@
-import {
-    validationResult,
-} from 'express-validator/check';
 import Transaction from '../models/transactionModel';
 import Accounts from '../models/accountModel';
-import User from '../models/userModel';
 
 class transaction {
     static async creditAccount(req, res) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                const validateErrors = errors.array();
-
-                const errArray = validateErrors.map((obj) => {
-                    const rObj = {};
-                    rObj[obj.param] = obj.msg;
-                    rObj.value = obj.value;
-                    return rObj;
-                });
-
-                return res.status(400).json({
-                    status: 400,
-                    error: 'Validation failed, check errors property for more details',
-                    errors: errArray,
-                });
-            }
             const {
                 amount,
-                accountNumber,
             } = req.body;
+            const {
+                accountNumber,
+            } = req.params;
             const account = await Accounts.getSingleAccount(accountNumber);
             if (!account) { // if acct does not exist
                 return res.status(404).json({
@@ -40,9 +21,10 @@ class transaction {
             const {
                 balance,
             } = account;
+
             const creditAccountBal = parseFloat(+balance + +amount);
             await Accounts.updateAccountBal(accountNumber, creditAccountBal);
-            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'credit', creditAccountBal);
+            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'credit', creditAccountBal, balance);
 
             const {
                 transactionid,
@@ -69,27 +51,12 @@ class transaction {
 
     static async debitAccount(req, res) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                const validateErrors = errors.array();
-
-                const errArray = validateErrors.map((obj) => {
-                    const rObj = {};
-                    rObj[obj.param] = obj.msg;
-                    rObj.value = obj.value;
-                    return rObj;
-                });
-
-                return res.status(400).json({
-                    status: 400,
-                    error: 'Validation failed, check errors property for more details',
-                    errors: errArray,
-                });
-            }
             const {
                 amount,
-                accountNumber,
             } = req.body;
+            const {
+                accountNumber,
+            } = req.params;
             const account = await Accounts.getSingleAccount(accountNumber);
             if (!account) { // if acct does not exist
                 return res.status(404).json({
@@ -112,8 +79,7 @@ class transaction {
             }
             const newAccountBal = parseFloat(getBal - getAmount);
             await Accounts.updateAccountBal(accountNumber, newAccountBal);
-            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'debit', newAccountBal);
-
+            const transactionData = await Transaction.transact(accountNumber, amount, req.data.id, 'debit', balance, newAccountBal);
             const {
                 transactionid,
             } = transactionData;
@@ -128,11 +94,54 @@ class transaction {
                     transactionType: 'debit',
                     accountBalance: newAccountBal,
                 },
-            })
+            });
         } catch (error) {
             return res.status(500).json({
                 status: 500,
-                error: 'Something went wrong',
+                error: 'Something went wrong while trying to debit your account',
+            });
+        }
+    }
+
+    static async getSingleTransactions(req, res) {
+        try {
+            const {
+                transactionId,
+            } = req.params;
+
+            const allTransaction = await Transaction.getSingleTransactions(transactionId);
+            if (!allTransaction) { // no transactions
+                return res.status(404).json({
+                    status: 404,
+                    error: 'No account transaction found',
+                });
+            }
+            const {
+                transactionid,
+                amount,
+                transactiontype,
+                newbalance,
+                oldbalance,
+                createdon,
+                accountnumber,
+            } = allTransaction;
+            return res.status(200).json({
+                status: 200,
+                message: 'Transaction has been successfully retrieved',
+                data: {
+                    transactionId: transactionid,
+                    createdOn: createdon,
+                    type: transactiontype,
+                    accountNumber: accountnumber,
+                    amount,
+                    oldBalance: oldbalance,
+                    newBalance: newbalance,
+                },
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                error: 'Something went wrong while trying to retrieve all accounts',
             });
         }
     }

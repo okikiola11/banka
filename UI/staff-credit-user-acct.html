@@ -77,12 +77,6 @@
                         </li>
 
                         <li id="menu-dashbrd">
-                            <a href="notifcation.html">
-                                <span> Notification </span>
-                            </a>
-                        </li>
-
-                        <li id="menu-dashbrd">
                             <a href="index.html">
                                 <span> Log out </span>
                             </a>
@@ -100,7 +94,7 @@
 
         <div class="left-content">
 
-            <div class="hdr-acct"> Credit User Account</div>
+            <div class="hdr-acct"> Manage Account Transaction</div>
 
             <div class="inner-content contt-center">
 
@@ -113,34 +107,22 @@
                         </div>
 
                         <div>
-                            <label for="">Account Name</label>
-                            <input type="text" name="acct-name" id="inputbx" />
-                        </div>
-
-                        <div>
-                            <label for=""> Credit Account (amount) </label>
+                            <label for=""> Amount </label>
                             <input type="text" name="credit-acct" id="inputbx" />
-                            <small>Amount to be credited into account</small>
                         </div>
 
                         <div class="custom-select">
-                            <label for="">User role</label>
-                            <input type="text" placeholder="Staff" name="user-role" id="inputbx" />
-                        </div>
-
-                        <div class="custom-select">
-                            <label for="">Account Type</label>
-                            <input type="text" placeholder="Savings" name="acct-type" id="inputbx" />
-                        </div>
-
-                        <div>
-                            <label for=""> Old Balance </label>
-                            <input type="text" placeholder="NGN200,000" name="available-bal" id="inputbx" />
+                            <label for=""> Transaction type </label>
+                            <select id="inputbx">
+                                <option value="0">--- Select Transaction type ---</option>
+                                <option value="1">Credit</option>
+                                <option value="2">Debit</option>
+                            </select>
                         </div>
 
                         <div class="btn-action">
                             <div class="btn-yes btn-create-u">
-                                <a href="staff-get-user-transactns.html"> Credit </a>
+                                <a href="staff-get-user-transactns.html"> Submit </a>
                             </div>
 
                             <div class="btn-no btn-create-u">

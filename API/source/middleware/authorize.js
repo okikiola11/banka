@@ -8,7 +8,7 @@ class authorize {
                 message: 'Access denied',
             });
         }
-        next();
+        return next();
     }
 
     static async clientAccount(req, res, next) {
