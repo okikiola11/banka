@@ -11,6 +11,7 @@ class transaction {
                 accountNumber,
             } = req.params;
             const account = await Accounts.getSingleAccount(accountNumber);
+
             if (!account) { // if acct does not exist
                 return res.status(404).json({
                     status: 404,
@@ -42,6 +43,7 @@ class transaction {
                 },
             });
         } catch (error) {
+            console.log(error.stack);
             return res.status(500).json({
                 status: 500,
                 message: 'Something went wrong while trying to credit your account',

@@ -1,5 +1,10 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
 var _chai = _interopRequireDefault(require("chai"));
 
 var _supertest = _interopRequireDefault(require("supertest"));
@@ -18,7 +23,8 @@ var API_PREFIX = '/api/v1';
 
 var token = _jsonwebtoken.default.sign({
   id: 4,
-  type: 'client'
+  type: 'client',
+  isAdmin: false
 }, process.env.SECRET, {
   expiresIn: 86400 // expires cmdin 24hours
 
@@ -71,7 +77,16 @@ describe('/ Account Endpoint ', function () {
         expect(response.body.status).to.equal(200);
         expect(response.body.message).to.equal('Successfully retrieved all dormant accounts');
         expect(response.body.data[0]).to.have.all.keys('id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon');
-        expect(response.body.data[0].id).to.equal(response.body.data[0].ownerid);
+        expect(response.body.data[0].ownerid).to.equal(4);
+      }).end(done);
+    });
+    it('should return only all active accounts owned by the client in the event that a client makes a request with this route', function (done) {
+      (0, _supertest.default)(_index.default).get("".concat(API_PREFIX, "/accounts?status=active")).set('Accept', 'application/json').set('Authorization', "".concat(token)).expect(200).expect(function (response) {
+        expect(response.body).to.have.all.keys('status', 'message', 'data');
+        expect(response.body.status).to.equal(200);
+        expect(response.body.message).to.equal('Successfully retrieved all active accounts');
+        expect(response.body.data[0]).to.have.all.keys('id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon');
+        expect(response.body.data[0].ownerid).to.equal(4);
       }).end(done);
     });
     it('should get all active accounts ', function (done) {
@@ -163,3 +178,5 @@ describe('/ DELETE account ', function () {
     }).end(done);
   });
 });
+var _default = token;
+exports.default = _default;

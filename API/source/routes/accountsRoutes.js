@@ -14,6 +14,7 @@ router.post('/', Validation.validateAccount(), Validate.validateResult, accounts
 router.patch('/:accountNumber', authorize.viewAccountAuth, Validation.validateUpdateAccount(), Validate.validateResult, accountsController.updateAccount);
 router.get('/', authorize.clientAccount, accountsController.getAllAccount);
 router.get('/:accountNumber', accountsController.getSingleAccount);
+router.get('/:accountNumber/transactions', authorize.viewAccountAuth, accountsController.getAccountTransaction);
 router.delete('/:accountNumber', authorize.viewAccountAuth, accountsController.deleteAccount);
 
 export default router;

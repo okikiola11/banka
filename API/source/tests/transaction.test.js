@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import {
     config,
 } from 'dotenv';
-
+import clientToken from './account.test';
 import app from '../index';
 
 config();
@@ -16,23 +16,17 @@ const {
     expect,
 } = chai;
 
+
 const API_PREFIX = '/api/v1';
 const staffToken = jwt.sign({
-        id: 1,
-        type: 'staff',
-        isAdmin: false,
-    },
-    process.env.SECRET, {
-        expiresIn: 86400, // expires cmdin 24hours
-    });
-const clientToken = jwt.sign({
-        id: 3456,
-        type: 'client',
-        isAdmin: false
-    },
-    process.env.SECRET, {
-        expiresIn: 86400, // expires cmdin 24hours
-    });
+    id: 1,
+    type: 'staff',
+    isAdmin: false,
+},
+process.env.SECRET, {
+    expiresIn: 86400, // expires cmdin 24hours
+});
+
 
 describe('/ Transaction Account Endpoint ', () => {
     describe('/ POST credit account transaction', () => {
@@ -198,6 +192,65 @@ describe('/ Transaction Account Endpoint ', () => {
                             error: 'No account transaction found',
                         })
                         .to.have.all.keys('status', 'error');
+                })
+                .end(done);
+        });
+    });
+});
+
+describe('/ Transaction Account Endpoint ', () => {
+    describe('/ GET transaction history for a specific account', () => {
+        it('should get a bank account transaction', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts/2050030401/transactions`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Successfully retrieved transaction history');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'transactionid', 'accountnumber', 'amount', 'cashierid', 'transactiontype', 'oldbalance', 'newbalance', 'createdon',
+                        );
+                })
+                .end(done);
+        });
+
+        it('should get a bank account transaction', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts/2050030190/transactions`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('No transaction history');
+                })
+                .end(done);
+        });
+
+        it('should get an error message if there is no bank account transaction', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts/1050030401/transactions`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${staffToken}`)
+                .expect(404)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.eql({
+                            status: 404,
+                            message: 'The requested account does not exist',
+                        })
+                        .to.have.all.keys('status', 'message');
                 })
                 .end(done);
         });
