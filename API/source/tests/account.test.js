@@ -18,20 +18,21 @@ const {
 
 const API_PREFIX = '/api/v1';
 const token = jwt.sign({
-        id: 4,
-        type: 'client',
-    },
-    process.env.SECRET, {
-        expiresIn: 86400, // expires cmdin 24hours
-    });
+    id: 4,
+    type: 'client',
+    isAdmin: false,
+},
+process.env.SECRET, {
+    expiresIn: 86400, // expires cmdin 24hours
+});
 const staffToken = jwt.sign({
-        id: 1,
-        type: 'staff',
-        isAdmin: false,
-    },
-    process.env.SECRET, {
-        expiresIn: 86400, // expires cmdin 24hours
-    });
+    id: 1,
+    type: 'staff',
+    isAdmin: false,
+},
+process.env.SECRET, {
+    expiresIn: 86400, // expires cmdin 24hours
+});
 
 describe('/ Account Endpoint ', () => {
     describe('/ POST accounts - Account Setup (Required)', () => {
@@ -118,7 +119,28 @@ describe('/ Account Endpoint ', () => {
                         .to.have.all.keys(
                             'id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon',
                         );
-                    expect(response.body.data[0].id).to.equal(response.body.data[0].ownerid);
+                    expect(response.body.data[0].ownerid).to.equal(4);
+                })
+                .end(done);
+        });
+        it('should return only all active accounts owned by the client in the event that a client makes a request with this route', (done) => {
+            request(app)
+                .get(`${API_PREFIX}/accounts?status=active`)
+                .set('Accept', 'application/json')
+                .set('Authorization', `${token}`)
+                .expect(200)
+                .expect((response) => {
+                    expect(response.body)
+                        .to.have.all.keys('status', 'message', 'data');
+                    expect(response.body.status)
+                        .to.equal(200);
+                    expect(response.body.message)
+                        .to.equal('Successfully retrieved all active accounts');
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'ownerid', 'accountnumber', 'type', 'status', 'balance', 'createdon', 'updatedon',
+                        );
+                    expect(response.body.data[0].ownerid).to.equal(4);
                 })
                 .end(done);
         });
@@ -321,3 +343,5 @@ describe('/ DELETE account ', () => {
             .end(done);
     });
 });
+
+export default token;

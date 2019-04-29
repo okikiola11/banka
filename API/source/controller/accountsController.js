@@ -1,6 +1,10 @@
+import {
+    get,
+} from 'https';
 import Utility from '../utils/util';
 import Accounts from '../models/accountModel';
 import User from '../models/userModel';
+import Transaction from '../models/transactionModel';
 
 class accountsController {
     static async createAccount(req, res) {
@@ -115,6 +119,39 @@ class accountsController {
             return res.status(500).json({
                 status: 500,
                 error: 'Something went wrong while trying to retrieve all accounts',
+            });
+        }
+    }
+
+    static async getAccountTransaction(req, res) {
+        try {
+            const {
+                accountNumber,
+            } = req.params;
+            const account = await Accounts.getSingleAccount(accountNumber);
+            if (!account) {
+                return res.status(404).json({
+                    status: 404,
+                    message: 'The requested account does not exist',
+                });
+            }
+            const transactionHistory = await Transaction.getAccountTransaction(accountNumber);
+            if (transactionHistory.length === 0) {
+                return res.status(200).json({
+                    status: 200,
+                    message: 'No transaction history',
+                    data: transactionHistory,
+                });
+            }
+            return res.status(200).json({
+                status: 200,
+                message: 'Successfully retrieved transaction history',
+                data: transactionHistory,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                error: 'Something went wrong while trying to retrieve account',
             });
         }
     }

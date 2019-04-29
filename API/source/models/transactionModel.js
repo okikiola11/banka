@@ -26,6 +26,18 @@ class Transaction {
 
         return rows[0];
     }
+
+    static async getAccountTransaction(accountNumber) {
+        const query = `
+        SELECT * FROM transactions  WHERE accountnumber = $1
+        `;
+        const values = [accountNumber];
+        const {
+            rows,
+        } = await db.query(query, values);
+
+        return rows;
+    }
 }
 
 export default Transaction;

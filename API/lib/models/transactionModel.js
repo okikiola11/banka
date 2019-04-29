@@ -98,6 +98,42 @@ function () {
 
       return getSingleTransactions;
     }()
+  }, {
+    key: "getAccountTransaction",
+    value: function () {
+      var _getAccountTransaction = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(accountNumber) {
+        var query, values, _ref3, rows;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                query = "\n        SELECT * FROM transactions  WHERE accountnumber = $1\n        ";
+                values = [accountNumber];
+                _context3.next = 4;
+                return _index.default.query(query, values);
+
+              case 4:
+                _ref3 = _context3.sent;
+                rows = _ref3.rows;
+                return _context3.abrupt("return", rows);
+
+              case 7:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function getAccountTransaction(_x8) {
+        return _getAccountTransaction.apply(this, arguments);
+      }
+
+      return getAccountTransaction;
+    }()
   }]);
 
   return Transaction;

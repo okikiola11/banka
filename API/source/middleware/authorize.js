@@ -1,8 +1,10 @@
 import Accounts from '../models/accountModel';
 
 class authorize {
-    static authTransaction(req, res, next) {
-        if (!req.data.type === 'staff') {
+    static async authTransaction(req, res, next) {
+        await req.data.type;
+        console.log(req.data.type);
+        if (req.data.type === 'client') {
             return res.status(403).json({
                 status: 403,
                 message: 'Access denied',

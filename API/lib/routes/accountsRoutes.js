@@ -25,6 +25,7 @@ router.post('/', _validator.default.validateAccount(), _validateResult.default.v
 router.patch('/:accountNumber', _authorize.default.viewAccountAuth, _validator.default.validateUpdateAccount(), _validateResult.default.validateResult, _accountsController.default.updateAccount);
 router.get('/', _authorize.default.clientAccount, _accountsController.default.getAllAccount);
 router.get('/:accountNumber', _accountsController.default.getSingleAccount);
+router.get('/:accountNumber/transactions', _authorize.default.viewAccountAuth, _accountsController.default.getAccountTransaction);
 router.delete('/:accountNumber', _authorize.default.viewAccountAuth, _accountsController.default.deleteAccount);
 var _default = router;
 exports.default = _default;

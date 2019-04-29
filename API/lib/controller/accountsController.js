@@ -5,11 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _https = require("https");
+
 var _util = _interopRequireDefault(require("../utils/util"));
 
 var _accountModel = _interopRequireDefault(require("../models/accountModel"));
 
 var _userModel = _interopRequireDefault(require("../models/userModel"));
+
+var _transactionModel = _interopRequireDefault(require("../models/transactionModel"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -255,12 +259,12 @@ function () {
       return getAllAccount;
     }()
   }, {
-    key: "getSingleAccount",
+    key: "getAccountTransaction",
     value: function () {
-      var _getSingleAccount = _asyncToGenerator(
+      var _getAccountTransaction = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee3(req, res) {
-        var accountNumber, account, ownerid;
+        var accountNumber, account, transactionHistory;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -278,65 +282,141 @@ function () {
                   break;
                 }
 
+                return _context3.abrupt("return", res.status(404).json({
+                  status: 404,
+                  message: 'The requested account does not exist'
+                }));
+
+              case 7:
+                _context3.next = 9;
+                return _transactionModel.default.getAccountTransaction(accountNumber);
+
+              case 9:
+                transactionHistory = _context3.sent;
+
+                if (!(transactionHistory.length === 0)) {
+                  _context3.next = 12;
+                  break;
+                }
+
+                return _context3.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'No transaction history',
+                  data: transactionHistory
+                }));
+
+              case 12:
+                return _context3.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'Successfully retrieved transaction history',
+                  data: transactionHistory
+                }));
+
+              case 15:
+                _context3.prev = 15;
+                _context3.t0 = _context3["catch"](0);
+                return _context3.abrupt("return", res.status(500).json({
+                  status: 500,
+                  error: 'Something went wrong while trying to retrieve account'
+                }));
+
+              case 18:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 15]]);
+      }));
+
+      function getAccountTransaction(_x5, _x6) {
+        return _getAccountTransaction.apply(this, arguments);
+      }
+
+      return getAccountTransaction;
+    }()
+  }, {
+    key: "getSingleAccount",
+    value: function () {
+      var _getSingleAccount = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4(req, res) {
+        var accountNumber, account, ownerid;
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.prev = 0;
+                accountNumber = req.params.accountNumber;
+                _context4.next = 4;
+                return _accountModel.default.getSingleAccount(accountNumber);
+
+              case 4:
+                account = _context4.sent;
+
+                if (account) {
+                  _context4.next = 7;
+                  break;
+                }
+
                 throw new Error('Account does not exist');
 
               case 7:
                 ownerid = account.ownerid; // check if user is actually the acct owner
 
                 if (!(ownerid !== req.data.id && req.data.type === 'client')) {
-                  _context3.next = 10;
+                  _context4.next = 10;
                   break;
                 }
 
                 throw new Error('Unauthorized');
 
               case 10:
-                return _context3.abrupt("return", res.status(200).json({
+                return _context4.abrupt("return", res.status(200).json({
                   status: 200,
                   message: 'Account has been successfully retrieved',
                   data: [account]
                 }));
 
               case 13:
-                _context3.prev = 13;
-                _context3.t0 = _context3["catch"](0);
+                _context4.prev = 13;
+                _context4.t0 = _context4["catch"](0);
 
-                if (!(_context3.t0.message === 'Account does not exist')) {
-                  _context3.next = 17;
+                if (!(_context4.t0.message === 'Account does not exist')) {
+                  _context4.next = 17;
                   break;
                 }
 
-                return _context3.abrupt("return", res.status(404).json({
+                return _context4.abrupt("return", res.status(404).json({
                   status: 404,
                   message: 'Account does not exist'
                 }));
 
               case 17:
-                if (!(_context3.t0.message === 'Unauthorized')) {
-                  _context3.next = 19;
+                if (!(_context4.t0.message === 'Unauthorized')) {
+                  _context4.next = 19;
                   break;
                 }
 
-                return _context3.abrupt("return", res.status(403).json({
+                return _context4.abrupt("return", res.status(403).json({
                   status: 403,
                   message: 'This account does not belong to you'
                 }));
 
               case 19:
-                return _context3.abrupt("return", res.status(500).json({
+                return _context4.abrupt("return", res.status(500).json({
                   status: 500,
                   message: 'Something went wrong while trying to retrieve account'
                 }));
 
               case 20:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, null, [[0, 13]]);
+        }, _callee4, null, [[0, 13]]);
       }));
 
-      function getSingleAccount(_x5, _x6) {
+      function getSingleAccount(_x7, _x8) {
         return _getSingleAccount.apply(this, arguments);
       }
 
@@ -347,33 +427,33 @@ function () {
     value: function () {
       var _updateAccount = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee4(req, res) {
+      regeneratorRuntime.mark(function _callee5(req, res) {
         var status, accountNumber, account;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _context4.prev = 0;
+                _context5.prev = 0;
                 status = req.body.status;
                 accountNumber = req.params.accountNumber;
-                _context4.next = 5;
+                _context5.next = 5;
                 return _accountModel.default.updateAccount(status, accountNumber);
 
               case 5:
-                account = _context4.sent;
+                account = _context5.sent;
 
                 if (account) {
-                  _context4.next = 8;
+                  _context5.next = 8;
                   break;
                 }
 
-                return _context4.abrupt("return", res.status(404).json({
+                return _context5.abrupt("return", res.status(404).json({
                   status: 404,
                   error: 'Account Number not found'
                 }));
 
               case 8:
-                return _context4.abrupt("return", res.status(200).json({
+                return _context5.abrupt("return", res.status(200).json({
                   status: 200,
                   message: 'Account has been succesfully updated',
                   data: [{
@@ -383,9 +463,9 @@ function () {
                 }));
 
               case 11:
-                _context4.prev = 11;
-                _context4.t0 = _context4["catch"](0);
-                return _context4.abrupt("return", res.status(500).json({
+                _context5.prev = 11;
+                _context5.t0 = _context5["catch"](0);
+                return _context5.abrupt("return", res.status(500).json({
                   status: 500,
                   // 500 no available content
                   error: 'Something went wrong while trying to update your account'
@@ -393,13 +473,13 @@ function () {
 
               case 14:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, null, [[0, 11]]);
+        }, _callee5, null, [[0, 11]]);
       }));
 
-      function updateAccount(_x7, _x8) {
+      function updateAccount(_x9, _x10) {
         return _updateAccount.apply(this, arguments);
       }
 
@@ -410,53 +490,53 @@ function () {
     value: function () {
       var _deleteAccount = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee5(req, res) {
+      regeneratorRuntime.mark(function _callee6(req, res) {
         var accountNumber, deletedAccount;
-        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _context5.prev = 0;
+                _context6.prev = 0;
                 accountNumber = req.params.accountNumber;
-                _context5.next = 4;
+                _context6.next = 4;
                 return _accountModel.default.deleteAccount(accountNumber);
 
               case 4:
-                deletedAccount = _context5.sent;
+                deletedAccount = _context6.sent;
 
                 if (deletedAccount) {
-                  _context5.next = 7;
+                  _context6.next = 7;
                   break;
                 }
 
-                return _context5.abrupt("return", res.status(404).json({
+                return _context6.abrupt("return", res.status(404).json({
                   status: 404,
                   error: 'Oooops! no record with such Account number'
                 }));
 
               case 7:
-                return _context5.abrupt("return", res.status(200).json({
+                return _context6.abrupt("return", res.status(200).json({
                   status: 200,
                   message: 'Account has been deleted successfully'
                 }));
 
               case 10:
-                _context5.prev = 10;
-                _context5.t0 = _context5["catch"](0);
-                return _context5.abrupt("return", res.status(500).send({
+                _context6.prev = 10;
+                _context6.t0 = _context6["catch"](0);
+                return _context6.abrupt("return", res.status(500).send({
                   status: '500',
                   error: 'Something went wrong while trying to delete, try again'
                 }));
 
               case 13:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5, null, [[0, 10]]);
+        }, _callee6, null, [[0, 10]]);
       }));
 
-      function deleteAccount(_x9, _x10) {
+      function deleteAccount(_x11, _x12) {
         return _deleteAccount.apply(this, arguments);
       }
 

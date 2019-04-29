@@ -87,12 +87,13 @@ function () {
               case 19:
                 _context.prev = 19;
                 _context.t0 = _context["catch"](0);
+                console.log(_context.t0.stack);
                 return _context.abrupt("return", res.status(500).json({
                   status: 500,
                   message: 'Something went wrong while trying to credit your account'
                 }));
 
-              case 22:
+              case 23:
               case "end":
                 return _context.stop();
             }

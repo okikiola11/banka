@@ -28,161 +28,34 @@ function () {
 
   _createClass(authorize, null, [{
     key: "authTransaction",
-    value: function authTransaction(req, res, next) {
-      if (!req.data.type === 'staff') {
-        console.log('rgggggggggggggggggggggggggggggggggg');
-        return res.status(403).json({
-          status: 403,
-          message: 'Access denied'
-        });
-      }
-
-      return next();
-    }
-  }, {
-    key: "clientAccount",
     value: function () {
-      var _clientAccount = _asyncToGenerator(
+      var _authTransaction = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res, next) {
-        var isQuery, status, _accounts, _accounts2, _accounts3, accounts;
-
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                _context.next = 2;
+                return req.data.type;
+
+              case 2:
+                console.log(req.data.type);
+
                 if (!(req.data.type === 'client')) {
-                  _context.next = 31;
+                  _context.next = 5;
                   break;
                 }
 
-                isQuery = Object.keys(req.query).length;
-
-                if (!isQuery) {
-                  _context.next = 25;
-                  break;
-                }
-
-                status = req.query.status;
-
-                if (!(status === 'dormant')) {
-                  _context.next = 11;
-                  break;
-                }
-
-                _context.next = 7;
-                return _accountModel.default.clientDormantAccount(req.data.id);
-
-              case 7:
-                _accounts = _context.sent;
-
-                if (!(_accounts.length === 0)) {
-                  _context.next = 10;
-                  break;
-                }
-
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'There are no existing dormant account',
-                  data: _accounts
+                return _context.abrupt("return", res.status(403).json({
+                  status: 403,
+                  message: 'Access denied'
                 }));
 
-              case 10:
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'Successfully retrieved all dormant accounts',
-                  data: _accounts
-                }));
-
-              case 11:
-                if (!(status === 'active')) {
-                  _context.next = 18;
-                  break;
-                }
-
-                _context.next = 14;
-                return _accountModel.default.clientActiveAccount(req.data.id);
-
-              case 14:
-                _accounts2 = _context.sent;
-
-                if (!(_accounts2.length === 0)) {
-                  _context.next = 17;
-                  break;
-                }
-
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'There are no existing active account',
-                  data: _accounts2
-                }));
-
-              case 17:
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'Successfully retrieved all active accounts',
-                  data: _accounts2
-                }));
-
-              case 18:
-                if (!(status === 'draft')) {
-                  _context.next = 25;
-                  break;
-                }
-
-                _context.next = 21;
-                return _accountModel.default.clientDraftAccount(req.data.id);
-
-              case 21:
-                _accounts3 = _context.sent;
-
-                if (!(_accounts3.length === 0)) {
-                  _context.next = 24;
-                  break;
-                }
-
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'There are no existing draft account',
-                  data: _accounts3
-                }));
-
-              case 24:
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'Successfully retrieved all draft accounts',
-                  data: _accounts3
-                }));
-
-              case 25:
-                _context.next = 27;
-                return _accountModel.default.getClientAccounts(req.data.id);
-
-              case 27:
-                accounts = _context.sent;
-
-                if (!(accounts.length === 0)) {
-                  _context.next = 30;
-                  break;
-                }
-
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'There are no existing account',
-                  data: accounts
-                }));
-
-              case 30:
-                return _context.abrupt("return", res.status(200).json({
-                  status: 200,
-                  message: 'Successfully retrieved all accounts',
-                  data: accounts
-                }));
-
-              case 31:
+              case 5:
                 return _context.abrupt("return", next());
 
-              case 32:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -190,7 +63,164 @@ function () {
         }, _callee);
       }));
 
-      function clientAccount(_x, _x2, _x3) {
+      function authTransaction(_x, _x2, _x3) {
+        return _authTransaction.apply(this, arguments);
+      }
+
+      return authTransaction;
+    }()
+  }, {
+    key: "clientAccount",
+    value: function () {
+      var _clientAccount = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(req, res, next) {
+        var isQuery, status, _accounts, _accounts2, _accounts3, accounts;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(req.data.type === 'client')) {
+                  _context2.next = 31;
+                  break;
+                }
+
+                isQuery = Object.keys(req.query).length;
+
+                if (!isQuery) {
+                  _context2.next = 25;
+                  break;
+                }
+
+                status = req.query.status;
+
+                if (!(status === 'dormant')) {
+                  _context2.next = 11;
+                  break;
+                }
+
+                _context2.next = 7;
+                return _accountModel.default.clientDormantAccount(req.data.id);
+
+              case 7:
+                _accounts = _context2.sent;
+
+                if (!(_accounts.length === 0)) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'There are no existing dormant account',
+                  data: _accounts
+                }));
+
+              case 10:
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'Successfully retrieved all dormant accounts',
+                  data: _accounts
+                }));
+
+              case 11:
+                if (!(status === 'active')) {
+                  _context2.next = 18;
+                  break;
+                }
+
+                _context2.next = 14;
+                return _accountModel.default.clientActiveAccount(req.data.id);
+
+              case 14:
+                _accounts2 = _context2.sent;
+
+                if (!(_accounts2.length === 0)) {
+                  _context2.next = 17;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'There are no existing active account',
+                  data: _accounts2
+                }));
+
+              case 17:
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'Successfully retrieved all active accounts',
+                  data: _accounts2
+                }));
+
+              case 18:
+                if (!(status === 'draft')) {
+                  _context2.next = 25;
+                  break;
+                }
+
+                _context2.next = 21;
+                return _accountModel.default.clientDraftAccount(req.data.id);
+
+              case 21:
+                _accounts3 = _context2.sent;
+
+                if (!(_accounts3.length === 0)) {
+                  _context2.next = 24;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'There are no existing draft account',
+                  data: _accounts3
+                }));
+
+              case 24:
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'Successfully retrieved all draft accounts',
+                  data: _accounts3
+                }));
+
+              case 25:
+                _context2.next = 27;
+                return _accountModel.default.getClientAccounts(req.data.id);
+
+              case 27:
+                accounts = _context2.sent;
+
+                if (!(accounts.length === 0)) {
+                  _context2.next = 30;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'There are no existing account',
+                  data: accounts
+                }));
+
+              case 30:
+                return _context2.abrupt("return", res.status(200).json({
+                  status: 200,
+                  message: 'Successfully retrieved all accounts',
+                  data: accounts
+                }));
+
+              case 31:
+                return _context2.abrupt("return", next());
+
+              case 32:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function clientAccount(_x4, _x5, _x6) {
         return _clientAccount.apply(this, arguments);
       }
 
