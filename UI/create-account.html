@@ -9,66 +9,111 @@
     <meta name="keywords" content="A Bank Application" />
     <meta name="author" content="Apelehin Okikiola" />
     <title>Banka</title>
-    <link rel="stylesheet" href="asset/css/style.css" />
-    <script src="asset/js/main.js"></script>
+    <link rel="stylesheet" href="asset/css/user.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 
 <body>
 
     <header>
+        <div class="logo" id="logo">
+            <i class="fa fa-tachometer"></i>
+            <span>Banka</span>
+        </div>
 
-        <nav>
+        <div class="logo--b">
+            <a href="index.html">Banka</a>
+        </div>
 
-            <div id="branding">
-                <h1> <a href="index.html"> Banka </a></h1>
-            </div>
-
-
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="signup.html">Sign up</a></li>
-                <li><a href="login.html">Log in</a></li>
-            </ul>
-        </nav>
+        <a href="#" class="nav-trigger">
+            <span></span>
+        </a>
 
     </header>
 
-    <div class="register-container-a">
+    <div class="side-nav">
+        <div class="txt-sidenav">
+            User
+        </div>
 
-        <div class="acct-wrapper">
+        <nav>
+            <ul>
+                <li>
+                    <a href="create-account.html">
+                        <span><i class="far fa-user"></i></span>
+                        <span>Open an account</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="my-profile.html">
+                        <span><i class="far fa-user"></i></span>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="user-transaction-history.html">
+                        <span><i class="far fa-edit"></i></span>
+                        <span>Transaction history</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <span><i class="fas fa-cog"></i></span>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">
+                        <span><i class="far fa-arrow-alt-circle-left"></i></span>
+                        <span>Log out</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-            <form id="create-form">
-                <div class="txt-hdr">Set up Account</div>
+    </div>
 
-                <fieldset>
 
-                    <input type="text" placeholder="First name" name="firstname" id="inputbx" />
-                    <input type="text" placeholder="Last name" name="lastname" id="inputbx" />
-                    <input type="text" placeholder="Email" name="email" id="inputbx" />
-                    <input type="text" placeholder="Phone number" name="password" id="inputbx" />
-                    <input type="text" placeholder="Date of birth" name="password" id="inputbx" />
-                    <input type="text" placeholder="BVN (Optional)" name="password" id="inputbx" />
+    <div class="main-content bottom--sp">
 
-                    <textarea name="address" placeholder="Address" id="inputbx" cols="30" rows="10"></textarea>
-                    <input type="file" name="file" id="inputbx" />
+        <div class="main-nn">
 
-                    <input type="submit" value="Submit" name="next" class="next action-button" id="inputbx" />
+            <div class="register-container-a">
 
-                </fieldset>
+                <div class="acct-wrapper">
 
-            </form>
+                    <form id="create-form">
+                        <div class="txt-hdr">Set up Account</div>
+
+                        <fieldset>
+
+                            <input type="text" placeholder="First name" name="firstname" id="inputbx" />
+                            <input type="text" placeholder="Last name" name="lastname" id="inputbx" />
+                            <input type="text" placeholder="Email" name="email" id="inputbx" />
+                            <input type="text" placeholder="Phone number" name="password" id="inputbx" />
+
+                            <input type="file" name="file" id="inputbx" />
+
+                            <input type="submit" value="Submit" name="next" class="next action-button" id="inputbx" />
+
+                        </fieldset>
+
+                    </form>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
     <footer>
-        <div class="footer">2019 Banking Application. All Rights Reserved </div>
+        <div class=" footer">2019 Banking Application. All Rights Reserved </div>
     </footer>
-    <div class="footer-text">
-        Powered by Apelehin Okikiola
-    </div>
-
 </body>
+
+<script src="asset/js/main.js"></script>
 
 </html>

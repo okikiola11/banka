@@ -22,14 +22,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Transaction =
 /*#__PURE__*/
 function () {
-  function Transaction(accountNumber, amount, cashierID, transactionType, accountBalance) {
+  function Transaction() {
     _classCallCheck(this, Transaction);
-
-    this.accountNumber = accountNumber;
-    this.amount = amount;
-    this.cashierID = cashierID;
-    this.transactionType = transactionType;
-    this.accountBalance = accountBalance;
   }
 
   _createClass(Transaction, null, [{
@@ -37,15 +31,15 @@ function () {
     value: function () {
       var _transact = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(accountNumber, amount, cashierID, transactionType, accountBalance) {
+      regeneratorRuntime.mark(function _callee(accountNumber, amount, cashierID, transactionType, oldBalance, newBalance) {
         var query, values, _ref, rows;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                query = "\n            INSERT INTO\n            transactions(accountnumber, amount, cashierid, transactiontype, accountbalance)\n            VALUES ($1, $2, $3, $4, $5)\n            returning *\n        ";
-                values = [accountNumber, amount, cashierID, transactionType, accountBalance];
+                query = "\n            INSERT INTO\n            transactions(accountnumber, amount, cashierid, transactiontype, oldBalance, newbalance)\n            VALUES ($1, $2, $3, $4, $5, $6)\n            returning *\n        ";
+                values = [accountNumber, amount, cashierID, transactionType, oldBalance, newBalance];
                 _context.next = 4;
                 return _index.default.query(query, values);
 
@@ -62,11 +56,47 @@ function () {
         }, _callee);
       }));
 
-      function transact(_x, _x2, _x3, _x4, _x5) {
+      function transact(_x, _x2, _x3, _x4, _x5, _x6) {
         return _transact.apply(this, arguments);
       }
 
       return transact;
+    }()
+  }, {
+    key: "getSingleTransactions",
+    value: function () {
+      var _getSingleTransactions = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(transactionId) {
+        var query, values, _ref2, rows;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                query = "\n            SELECT * FROM transactions  WHERE transactionId = $1\n        ";
+                values = [transactionId];
+                _context2.next = 4;
+                return _index.default.query(query, values);
+
+              case 4:
+                _ref2 = _context2.sent;
+                rows = _ref2.rows;
+                return _context2.abrupt("return", rows[0]);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function getSingleTransactions(_x7) {
+        return _getSingleTransactions.apply(this, arguments);
+      }
+
+      return getSingleTransactions;
     }()
   }]);
 

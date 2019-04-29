@@ -54,8 +54,6 @@ describe('/ User Auth Signup Endpoint ', () => {
                     firstName: '',
                     lastName: '',
                     email: '',
-                    phone: '',
-                    gender: '',
                     password: '',
                 })
                 .expect(400)
@@ -77,20 +75,16 @@ describe('/ User Auth Signup Endpoint ', () => {
                     firstName: 'Okikiola',
                     lastName: 'Apelehin',
                     email: 'user@gmail.com',
-                    phone: '08023182819',
-                    gender: 'female',
-                    user: true,
                     password: 'okiki123',
                 })
                 .expect(201)
                 .expect((response) => {
                     expect(response.body.status).to.equal(201);
                     expect(response.body.message).to.equal('New User has been created');
-                    expect(response.body.data[0]).to.have.all.keys(
-                        'auth',
-                        'token',
-                        'payLoad',
-                    );
+                    expect(response.body.data[0])
+                        .to.have.all.keys(
+                            'id', 'token', 'firstName', 'lastName', 'email',
+                        );
                 })
                 .end(done);
         });
@@ -124,10 +118,9 @@ describe('/ User Auth Login Endpoint ', () => {
                     email: 'user@gmail.com',
                     password: 'okiki111',
                 })
-                .expect(400)
+                .expect(403)
                 .expect((response) => {
-                    expect(response.body.status).to.equal(400);
-                    expect(response.body.auth).to.equal('false');
+                    expect(response.body.status).to.equal(403);
                     expect(response.body.message).to.equal('Incorrect Password');
                 })
                 .end(done);
@@ -138,19 +131,21 @@ describe('/ User Auth Login Endpoint ', () => {
                 .post(`${API_PREFIX}/auth/signin`)
                 .set('Accept', 'application/json')
                 .send({
-                    email: 'user@gmail.com',
-                    password: 'okiki123',
+                    email: 'john.doe@gmail.com',
+                    password: 'johnny',
                 })
                 .expect(200)
                 .expect((response) => {
                     expect(response.body.status).to.equal(200);
                     expect(response.body.message).to.equal(
-                        'Welcome user@gmail.com, you have successfully logged in',
+                        'Welcome john.doe@gmail.com, you have successfully logged in',
                     );
-                    expect(response.body.data[0]).to.have.all.keys(
-                        'auth',
+                    expect(response.body.data).to.have.all.keys(
+                        'id',
                         'token',
-                        'payLoad',
+                        'firstName',
+                        'lastName',
+                        'email',
                     );
                 })
                 .end(done);

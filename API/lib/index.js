@@ -27,9 +27,9 @@ app.use(_bodyParser.default.json());
 app.get('/', function (req, res) {
   return res.send('Welcome, to the Web Banking Application!');
 });
-app.use('/api/v1/auth', _userRoutes.default);
+app.use('/api/v1', _userRoutes.default);
 app.use('/api/v1/accounts', _accountsRoutes.default);
-app.use('/api/v1/transactions/:accountNumber', _transactionRte.default);
+app.use('/api/v1/transactions', _transactionRte.default);
 app.all('*', function (req, res) {
   res.status(404).json({
     status: 404,

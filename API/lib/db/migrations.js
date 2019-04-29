@@ -22,7 +22,7 @@ function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            queryText = "\n    DROP TABLE IF EXISTS users CASCADE;\n    DROP TABLE IF EXISTS accounts CASCADE;\n    DROP TABLE IF EXISTS transactions CASCADE;\n\n    CREATE TABLE IF NOT EXISTS\n    users(\n        ID serial PRIMARY KEY,\n        firstName varchar NOT NULL,\n        lastName varchar NOT NULL,\n        email varchar(128) NOT NULL UNIQUE,\n        password varchar(355) NOT NULL,\n        type VARCHAR(6) NOT NULL DEFAULT ('client'),\n        isAdmin BOOLEAN NOT NULL DEFAULT (false),\n        createdOn TIMESTAMP NOT NULL DEFAULT NOW()\n    );\n\n    CREATE TABLE IF NOT EXISTS\n        accounts(\n            ID serial PRIMARY KEY,\n            ownerID INTEGER NOT NULL,\n            accountNumber varchar NOT NULL UNIQUE,\n            type varchar NOT NULL,\n            status varchar,\n            balance float(2) NOT NULL,\n            createdOn TIMESTAMP NOT NULL DEFAULT NOW(),\n            updatedOn TIMESTAMP NULL,\n            FOREIGN KEY (ownerID) REFERENCES users (ID) ON DELETE CASCADE\n        );\n\n    CREATE TABLE IF NOT EXISTS\n        transactions(\n            transactionId serial PRIMARY KEY,\n            accountNumber varchar NOT NULL,\n            amount varchar,\n            cashierID INTEGER NOT NULL,\n            transactionType varchar,\n            accountBalance varchar NOT NULL,\n            createdOn TIMESTAMP NOT NULL DEFAULT NOW(),\n            FOREIGN KEY (cashierID) REFERENCES users (ID) ON DELETE CASCADE\n        );\n    "; // await db.query(queryText + seeders);
+            queryText = "\n    DROP TABLE IF EXISTS users CASCADE;\n    DROP TABLE IF EXISTS accounts CASCADE;\n    DROP TABLE IF EXISTS transactions CASCADE;\n\n    CREATE TABLE IF NOT EXISTS\n    users(\n        ID serial PRIMARY KEY,\n        firstName varchar NOT NULL,\n        lastName varchar NOT NULL,\n        email varchar(128) NOT NULL UNIQUE,\n        password varchar(355) NOT NULL,\n        type VARCHAR(6) NOT NULL DEFAULT ('client'),\n        isAdmin BOOLEAN NOT NULL DEFAULT (false),\n        createdOn TIMESTAMP NOT NULL DEFAULT NOW()\n    );\n\n    CREATE TABLE IF NOT EXISTS\n        accounts(\n            ID serial PRIMARY KEY,\n            ownerID INTEGER NOT NULL,\n            accountNumber varchar NOT NULL UNIQUE,\n            type varchar NOT NULL,\n            status varchar,\n            balance float(2) NOT NULL,\n            createdOn TIMESTAMP NOT NULL DEFAULT NOW(),\n            updatedOn TIMESTAMP NULL,\n            FOREIGN KEY (ownerID) REFERENCES users (ID) ON DELETE CASCADE\n        );\n\n    CREATE TABLE IF NOT EXISTS\n        transactions(\n            transactionId serial PRIMARY KEY,\n            accountNumber varchar NOT NULL,\n            amount varchar,\n            cashierID INTEGER NOT NULL,\n            transactionType varchar,\n            oldBalance varchar NOT NULL,\n            newBalance varchar NOT NULL,\n            createdOn TIMESTAMP NOT NULL DEFAULT NOW(),\n            FOREIGN KEY (cashierID) REFERENCES users (ID) ON DELETE CASCADE\n        );\n    "; // await db.query(queryText + seeders);
 
             _context.prev = 1;
             _context.next = 4;
@@ -35,7 +35,7 @@ function () {
           case 6:
             _context.prev = 6;
             _context.t0 = _context["catch"](1);
-            console.log(_context.t0.stack);
+            console.log(_context.t0);
 
           case 9:
           case "end":

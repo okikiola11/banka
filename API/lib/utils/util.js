@@ -50,19 +50,15 @@ function () {
       }
 
       return accountNo;
-    }
-  }, {
-    key: "generateToken",
-    value: function generateToken(payload) {
-      return _jsonwebtoken.default.sign(payload, process.env.secret, {
-        expiresIn: '24h'
-      });
-    }
-  }, {
-    key: "decodeToken",
-    value: function decodeToken(token) {
-      return _jsonwebtoken.default.verify(token, process.env.secret);
-    }
+    } // static generateToken(payload) {
+    //     return jwt.sign(payload, process.env.secret, {
+    //         expiresIn: '24h',
+    //     });
+    // }
+    // static decodeToken(token) {
+    //     return jwt.verify(token, process.env.secret);
+    // }
+
   }]);
 
   return Utility;
